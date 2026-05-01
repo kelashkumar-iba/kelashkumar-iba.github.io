@@ -13,28 +13,28 @@
 <meta property="og:type" content="website" />
 
 <meta name="theme-color" content="#0A0E14" media="(prefers-color-scheme: dark)" />
-<meta name="theme-color" content="#F4EFE0" media="(prefers-color-scheme: light)" />
+<meta name="theme-color" content="#F7F2E3" media="(prefers-color-scheme: light)" />
 
-<link rel="icon" href='data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" fill="%230A0E14"/><text x="50%25" y="56%25" font-family="Georgia,serif" font-size="22" font-weight="600" font-style="italic" fill="%23E0A93C" text-anchor="middle" dominant-baseline="middle">k</text></svg>' />
+<link rel="icon" href='data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" fill="%230A0E14"/><text x="50%25" y="58%25" font-family="Georgia,serif" font-size="22" font-weight="600" font-style="italic" fill="%23E0A93C" text-anchor="middle" dominant-baseline="middle">k</text></svg>' />
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,30..100;1,9..144,300..900,30..100&family=IBM+Plex+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 
 <style>
-  /* ============================================
-     THEME TOKENS — two distinct identities
-     ============================================ */
+  /* =====================================================================
+     THEMES — two distinct identities
+     ===================================================================== */
 
   :root[data-theme="dark"] {
     --bg:           #0A0E14;
-    --bg-elev:      #11151D;
-    --bg-pop:       #161B26;
+    --bg-elev:      #11161F;
+    --bg-pop:       #161C28;
     --line:         rgba(237, 230, 214, 0.08);
-    --line-strong:  rgba(237, 230, 214, 0.18);
+    --line-strong:  rgba(237, 230, 214, 0.20);
     --fg:           #EDE6D6;
     --fg-dim:       #BFB7A4;
-    --fg-mute:      #7C7868;
+    --fg-mute:      #807866;
     --accent:       #E0A93C;
     --accent-soft:  #F0C879;
     --accent-deep:  #B58A2E;
@@ -42,20 +42,21 @@
     --grid:         rgba(237, 230, 214, 0.035);
   }
 
+  /* Light: SHARP cream paper · vivid terracotta · forest signal */
   :root[data-theme="light"] {
-  --bg:           #FFFFFF;
-  --bg-elev:      #F8FAFC;
-  --bg-pop:       #F1F5F9;
-  --line:         rgba(15, 23, 42, 0.08);
-  --line-strong:  rgba(15, 23, 42, 0.18);
-  --fg:           #0F172A;
-  --fg-dim:       #334155;
-  --fg-mute:      #64748B;
-  --accent:       #2563EB;
-  --accent-soft:  #3B82F6;
-  --accent-deep:  #1D4ED8;
-  --signal:       #16A34A;
-  --grid:         rgba(15, 23, 42, 0.035);
+    --bg:           #F7F2E3;
+    --bg-elev:      #EFE9D5;
+    --bg-pop:       #E5DCC0;
+    --line:         rgba(20, 16, 11, 0.16);
+    --line-strong:  rgba(20, 16, 11, 0.36);
+    --fg:           #14100B;
+    --fg-dim:       #3A332A;
+    --fg-mute:      #7C7263;
+    --accent:       #C8451B;
+    --accent-soft:  #E55D2F;
+    --accent-deep:  #9E3414;
+    --signal:       #156639;
+    --grid:         rgba(20, 16, 11, 0.045);
   }
 
   :root {
@@ -67,9 +68,9 @@
     --tx: color 0.5s ease, background-color 0.5s ease, border-color 0.5s ease, fill 0.5s ease, stroke 0.5s ease;
   }
 
-  /* ============================================
+  /* =====================================================================
      RESET + GLOBALS
-     ============================================ */
+     ===================================================================== */
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -118,9 +119,9 @@
 
   .accent { color: var(--accent); }
 
-  /* ============================================
+  /* =====================================================================
      CUSTOM CURSOR
-     ============================================ */
+     ===================================================================== */
 
   .cursor, .cursor-dot {
     position: fixed;
@@ -157,9 +158,9 @@
     border-color: var(--fg);
   }
 
-  /* ============================================
+  /* =====================================================================
      HEADER
-     ============================================ */
+     ===================================================================== */
 
   header.top {
     position: fixed;
@@ -168,7 +169,7 @@
     right: 0;
     z-index: 50;
     padding: 18px 0;
-    background: color-mix(in srgb, var(--bg) 82%, transparent);
+    background: color-mix(in srgb, var(--bg) 80%, transparent);
     backdrop-filter: blur(18px) saturate(140%);
     -webkit-backdrop-filter: blur(18px) saturate(140%);
     border-bottom: 1px solid transparent;
@@ -188,15 +189,22 @@
 
   .brand {
     font-family: var(--serif);
-    font-weight: 500;
-    font-size: 20px;
-    letter-spacing: -0.01em;
-    transition: var(--tx);
-  }
-  .brand em {
     font-style: italic;
-    color: var(--accent);
     font-weight: 400;
+    font-size: 22px;
+    letter-spacing: -0.015em;
+    color: var(--fg);
+    transition: var(--tx);
+    font-variation-settings: "opsz" 144, "SOFT" 70;
+  }
+  .brand .dot {
+    color: var(--accent);
+  }
+
+  .top-right {
+    display: flex;
+    align-items: center;
+    gap: 32px;
   }
 
   nav.primary {
@@ -225,8 +233,6 @@
   nav.primary a:hover { color: var(--fg); }
   nav.primary a:hover::after { right: 0; }
 
-  .top-actions { display: flex; align-items: center; gap: 12px; }
-
   .theme-toggle {
     width: 42px;
     height: 42px;
@@ -235,12 +241,11 @@
     display: grid;
     place-items: center;
     transition: var(--tx), transform 0.25s ease;
-    position: relative;
     overflow: hidden;
   }
   .theme-toggle:hover {
     border-color: var(--accent);
-    transform: scale(1.05);
+    transform: scale(1.06);
   }
   .theme-toggle:active { transform: scale(0.92); }
 
@@ -248,7 +253,7 @@
     width: 18px;
     height: 18px;
     color: var(--fg);
-    transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease;
+    transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
   }
   .theme-toggle .icon-sun { display: none; }
   .theme-toggle .icon-moon { display: block; }
@@ -257,20 +262,22 @@
 
   @media (max-width: 720px) {
     nav.primary { display: none; }
+    .top-right { gap: 12px; }
   }
 
-  /* ============================================
+  /* =====================================================================
      HERO
-     ============================================ */
+     ===================================================================== */
 
   .hero {
     min-height: 100vh;
     min-height: 100svh;
     display: grid;
     grid-template-rows: auto 1fr auto;
-    padding: 100px 0 40px;
+    padding: 110px 0 56px;
     position: relative;
     isolation: isolate;
+    gap: clamp(40px, 6vh, 72px);
   }
 
   .hero::before {
@@ -278,8 +285,8 @@
     position: absolute;
     inset: 0;
     background:
-      radial-gradient(ellipse 80% 60% at 75% 25%, color-mix(in srgb, var(--accent) 6%, transparent) 0%, transparent 60%),
-      radial-gradient(ellipse 40% 40% at 15% 85%, color-mix(in srgb, var(--signal) 4%, transparent) 0%, transparent 60%);
+      radial-gradient(ellipse 70% 50% at 80% 20%, color-mix(in srgb, var(--accent) 7%, transparent) 0%, transparent 60%),
+      radial-gradient(ellipse 35% 35% at 10% 90%, color-mix(in srgb, var(--signal) 5%, transparent) 0%, transparent 60%);
     z-index: -1;
     pointer-events: none;
     transition: var(--tx);
@@ -289,8 +296,8 @@
     display: inline-flex;
     align-items: center;
     gap: 12px;
-    padding: 8px 16px 8px 14px;
-    border: 1px solid var(--line);
+    padding: 8px 18px 8px 14px;
+    border: 1px solid var(--line-strong);
     border-radius: 100px;
     font-family: var(--mono);
     font-size: 11px;
@@ -316,21 +323,24 @@
     100% { box-shadow: 0 0 0 0 transparent; }
   }
 
-  .hero-main {
+  /* Hero grid: name+lede LEFT, NOW panel RIGHT */
+  .hero-grid {
     display: grid;
-    grid-template-columns: 1fr;
-    gap: 28px;
-    align-content: center;
-    padding: 40px 0;
+    grid-template-columns: 1.5fr 1fr;
+    gap: clamp(32px, 5vw, 80px);
+    align-items: start;
+  }
+  @media (max-width: 880px) {
+    .hero-grid { grid-template-columns: 1fr; gap: 48px; }
   }
 
   .hero h1 {
     font-family: var(--serif);
     font-weight: 380;
-    font-size: clamp(64px, 14vw, 200px);
-    line-height: 0.9;
-    letter-spacing: -0.04em;
-    font-variation-settings: "opsz" 144, "SOFT" 30;
+    font-size: clamp(56px, 9vw, 132px);
+    line-height: 0.92;
+    letter-spacing: -0.035em;
+    font-variation-settings: "opsz" 144, "SOFT" 60;
     overflow: hidden;
   }
   .hero h1 .first,
@@ -344,7 +354,6 @@
     font-style: italic;
     font-weight: 320;
     color: var(--accent);
-    position: relative;
     animation-delay: 0.18s;
   }
   @keyframes rise {
@@ -352,41 +361,36 @@
   }
 
   .hero-meta {
-    display: grid;
-    grid-template-columns: 1fr 1.2fr;
-    gap: clamp(28px, 6vw, 80px);
-    margin-top: 20px;
-    align-items: end;
-  }
-  @media (max-width: 820px) {
-    .hero-meta { grid-template-columns: 1fr; gap: 28px; }
-  }
-
-  .hero-role {
+    margin-top: 28px;
+    padding-top: 24px;
+    border-top: 1px solid var(--line);
     font-family: var(--mono);
-    font-size: 12px;
-    letter-spacing: 0.04em;
+    font-size: 11.5px;
+    letter-spacing: 0.06em;
     color: var(--fg-mute);
     line-height: 1.85;
+    transition: var(--tx);
   }
-  .hero-role strong {
+  .hero-meta strong {
     color: var(--fg);
     font-weight: 500;
-    display: block;
-    font-size: 13px;
-    margin-bottom: 6px;
-    letter-spacing: 0.06em;
+    font-size: 12.5px;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
+    display: block;
+    margin-bottom: 6px;
   }
 
   .hero-lede {
+    margin-top: 28px;
     font-family: var(--serif);
     font-weight: 360;
-    font-size: clamp(20px, 2.4vw, 28px);
+    font-size: clamp(20px, 2.2vw, 26px);
     line-height: 1.4;
     color: var(--fg);
     letter-spacing: -0.012em;
     max-width: 32ch;
+    font-variation-settings: "opsz" 60;
   }
   .hero-lede .rotate-host {
     color: var(--accent);
@@ -403,17 +407,89 @@
     transform: translateY(-8px);
   }
 
-  .hero-bottom {
-    display: flex;
-    justify-content: space-between;
-    align-items: end;
-    gap: 24px;
-    flex-wrap: wrap;
-    padding-top: 32px;
-    border-top: 1px solid var(--line);
+  /* NOW panel — fills right empty space */
+  .now-panel {
+    border: 1px solid var(--line-strong);
+    background: color-mix(in srgb, var(--bg-elev) 80%, transparent);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    padding: 28px 28px 24px;
+    border-radius: 4px;
+    transition: var(--tx);
+    position: relative;
+    overflow: hidden;
+  }
+  .now-panel::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), transparent);
     transition: var(--tx);
   }
 
+  .now-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 18px;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--fg-mute);
+  }
+  .now-head .now-eye {
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  .now-blurb {
+    font-family: var(--serif);
+    font-size: 16.5px;
+    line-height: 1.5;
+    color: var(--fg-dim);
+    margin-bottom: 22px;
+    letter-spacing: -0.005em;
+    font-variation-settings: "opsz" 60;
+  }
+
+  .now-divider {
+    height: 1px;
+    background: var(--line);
+    margin-bottom: 18px;
+    transition: var(--tx);
+  }
+
+  .now-stats {
+    display: grid;
+    gap: 14px;
+  }
+  .stat-row {
+    display: grid;
+    grid-template-columns: 70px 1fr;
+    align-items: baseline;
+    gap: 16px;
+  }
+  .stat-val {
+    font-family: var(--serif);
+    font-size: 24px;
+    color: var(--accent);
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    font-variation-settings: "opsz" 60;
+  }
+  .stat-key {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--fg-mute);
+  }
+
+  /* CTA row at hero bottom — no scroll element */
   .cta-row {
     display: flex;
     flex-wrap: wrap;
@@ -455,41 +531,9 @@
   .btn .arrow { transition: transform 0.25s ease; }
   .btn:hover .arrow { transform: translateX(3px); }
 
-  .scroll-cue {
-    font-family: var(--mono);
-    font-size: 10px;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--fg-mute);
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-  .scroll-cue .line {
-    width: 40px;
-    height: 1px;
-    background: var(--fg-mute);
-    position: relative;
-    overflow: hidden;
-  }
-  .scroll-cue .line::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: -16px;
-    width: 16px;
-    height: 100%;
-    background: var(--accent);
-    animation: travel 2.4s ease-in-out infinite;
-  }
-  @keyframes travel {
-    0%   { left: -16px; }
-    100% { left: 40px; }
-  }
-
-  /* ============================================
+  /* =====================================================================
      SECTIONS
-     ============================================ */
+     ===================================================================== */
 
   section.layer {
     padding: clamp(80px, 14vh, 160px) 0;
@@ -501,7 +545,7 @@
     display: flex;
     justify-content: space-between;
     align-items: baseline;
-    padding-bottom: 16px;
+    padding-bottom: 18px;
     border-bottom: 1px solid var(--line-strong);
     margin-bottom: 64px;
     gap: 20px;
@@ -514,7 +558,7 @@
     font-size: clamp(32px, 5vw, 56px);
     letter-spacing: -0.025em;
     line-height: 1;
-    font-variation-settings: "opsz" 144;
+    font-variation-settings: "opsz" 144, "SOFT" 50;
   }
   .section-head h2 em {
     font-style: italic;
@@ -530,15 +574,15 @@
     text-transform: uppercase;
   }
 
-  /* ============================================
+  /* =====================================================================
      PROJECTS
-     ============================================ */
+     ===================================================================== */
 
   .project {
     display: grid;
     grid-template-columns: 84px 1fr;
     gap: clamp(16px, 3vw, 40px);
-    padding: 56px 0;
+    padding: 60px 0;
     border-bottom: 1px solid var(--line);
     transition: var(--tx);
   }
@@ -555,12 +599,14 @@
     line-height: 1;
     color: var(--fg-mute);
     letter-spacing: -0.03em;
+    font-variation-settings: "opsz" 144;
   }
 
   .project-body {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 22px;
+    min-width: 0; /* prevent overflow */
   }
 
   .project-meta {
@@ -587,7 +633,7 @@
   }
   .badge--live {
     color: var(--signal);
-    border-color: color-mix(in srgb, var(--signal) 35%, transparent);
+    border-color: color-mix(in srgb, var(--signal) 40%, transparent);
   }
 
   .project h3 {
@@ -597,6 +643,7 @@
     line-height: 1.05;
     letter-spacing: -0.02em;
     margin-top: 4px;
+    font-variation-settings: "opsz" 144, "SOFT" 50;
   }
   .project h3 a {
     background-image: linear-gradient(var(--accent), var(--accent));
@@ -623,56 +670,94 @@
     color: var(--fg);
     font-family: var(--serif);
     font-weight: 360;
-    font-size: clamp(17px, 1.8vw, 20px);
-    line-height: 1.55;
-    max-width: 56ch;
+    font-size: clamp(17px, 1.8vw, 19.5px);
+    line-height: 1.6;
+    max-width: 64ch;
     letter-spacing: -0.005em;
+    font-variation-settings: "opsz" 60;
   }
 
-  .diagram {
-    margin-top: 8px;
-    padding: 28px clamp(12px, 3vw, 32px);
+  /* Architecture table — text-based, structured, elegant */
+  .arch {
     border: 1px solid var(--line);
     border-radius: 4px;
+    overflow: hidden;
     background: var(--bg-elev);
-    overflow-x: auto;
+    margin-top: 4px;
     transition: var(--tx);
   }
-  .diagram svg { width: 100%; height: auto; min-width: 480px; }
-
-  .arch-node rect {
-    fill: var(--bg-pop);
-    stroke: var(--line-strong);
-    stroke-width: 1;
-    transition: var(--tx);
-  }
-  .arch-node text {
-    fill: var(--fg);
+  .arch-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 16px;
+    padding: 14px 20px;
+    background: color-mix(in srgb, var(--bg-pop) 70%, transparent);
+    border-bottom: 1px solid var(--line);
     font-family: var(--mono);
-    font-size: 11px;
-    font-weight: 500;
-    transition: var(--tx);
-  }
-  .arch-node-accent rect {
-    fill: color-mix(in srgb, var(--accent) 14%, var(--bg-pop));
-    stroke: var(--accent);
-  }
-  .arch-line {
-    stroke: var(--fg-mute);
-    stroke-width: 1;
-    fill: none;
-    transition: var(--tx);
-  }
-  .arch-arrow { fill: var(--fg-mute); transition: var(--tx); }
-  .arch-label {
-    fill: var(--fg-mute);
-    font-family: var(--mono);
-    font-size: 9px;
-    letter-spacing: 0.12em;
+    font-size: 10px;
+    letter-spacing: 0.18em;
     text-transform: uppercase;
+    color: var(--fg-mute);
     transition: var(--tx);
   }
+  .arch-head .arch-tag { color: var(--accent); font-weight: 600; }
 
+  .arch-row {
+    display: grid;
+    grid-template-columns: 50px 130px 1fr;
+    gap: 18px;
+    padding: 14px 20px;
+    border-top: 1px solid var(--line);
+    align-items: baseline;
+    transition: var(--tx), background 0.3s ease;
+  }
+  .arch-row:first-child { border-top: 0; }
+  .arch-row:hover { background: color-mix(in srgb, var(--accent) 5%, transparent); }
+
+  .arch-num {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--fg-mute);
+    letter-spacing: 0.1em;
+  }
+  .arch-key {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 600;
+  }
+  .arch-val {
+    font-family: var(--sans);
+    font-size: 13.5px;
+    color: var(--fg);
+    line-height: 1.55;
+    letter-spacing: -0.005em;
+  }
+  .arch-val code {
+    font-family: var(--mono);
+    font-size: 12px;
+    background: color-mix(in srgb, var(--accent) 12%, transparent);
+    color: var(--accent);
+    padding: 1px 6px;
+    border-radius: 2px;
+  }
+
+  @media (max-width: 720px) {
+    .arch-row {
+      grid-template-columns: 36px 1fr;
+      gap: 12px;
+    }
+    .arch-row .arch-key {
+      grid-column: 2;
+      margin-bottom: -8px;
+    }
+    .arch-row .arch-val { grid-column: 2; }
+  }
+
+  /* Metrics tiles */
   .metrics {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -701,7 +786,7 @@
 
   .metric-val {
     font-family: var(--mono);
-    font-size: 17px;
+    font-size: 16px;
     font-weight: 600;
     color: var(--accent);
     letter-spacing: -0.01em;
@@ -719,7 +804,7 @@
     display: flex;
     gap: 22px;
     flex-wrap: wrap;
-    margin-top: 4px;
+    margin-top: 6px;
   }
   .project-links a {
     font-family: var(--mono);
@@ -736,114 +821,178 @@
     border-bottom-color: var(--accent);
   }
 
-  /* ============================================
-     STACK
-     ============================================ */
+  /* =====================================================================
+     TECH STACK — pills with brand logos via CSS mask
+     ===================================================================== */
 
-  .stack-grid {
+  .stack-categories {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 0;
-    border: 1px solid var(--line);
-    border-radius: 4px;
-    overflow: hidden;
-    transition: var(--tx);
-  }
-  @media (max-width: 720px) { .stack-grid { grid-template-columns: 1fr; } }
-
-  .stack-row {
-    display: grid;
-    grid-template-columns: 180px 1fr;
-    gap: 24px;
-    padding: 22px 24px;
-    border-bottom: 1px solid var(--line);
-    border-right: 1px solid var(--line);
-    align-items: start;
-    transition: var(--tx), background 0.3s ease;
-  }
-  .stack-row:hover { background: var(--bg-elev); }
-  .stack-row:nth-child(2n) { border-right: 0; }
-  .stack-row:nth-last-child(-n+2) { border-bottom: 0; }
-  @media (max-width: 720px) {
-    .stack-row { grid-template-columns: 1fr; gap: 8px; border-right: 0; }
-    .stack-row:nth-last-child(-n+2):not(:last-child) { border-bottom: 1px solid var(--line); }
+    gap: 36px;
   }
 
-  .stack-label {
-    font-family: var(--mono);
-    font-size: 10px;
-    text-transform: uppercase;
-    letter-spacing: 0.16em;
-    color: var(--accent);
-    padding-top: 4px;
-  }
-  .stack-items {
-    color: var(--fg);
-    font-size: 14px;
-    line-height: 1.85;
-  }
-
-  /* ============================================
-     ABOUT
-     ============================================ */
-
-  .about-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: clamp(28px, 6vw, 80px);
-  }
-  @media (max-width: 820px) { .about-grid { grid-template-columns: 1fr; gap: 48px; } }
-
-  .about-col h3 {
-    font-family: var(--serif);
-    font-weight: 400;
-    font-size: 22px;
-    margin-bottom: 22px;
-    padding-bottom: 12px;
-    border-bottom: 1px solid var(--line-strong);
-    letter-spacing: -0.01em;
-    transition: var(--tx);
-  }
-
-  .about-item {
-    padding: 16px 0;
-    border-bottom: 1px dashed var(--line);
-    transition: var(--tx);
-  }
-  .about-item:last-child { border-bottom: 0; }
-
-  .about-title {
-    font-family: var(--sans);
-    font-weight: 500;
-    font-size: 15px;
-    color: var(--fg);
-    margin-bottom: 5px;
-  }
-  .about-meta {
+  .stack-cat-head {
     font-family: var(--mono);
     font-size: 10.5px;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.2em;
     text-transform: uppercase;
-    color: var(--fg-mute);
+    color: var(--accent);
+    margin-bottom: 18px;
+    padding-bottom: 10px;
+    border-bottom: 1px dashed var(--line-strong);
+    transition: var(--tx);
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
   }
-  .about-note {
-    font-size: 13.5px;
-    color: var(--fg-dim);
-    margin-top: 8px;
-    line-height: 1.65;
-    max-width: 56ch;
+  .stack-cat-head .count {
+    color: var(--fg-mute);
+    letter-spacing: 0.1em;
+    font-size: 10px;
   }
 
-  /* ============================================
+  .tools {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .tool {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    padding: 10px 16px 10px 14px;
+    border: 1px solid var(--line-strong);
+    border-radius: 100px;
+    font-family: var(--mono);
+    font-size: 12.5px;
+    letter-spacing: 0.02em;
+    color: var(--fg);
+    background: color-mix(in srgb, var(--bg-elev) 50%, transparent);
+    transition: var(--tx), border-color 0.25s ease, background 0.25s ease, transform 0.2s ease;
+  }
+  .tool:hover {
+    border-color: var(--accent);
+    background: var(--bg-elev);
+    transform: translateY(-2px);
+  }
+  .tool::before {
+    content: "";
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    background-color: var(--fg-dim);
+    -webkit-mask-image: var(--icon);
+    mask-image: var(--icon);
+    -webkit-mask-size: contain;
+    mask-size: contain;
+    -webkit-mask-position: center;
+    mask-position: center;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    transition: var(--tx), background-color 0.25s ease;
+    flex-shrink: 0;
+  }
+  .tool:hover::before { background-color: var(--accent); }
+  .tool.no-icon::before {
+    background-color: var(--accent);
+    -webkit-mask: none;
+    mask: none;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    margin-left: 4px;
+  }
+  .tool.no-icon { padding-left: 12px; }
+
+  /* =====================================================================
+     ABOUT — editorial timeline
+     ===================================================================== */
+
+  .about-cats { display: grid; gap: 56px; }
+
+  .about-cat-head {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 24px;
+    padding-bottom: 10px;
+    border-bottom: 1px dashed var(--line-strong);
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    transition: var(--tx);
+  }
+  .about-cat-head .count {
+    color: var(--fg-mute);
+    letter-spacing: 0.1em;
+    font-size: 10px;
+  }
+
+  .about-list { display: grid; gap: 0; }
+
+  .about-row {
+    display: grid;
+    grid-template-columns: 130px 1fr;
+    gap: clamp(20px, 4vw, 56px);
+    padding: 22px 0;
+    border-bottom: 1px solid var(--line);
+    align-items: baseline;
+    transition: var(--tx);
+  }
+  .about-row:last-child { border-bottom: 0; }
+
+  @media (max-width: 720px) {
+    .about-row { grid-template-columns: 1fr; gap: 8px; }
+  }
+
+  .about-year {
+    font-family: var(--mono);
+    font-size: 11.5px;
+    letter-spacing: 0.1em;
+    color: var(--fg-mute);
+    line-height: 1.5;
+    padding-top: 4px;
+  }
+
+  .about-content { min-width: 0; }
+
+  .about-title {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: 21px;
+    color: var(--fg);
+    line-height: 1.25;
+    margin-bottom: 6px;
+    letter-spacing: -0.01em;
+    font-variation-settings: "opsz" 60;
+  }
+  .about-org {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    color: var(--fg-mute);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .about-note {
+    font-family: var(--sans);
+    font-size: 14px;
+    color: var(--fg-dim);
+    line-height: 1.65;
+    max-width: 60ch;
+  }
+
+  /* =====================================================================
      CONTACT
-     ============================================ */
+     ===================================================================== */
 
   .contact {
     padding: clamp(100px, 16vh, 180px) 0 clamp(80px, 12vh, 140px);
     text-align: center;
     border-top: 1px solid var(--line);
     transition: var(--tx);
-    position: relative;
   }
 
   .contact .eyebrow {
@@ -864,7 +1013,7 @@
     letter-spacing: -0.035em;
     margin: 0 auto 28px;
     max-width: 14ch;
-    font-variation-settings: "opsz" 144;
+    font-variation-settings: "opsz" 144, "SOFT" 50;
   }
   .contact h2 em {
     font-style: italic;
@@ -882,14 +1031,14 @@
 
   .contact-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     border: 1px solid var(--line);
     border-radius: 4px;
     overflow: hidden;
     margin-top: 56px;
     transition: var(--tx);
   }
-  @media (max-width: 720px) { .contact-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 720px) { .contact-grid { grid-template-columns: 1fr; } }
 
   .contact-item {
     padding: 22px 16px;
@@ -900,8 +1049,8 @@
   .contact-item:last-child { border-right: 0; }
   .contact-item:hover { background: var(--bg-elev); }
   @media (max-width: 720px) {
-    .contact-item:nth-child(2) { border-right: 0; }
-    .contact-item:nth-child(-n+2) { border-bottom: 1px solid var(--line); }
+    .contact-item { border-right: 0; border-bottom: 1px solid var(--line); }
+    .contact-item:last-child { border-bottom: 0; }
   }
   .contact-item .label {
     font-family: var(--mono);
@@ -920,9 +1069,9 @@
   }
   .contact-item:hover .val { color: var(--accent); }
 
-  /* ============================================
-     FOOTER
-     ============================================ */
+  /* =====================================================================
+     FOOTER — centered
+     ===================================================================== */
 
   footer {
     padding: 32px 0;
@@ -931,10 +1080,9 @@
   }
   .foot-row {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
-    gap: 16px;
-    flex-wrap: wrap;
+    text-align: center;
     font-family: var(--mono);
     font-size: 10.5px;
     letter-spacing: 0.14em;
@@ -942,9 +1090,9 @@
     color: var(--fg-mute);
   }
 
-  /* ============================================
-     REVEAL ANIMATIONS — slower, more aesthetic
-     ============================================ */
+  /* =====================================================================
+     REVEAL ANIMATIONS — slow + aesthetic
+     ===================================================================== */
 
   .reveal {
     opacity: 0;
@@ -957,9 +1105,9 @@
     transform: translateY(0);
   }
 
-  /* ============================================
+  /* =====================================================================
      VIEW TRANSITIONS — circular reveal on theme toggle
-     ============================================ */
+     ===================================================================== */
 
   ::view-transition-old(root),
   ::view-transition-new(root) {
@@ -969,9 +1117,9 @@
   ::view-transition-old(root) { z-index: 1; }
   ::view-transition-new(root) { z-index: 2; }
 
-  /* ============================================
+  /* =====================================================================
      A11Y / motion
-     ============================================ */
+     ===================================================================== */
 
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after {
@@ -1002,16 +1150,16 @@
 <!-- ========== HEADER ========== -->
 <header class="top" id="top">
   <div class="container top-row">
-    <a href="#hero" class="brand" data-scroll>K. <em>Kumar</em></a>
+    <a href="#hero" class="brand" data-scroll>Kelash<span class="dot">.</span></a>
 
-    <nav class="primary" aria-label="Primary">
-      <a href="#work" data-scroll>Work</a>
-      <a href="#stack" data-scroll>Stack</a>
-      <a href="#about" data-scroll>About</a>
-      <a href="#contact" data-scroll>Contact</a>
-    </nav>
+    <div class="top-right">
+      <nav class="primary" aria-label="Primary">
+        <a href="#work" data-scroll>Work</a>
+        <a href="#stack" data-scroll>Stack</a>
+        <a href="#about" data-scroll>About</a>
+        <a href="#contact" data-scroll>Contact</a>
+      </nav>
 
-    <div class="top-actions">
       <button class="theme-toggle" id="themeToggle" aria-label="Toggle color theme" data-cursor-hover>
         <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
@@ -1030,41 +1178,73 @@
   <div class="container">
     <div class="status-pill">
       <span class="signal-dot" aria-hidden="true"></span>
-      Available · Junior data engineering · Remote &amp; freelance
+      Available · Data engineering · On-site · Remote · Freelance
     </div>
   </div>
 
-  <div class="container hero-main">
-    <h1>
-      <span class="first">Kelash</span><br/>
-      <span class="last">Kumar.</span>
-    </h1>
+  <div class="container">
+    <div class="hero-grid">
 
-    <div class="hero-meta">
-      <div class="hero-role">
-        <strong>Data Engineer</strong>
-        Sukkur · Pakistan<br/>
-        BS Computer Science<br/>
-        Sukkur IBA · Class of 2026
+      <div class="hero-left">
+        <h1>
+          <span class="first">Kelash</span><br/>
+          <span class="last">Kumar.</span>
+        </h1>
+
+        <div class="hero-meta">
+          <strong>Data Engineer</strong>
+          Sukkur · Pakistan &nbsp;·&nbsp; BS Computer Science<br/>
+          Sukkur IBA University &nbsp;·&nbsp; Class of 2026
+        </div>
+
+        <p class="hero-lede">
+          I ship <span class="rotate-host"><span class="rotate-word" id="rotator">streaming pipelines</span></span> &mdash; production-grade, observable, and built to survive load.
+        </p>
       </div>
 
-      <p class="hero-lede">
-        I build production data systems &mdash; <span class="rotate-host"><span class="rotate-word" id="rotator">streaming pipelines</span></span> that ship and stay alive under load.
-      </p>
+      <aside class="now-panel" aria-label="Current status and stats">
+        <div class="now-head">
+          <span class="now-eye">● Now</span>
+          <span>/ 01.2026</span>
+        </div>
+
+        <p class="now-blurb">
+          Final-year CS at Sukkur IBA. Shipping data pipelines, deploying to free-tier cloud, breaking things on purpose.
+        </p>
+
+        <div class="now-divider"></div>
+
+        <div class="now-stats">
+          <div class="stat-row">
+            <span class="stat-val">03</span>
+            <span class="stat-key">Pipelines shipped</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-val">14.4K</span>
+            <span class="stat-key">Events / day live</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-val">92.2</span>
+            <span class="stat-key">NSCT percentile</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-val">2026</span>
+            <span class="stat-key">Class of</span>
+          </div>
+        </div>
+      </aside>
+
     </div>
   </div>
 
-  <div class="container hero-bottom">
+  <div class="container">
     <div class="cta-row">
       <a href="https://kelash-crypto.duckdns.org" target="_blank" rel="noopener" class="btn btn--primary" data-cursor-hover>
         View Live Pipeline <span class="arrow">→</span>
       </a>
       <a href="https://github.com/kelashkumar-iba" target="_blank" rel="noopener" class="btn" data-cursor-hover>GitHub</a>
       <a href="https://linkedin.com/in/kelashkumar-iba" target="_blank" rel="noopener" class="btn" data-cursor-hover>LinkedIn</a>
-    </div>
-    <div class="scroll-cue" aria-hidden="true">
-      <span>Scroll</span>
-      <span class="line"></span>
+      <a href="mailto:kelash.iba22@gmail.com" class="btn" data-cursor-hover>Email</a>
     </div>
   </div>
 </section>
@@ -1077,7 +1257,7 @@
       <span class="num">§ 01 / Pipelines</span>
     </div>
 
-    <!-- Project 01 -->
+    <!-- Project 01 — Crypto Streaming -->
     <article class="project reveal">
       <div class="project-num">01</div>
       <div class="project-body">
@@ -1097,70 +1277,55 @@
         </h3>
 
         <div class="project-stack">
-          Python · Redpanda · PostgreSQL · dbt · Airflow · Metabase · Docker · OCI
+          Python · Redpanda · PostgreSQL · dbt · Airflow · Metabase · Docker · Oracle Cloud
         </div>
 
         <p class="project-lead">
-          A nine-service streaming pipeline. Live crypto prices flow from API to dashboard in under five minutes, deployed to a free-tier ARM VM with CI/CD shipping changes in ninety seconds.
+          A six-stage streaming system pulling live crypto prices from CoinGecko through Redpanda, persisting them in PostgreSQL, transforming with dbt, orchestrating with Airflow, and surfacing them in a Metabase dashboard. Eight containers, end-to-end. Deployed to Oracle Cloud&apos;s free-tier ARM VM with CI/CD shipping changes in ninety seconds.
         </p>
 
-        <div class="diagram">
-          <svg viewBox="0 0 760 200" xmlns="http://www.w3.org/2000/svg" aria-label="Architecture: CoinGecko to Redpanda to PostgreSQL to dbt to Metabase, orchestrated by Airflow">
-            <defs>
-              <marker id="arr1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-                <path d="M0,0 L10,5 L0,10 z" class="arch-arrow"/>
-              </marker>
-            </defs>
-
-            <g class="arch-node arch-node-accent">
-              <rect x="270" y="14" width="220" height="38" rx="4"/>
-              <text x="380" y="38" text-anchor="middle">Airflow · orchestration</text>
-            </g>
-            <line x1="380" y1="52" x2="80"  y2="100" class="arch-line" stroke-dasharray="3,4"/>
-            <line x1="380" y1="52" x2="220" y2="100" class="arch-line" stroke-dasharray="3,4"/>
-            <line x1="380" y1="52" x2="380" y2="100" class="arch-line" stroke-dasharray="3,4"/>
-            <line x1="380" y1="52" x2="540" y2="100" class="arch-line" stroke-dasharray="3,4"/>
-            <line x1="380" y1="52" x2="680" y2="100" class="arch-line" stroke-dasharray="3,4"/>
-
-            <g class="arch-node">
-              <rect x="20" y="100" width="120" height="50" rx="4"/>
-              <text x="80" y="130" text-anchor="middle">CoinGecko</text>
-            </g>
-            <g class="arch-node">
-              <rect x="160" y="100" width="120" height="50" rx="4"/>
-              <text x="220" y="130" text-anchor="middle">Redpanda</text>
-            </g>
-            <g class="arch-node">
-              <rect x="300" y="100" width="160" height="50" rx="4"/>
-              <text x="380" y="130" text-anchor="middle">PostgreSQL</text>
-            </g>
-            <g class="arch-node">
-              <rect x="480" y="100" width="120" height="50" rx="4"/>
-              <text x="540" y="130" text-anchor="middle">dbt · 3 layers</text>
-            </g>
-            <g class="arch-node">
-              <rect x="620" y="100" width="120" height="50" rx="4"/>
-              <text x="680" y="130" text-anchor="middle">Metabase</text>
-            </g>
-
-            <line x1="140" y1="125" x2="160" y2="125" class="arch-line" marker-end="url(#arr1)"/>
-            <line x1="280" y1="125" x2="300" y2="125" class="arch-line" marker-end="url(#arr1)"/>
-            <line x1="460" y1="125" x2="480" y2="125" class="arch-line" marker-end="url(#arr1)"/>
-            <line x1="600" y1="125" x2="620" y2="125" class="arch-line" marker-end="url(#arr1)"/>
-
-            <text x="80"  y="178" text-anchor="middle" class="arch-label">ingest</text>
-            <text x="220" y="178" text-anchor="middle" class="arch-label">queue</text>
-            <text x="380" y="178" text-anchor="middle" class="arch-label">store</text>
-            <text x="540" y="178" text-anchor="middle" class="arch-label">transform</text>
-            <text x="680" y="178" text-anchor="middle" class="arch-label">visualize</text>
-          </svg>
+        <div class="arch">
+          <div class="arch-head">
+            <span><span class="arch-tag">Architecture</span> &nbsp;/&nbsp; 6 stages · 8 containers</span>
+            <span>End-to-end · dockerized</span>
+          </div>
+          <div class="arch-row">
+            <span class="arch-num">01</span>
+            <span class="arch-key">Source</span>
+            <span class="arch-val">CoinGecko REST API · 10 crypto assets · <code>60s</code> polling cadence</span>
+          </div>
+          <div class="arch-row">
+            <span class="arch-num">02</span>
+            <span class="arch-key">Ingest</span>
+            <span class="arch-val">Redpanda event broker · Python producer publishes to <code>crypto-prices</code> · consumer commits safely with poison-pill handling</span>
+          </div>
+          <div class="arch-row">
+            <span class="arch-num">03</span>
+            <span class="arch-key">Store</span>
+            <span class="arch-val">PostgreSQL raw warehouse · indexed for read · volume-persisted across container restarts</span>
+          </div>
+          <div class="arch-row">
+            <span class="arch-num">04</span>
+            <span class="arch-key">Transform</span>
+            <span class="arch-val">dbt three-layer models · <code>staging → intermediate → mart</code> · LAG windows, moving averages, daily summaries</span>
+          </div>
+          <div class="arch-row">
+            <span class="arch-num">05</span>
+            <span class="arch-key">Orchestrate</span>
+            <span class="arch-val">Apache Airflow · 5-minute schedule · freshness gates · automatic retries · task-level observability</span>
+          </div>
+          <div class="arch-row">
+            <span class="arch-num">06</span>
+            <span class="arch-key">Analyze</span>
+            <span class="arch-val">Metabase six-panel live dashboard · price trends, deltas, top movers, volumes &mdash; refreshed in near real-time</span>
+          </div>
         </div>
 
         <div class="metrics">
           <div class="metric"><div class="metric-val">14,400/day</div><div class="metric-key">Throughput</div></div>
           <div class="metric"><div class="metric-val">&lt; 5 min</div><div class="metric-key">Freshness</div></div>
           <div class="metric"><div class="metric-val">~ 90 s</div><div class="metric-key">Deploy</div></div>
-          <div class="metric"><div class="metric-val">9 svc</div><div class="metric-key">Containers</div></div>
+          <div class="metric"><div class="metric-val">8 svc</div><div class="metric-key">Containers</div></div>
         </div>
 
         <div class="project-links">
@@ -1170,7 +1335,7 @@
       </div>
     </article>
 
-    <!-- Project 02 -->
+    <!-- Project 02 — CDC Pipeline -->
     <article class="project reveal">
       <div class="project-num">02</div>
       <div class="project-body">
@@ -1190,64 +1355,50 @@
         </div>
 
         <p class="project-lead">
-          Log-based replication that turns hourly batches into sub-ten-second streams. Idempotent consumer survives restarts; SCD Type 2 dimensions preserve history.
+          Log-based replication that turns hourly batches into sub-ten-second streams. Six containerized services capture WAL events from a source PostgreSQL via Debezium, stream them through Redpanda, and apply them idempotently to a target database. Bad records flow to a DLQ; dbt builds the analytical layer with full SCD Type 2 history.
         </p>
 
-        <div class="diagram">
-          <svg viewBox="0 0 760 200" xmlns="http://www.w3.org/2000/svg" aria-label="Architecture: PostgreSQL WAL captured by Debezium streamed via Redpanda consumed idempotently into dbt SCD Type 2">
-            <defs>
-              <marker id="arr2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-                <path d="M0,0 L10,5 L0,10 z" class="arch-arrow"/>
-              </marker>
-            </defs>
-
-            <g class="arch-node">
-              <rect x="540" y="14" width="160" height="38" rx="4"/>
-              <text x="620" y="38" text-anchor="middle">DLQ · bad records</text>
-            </g>
-            <line x1="540" y1="100" x2="620" y2="52" class="arch-line" stroke-dasharray="3,4" marker-end="url(#arr2)"/>
-
-            <g class="arch-node">
-              <rect x="20" y="100" width="140" height="50" rx="4"/>
-              <text x="90" y="123" text-anchor="middle">PostgreSQL</text>
-              <text x="90" y="138" text-anchor="middle" style="font-size:9px; opacity:0.65">WAL events</text>
-            </g>
-            <g class="arch-node arch-node-accent">
-              <rect x="180" y="100" width="120" height="50" rx="4"/>
-              <text x="240" y="130" text-anchor="middle">Debezium</text>
-            </g>
-            <g class="arch-node">
-              <rect x="320" y="100" width="120" height="50" rx="4"/>
-              <text x="380" y="130" text-anchor="middle">Redpanda</text>
-            </g>
-            <g class="arch-node">
-              <rect x="460" y="100" width="160" height="50" rx="4"/>
-              <text x="540" y="123" text-anchor="middle">Idempotent</text>
-              <text x="540" y="138" text-anchor="middle" style="font-size:9px; opacity:0.65">PK upserts</text>
-            </g>
-            <g class="arch-node">
-              <rect x="640" y="100" width="100" height="50" rx="4"/>
-              <text x="690" y="123" text-anchor="middle">dbt</text>
-              <text x="690" y="138" text-anchor="middle" style="font-size:9px; opacity:0.65">SCD T2</text>
-            </g>
-
-            <line x1="160" y1="125" x2="180" y2="125" class="arch-line" marker-end="url(#arr2)"/>
-            <line x1="300" y1="125" x2="320" y2="125" class="arch-line" marker-end="url(#arr2)"/>
-            <line x1="440" y1="125" x2="460" y2="125" class="arch-line" marker-end="url(#arr2)"/>
-            <line x1="620" y1="125" x2="640" y2="125" class="arch-line" marker-end="url(#arr2)"/>
-
-            <text x="90"  y="178" text-anchor="middle" class="arch-label">source</text>
-            <text x="240" y="178" text-anchor="middle" class="arch-label">capture</text>
-            <text x="380" y="178" text-anchor="middle" class="arch-label">stream</text>
-            <text x="540" y="178" text-anchor="middle" class="arch-label">consume</text>
-            <text x="690" y="178" text-anchor="middle" class="arch-label">history</text>
-          </svg>
+        <div class="arch">
+          <div class="arch-head">
+            <span><span class="arch-tag">Architecture</span> &nbsp;/&nbsp; 6 services · sub-10s lag</span>
+            <span>Docker compose</span>
+          </div>
+          <div class="arch-row">
+            <span class="arch-num">01</span>
+            <span class="arch-key">Source</span>
+            <span class="arch-val">Source PostgreSQL <code>:5433</code> · <code>wal_level=logical</code> · production database</span>
+          </div>
+          <div class="arch-row">
+            <span class="arch-num">02</span>
+            <span class="arch-key">Capture</span>
+            <span class="arch-val">Debezium <code>:8083</code> · <code>pgoutput</code> plugin · streams CDC events from WAL</span>
+          </div>
+          <div class="arch-row">
+            <span class="arch-num">03</span>
+            <span class="arch-key">Stream</span>
+            <span class="arch-val">Redpanda <code>:9092</code> · zero-JVM Kafka API · message broker</span>
+          </div>
+          <div class="arch-row">
+            <span class="arch-num">04</span>
+            <span class="arch-key">Consume</span>
+            <span class="arch-val">Python consumer · <code>confluent-kafka</code> · <code>ON CONFLICT</code> upserts to target <code>:5434</code> · DLQ for bad records</span>
+          </div>
+          <div class="arch-row">
+            <span class="arch-num">05</span>
+            <span class="arch-key">Model</span>
+            <span class="arch-val">dbt · 3 models · 9 tests · staging → marts · SCD Type 2 with <code>valid_from / valid_to</code> dimensions</span>
+          </div>
+          <div class="arch-row">
+            <span class="arch-num">06</span>
+            <span class="arch-key">Orchestrate</span>
+            <span class="arch-val">Airflow <code>:8085</code> · <code>cdc_pipeline_monitor</code> DAG · 30-min cadence · check_cdc_lag → snapshot → test → healthy</span>
+          </div>
         </div>
 
         <div class="metrics">
-          <div class="metric"><div class="metric-val">&lt; 10 s</div><div class="metric-key">Lag</div></div>
-          <div class="metric"><div class="metric-val">Real-time</div><div class="metric-key">vs. 60-min batch</div></div>
-          <div class="metric"><div class="metric-val">SCD T2</div><div class="metric-key">Dimensions</div></div>
+          <div class="metric"><div class="metric-val">&lt; 10 s</div><div class="metric-key">Replication lag</div></div>
+          <div class="metric"><div class="metric-val">9 / 3</div><div class="metric-key">Tests / models</div></div>
+          <div class="metric"><div class="metric-val">SCD T2</div><div class="metric-key">History</div></div>
           <div class="metric"><div class="metric-val">At-least-once</div><div class="metric-key">Semantics</div></div>
         </div>
 
@@ -1257,7 +1408,7 @@
       </div>
     </article>
 
-    <!-- Project 03 -->
+    <!-- Project 03 — Medallion Lakehouse -->
     <article class="project reveal">
       <div class="project-num">03</div>
       <div class="project-body">
@@ -1273,71 +1424,60 @@
         </h3>
 
         <div class="project-stack">
-          MinIO · DuckDB · Pandas · Great Expectations · Airflow · Parquet
+          MinIO · DuckDB · Open-Meteo · Great Expectations · Airflow · Parquet · Docker
         </div>
 
         <p class="project-lead">
-          Cloud-native lakehouse semantics on object storage. Bronze, Silver, Gold &mdash; with Great Expectations gating every promotion to keep the warehouse clean.
+          A four-layer lakehouse on object storage. MinIO holds Bronze, Silver, and Gold buckets; DuckDB reads and transforms Parquet directly from S3-compatible storage via the <code>httpfs</code> extension; Great Expectations gates every layer transition &mdash; the pipeline halts when validation fails, so the warehouse never silently corrupts.
         </p>
 
-        <div class="diagram">
-          <svg viewBox="0 0 760 200" xmlns="http://www.w3.org/2000/svg" aria-label="Architecture: source data through Bronze, Silver gated by Great Expectations, then Gold queried by DuckDB">
-            <defs>
-              <marker id="arr3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-                <path d="M0,0 L10,5 L0,10 z" class="arch-arrow"/>
-              </marker>
-            </defs>
-
-            <g class="arch-node arch-node-accent">
-              <rect x="280" y="14" width="220" height="38" rx="4"/>
-              <text x="390" y="38" text-anchor="middle">Great Expectations · gate</text>
-            </g>
-            <line x1="390" y1="52" x2="390" y2="100" class="arch-line" stroke-dasharray="3,4" marker-end="url(#arr3)"/>
-
-            <g class="arch-node">
-              <rect x="20" y="100" width="140" height="50" rx="4"/>
-              <text x="90" y="123" text-anchor="middle">Source</text>
-              <text x="90" y="138" text-anchor="middle" style="font-size:9px; opacity:0.65">CSV · JSON · API</text>
-            </g>
-            <g class="arch-node">
-              <rect x="180" y="100" width="140" height="50" rx="4"/>
-              <text x="250" y="123" text-anchor="middle">Bronze</text>
-              <text x="250" y="138" text-anchor="middle" style="font-size:9px; opacity:0.65">raw parquet</text>
-            </g>
-            <g class="arch-node">
-              <rect x="340" y="100" width="140" height="50" rx="4"/>
-              <text x="410" y="123" text-anchor="middle">Silver</text>
-              <text x="410" y="138" text-anchor="middle" style="font-size:9px; opacity:0.65">cleaned · validated</text>
-            </g>
-            <g class="arch-node">
-              <rect x="500" y="100" width="120" height="50" rx="4"/>
-              <text x="560" y="123" text-anchor="middle">Gold</text>
-              <text x="560" y="138" text-anchor="middle" style="font-size:9px; opacity:0.65">analytics</text>
-            </g>
-            <g class="arch-node">
-              <rect x="640" y="100" width="100" height="50" rx="4"/>
-              <text x="690" y="123" text-anchor="middle">DuckDB</text>
-              <text x="690" y="138" text-anchor="middle" style="font-size:9px; opacity:0.65">SQL engine</text>
-            </g>
-
-            <line x1="160" y1="125" x2="180" y2="125" class="arch-line" marker-end="url(#arr3)"/>
-            <line x1="320" y1="125" x2="340" y2="125" class="arch-line" marker-end="url(#arr3)"/>
-            <line x1="480" y1="125" x2="500" y2="125" class="arch-line" marker-end="url(#arr3)"/>
-            <line x1="620" y1="125" x2="640" y2="125" class="arch-line" marker-end="url(#arr3)"/>
-
-            <text x="90"  y="178" text-anchor="middle" class="arch-label">source</text>
-            <text x="250" y="178" text-anchor="middle" class="arch-label">land</text>
-            <text x="410" y="178" text-anchor="middle" class="arch-label">refine</text>
-            <text x="560" y="178" text-anchor="middle" class="arch-label">serve</text>
-            <text x="690" y="178" text-anchor="middle" class="arch-label">query</text>
-          </svg>
+        <div class="arch">
+          <div class="arch-head">
+            <span><span class="arch-tag">Architecture</span> &nbsp;/&nbsp; 4 layers · 5-task DAG</span>
+            <span>medallion_weather</span>
+          </div>
+          <div class="arch-row">
+            <span class="arch-num">01</span>
+            <span class="arch-key">Lakehouse</span>
+            <span class="arch-val">MinIO S3-compatible store · <code>bronze/</code> raw · <code>silver/</code> cleaned · <code>gold/</code> curated marts</span>
+          </div>
+          <div class="arch-row">
+            <span class="arch-num">02</span>
+            <span class="arch-key">Compute</span>
+            <span class="arch-val">DuckDB embedded with <code>httpfs</code> extension · reads Parquet from MinIO · transforms · writes Parquet back</span>
+          </div>
+          <div class="arch-row">
+            <span class="arch-num">03</span>
+            <span class="arch-key">Ingest</span>
+            <span class="arch-val">Python script · Open-Meteo public API → raw Parquet in <code>bronze/</code></span>
+          </div>
+          <div class="arch-row">
+            <span class="arch-num">04</span>
+            <span class="arch-key">Govern</span>
+            <span class="arch-val">Great Expectations validation suites at Bronze and Silver · pipeline FAILS if expectations break</span>
+          </div>
+          <div class="arch-row">
+            <span class="arch-num">05</span>
+            <span class="arch-key">Refine</span>
+            <span class="arch-val">DuckDB cleans &amp; deduplicates Bronze → partitioned Parquet in <code>silver/</code></span>
+          </div>
+          <div class="arch-row">
+            <span class="arch-num">06</span>
+            <span class="arch-key">Aggregate</span>
+            <span class="arch-val">DuckDB rolls Silver → business marts in <code>gold/</code> &mdash; <code>city_weekly_summary</code>, <code>regional_daily</code>, <code>city_extremes</code></span>
+          </div>
+          <div class="arch-row">
+            <span class="arch-num">07</span>
+            <span class="arch-key">Orchestrate</span>
+            <span class="arch-val">Airflow 2.9.1 LocalExecutor · DAG: <code>bronze_ingest → bronze_gate → silver_transform → silver_gate → gold_transform</code></span>
+          </div>
         </div>
 
         <div class="metrics">
           <div class="metric"><div class="metric-val">3 layers</div><div class="metric-key">Bronze · Silver · Gold</div></div>
-          <div class="metric"><div class="metric-val">GE gates</div><div class="metric-key">Quality</div></div>
+          <div class="metric"><div class="metric-val">GE gates</div><div class="metric-key">Quality validation</div></div>
           <div class="metric"><div class="metric-val">Idempotent</div><div class="metric-key">Backfills</div></div>
-          <div class="metric"><div class="metric-val">Parquet</div><div class="metric-key">Columnar</div></div>
+          <div class="metric"><div class="metric-val">Parquet</div><div class="metric-key">Columnar storage</div></div>
         </div>
 
         <div class="project-links">
@@ -1356,31 +1496,80 @@
       <span class="num">§ 02 / Tooling</span>
     </div>
 
-    <div class="stack-grid reveal">
-      <div class="stack-row">
-        <div class="stack-label">Languages</div>
-        <div class="stack-items">Python · SQL · Bash · Java</div>
+    <div class="stack-categories">
+
+      <div class="stack-cat reveal">
+        <div class="stack-cat-head">
+          <span>Languages &amp; Foundations</span>
+          <span class="count">04</span>
+        </div>
+        <div class="tools">
+          <span class="tool" style="--icon: url('https://cdn.simpleicons.org/python');">Python</span>
+          <span class="tool no-icon">SQL</span>
+          <span class="tool" style="--icon: url('https://cdn.simpleicons.org/gnubash');">Bash</span>
+          <span class="tool" style="--icon: url('https://cdn.simpleicons.org/openjdk');">Java</span>
+        </div>
       </div>
-      <div class="stack-row">
-        <div class="stack-label">Data Engineering</div>
-        <div class="stack-items">Airflow · dbt · Kafka / Redpanda · Debezium · Great Expectations · Pandas · Medallion · CDC · SCD Type 2</div>
+
+      <div class="stack-cat reveal">
+        <div class="stack-cat-head">
+          <span>Data Engineering &amp; Streaming</span>
+          <span class="count">07</span>
+        </div>
+        <div class="tools">
+          <span class="tool" style="--icon: url('https://cdn.simpleicons.org/apacheairflow');">Apache Airflow</span>
+          <span class="tool" style="--icon: url('https://cdn.simpleicons.org/dbt');">dbt</span>
+          <span class="tool" style="--icon: url('https://cdn.simpleicons.org/apachekafka');">Kafka</span>
+          <span class="tool no-icon">Redpanda</span>
+          <span class="tool no-icon">Debezium</span>
+          <span class="tool" style="--icon: url('https://cdn.simpleicons.org/pandas');">Pandas</span>
+          <span class="tool no-icon">Great Expectations</span>
+        </div>
       </div>
-      <div class="stack-row">
-        <div class="stack-label">Storage</div>
-        <div class="stack-items">PostgreSQL · DuckDB · MinIO · Parquet · MongoDB</div>
+
+      <div class="stack-cat reveal">
+        <div class="stack-cat-head">
+          <span>Storage &amp; Databases</span>
+          <span class="count">05</span>
+        </div>
+        <div class="tools">
+          <span class="tool" style="--icon: url('https://cdn.simpleicons.org/postgresql');">PostgreSQL</span>
+          <span class="tool" style="--icon: url('https://cdn.simpleicons.org/duckdb');">DuckDB</span>
+          <span class="tool no-icon">MinIO</span>
+          <span class="tool no-icon">Apache Parquet</span>
+          <span class="tool" style="--icon: url('https://cdn.simpleicons.org/mongodb');">MongoDB</span>
+        </div>
       </div>
-      <div class="stack-row">
-        <div class="stack-label">DevOps &amp; Cloud</div>
-        <div class="stack-items">Docker · Linux · GitHub Actions · CI/CD · Oracle Cloud · pytest · Caddy · iptables · SSH</div>
+
+      <div class="stack-cat reveal">
+        <div class="stack-cat-head">
+          <span>DevOps &amp; Cloud</span>
+          <span class="count">06</span>
+        </div>
+        <div class="tools">
+          <span class="tool" style="--icon: url('https://cdn.simpleicons.org/docker');">Docker</span>
+          <span class="tool" style="--icon: url('https://cdn.simpleicons.org/linux');">Linux</span>
+          <span class="tool" style="--icon: url('https://cdn.simpleicons.org/githubactions');">GitHub Actions</span>
+          <span class="tool" style="--icon: url('https://cdn.simpleicons.org/oracle');">Oracle Cloud</span>
+          <span class="tool" style="--icon: url('https://cdn.simpleicons.org/pytest');">pytest</span>
+          <span class="tool no-icon">Caddy</span>
+        </div>
       </div>
-      <div class="stack-row">
-        <div class="stack-label">Visualization</div>
-        <div class="stack-items">Metabase · Grafana · Plotly · Power BI · Tableau</div>
+
+      <div class="stack-cat reveal">
+        <div class="stack-cat-head">
+          <span>Visualization &amp; BI</span>
+          <span class="count">05</span>
+        </div>
+        <div class="tools">
+          <span class="tool" style="--icon: url('https://cdn.simpleicons.org/metabase');">Metabase</span>
+          <span class="tool" style="--icon: url('https://cdn.simpleicons.org/grafana');">Grafana</span>
+          <span class="tool" style="--icon: url('https://cdn.simpleicons.org/plotly');">Plotly</span>
+          <span class="tool" style="--icon: url('https://cdn.simpleicons.org/powerbi');">Power BI</span>
+          <span class="tool" style="--icon: url('https://cdn.simpleicons.org/tableau');">Tableau</span>
+        </div>
       </div>
-      <div class="stack-row">
-        <div class="stack-label">Foundations</div>
-        <div class="stack-items">Database Systems · DSA · Operating Systems · Computer Networks · System Design</div>
-      </div>
+
     </div>
   </div>
 </section>
@@ -1393,53 +1582,88 @@
       <span class="num">§ 03 / Background</span>
     </div>
 
-    <div class="about-grid reveal">
-      <div class="about-col">
-        <h3>Education &amp; certifications</h3>
+    <div class="about-cats">
 
-        <div class="about-item">
-          <div class="about-title">BS Computer Science</div>
-          <div class="about-meta">Sukkur IBA University · 2022 — 2026</div>
-          <div class="about-note">Database Systems · Data Structures &amp; Algorithms · Operating Systems · Computer Networks · Software Engineering · System Design.</div>
+      <div class="about-cat reveal">
+        <div class="about-cat-head">
+          <span>Education</span>
+          <span class="count">01</span>
         </div>
-
-        <div class="about-item">
-          <div class="about-title">Google Cloud Data Engineer</div>
-          <div class="about-meta">Coursera · 2026</div>
-        </div>
-
-        <div class="about-item">
-          <div class="about-title">IBM Data Engineering</div>
-          <div class="about-meta">Coursera · 2025</div>
-        </div>
-
-        <div class="about-item">
-          <div class="about-title">Google Data Analytics</div>
-          <div class="about-meta">Coursera · 2025</div>
+        <div class="about-list">
+          <div class="about-row">
+            <div class="about-year">2022 — 2026</div>
+            <div class="about-content">
+              <div class="about-title">BS Computer Science</div>
+              <div class="about-org">Sukkur IBA University · Pakistan</div>
+              <p class="about-note">Database Systems · Data Structures &amp; Algorithms · Operating Systems · Computer Networks · Software Engineering · System Design.</p>
+            </div>
+          </div>
         </div>
       </div>
 
-      <div class="about-col">
-        <h3>Honors</h3>
-
-        <div class="about-item">
-          <div class="about-title">National Skill Competency Test &mdash; 92.2 percentile</div>
-          <div class="about-meta">NSCT · 2026</div>
-          <div class="about-note">Top marks in Programming, Database, and AI/ML &amp; Data Analytics across a 10-subject national competency exam.</div>
+      <div class="about-cat reveal">
+        <div class="about-cat-head">
+          <span>Certifications</span>
+          <span class="count">03</span>
         </div>
-
-        <div class="about-item">
-          <div class="about-title">Sindh Talent Hunt Program scholarship</div>
-          <div class="about-meta">STHP · 2022</div>
-          <div class="about-note">Fully-funded merit scholarship covering BS Computer Science at Sukkur IBA University.</div>
-        </div>
-
-        <div class="about-item">
-          <div class="about-title">Three production pipelines shipped</div>
-          <div class="about-meta">2025 — 2026</div>
-          <div class="about-note">All open source. Streaming, CDC, and medallion lakehouse &mdash; each fully containerized and orchestrated.</div>
+        <div class="about-list">
+          <div class="about-row">
+            <div class="about-year">2026</div>
+            <div class="about-content">
+              <div class="about-title">Google Cloud Data Engineer</div>
+              <div class="about-org">Coursera</div>
+            </div>
+          </div>
+          <div class="about-row">
+            <div class="about-year">2025</div>
+            <div class="about-content">
+              <div class="about-title">IBM Data Engineering</div>
+              <div class="about-org">Coursera</div>
+            </div>
+          </div>
+          <div class="about-row">
+            <div class="about-year">2025</div>
+            <div class="about-content">
+              <div class="about-title">Google Data Analytics</div>
+              <div class="about-org">Coursera</div>
+            </div>
+          </div>
         </div>
       </div>
+
+      <div class="about-cat reveal">
+        <div class="about-cat-head">
+          <span>Honors &amp; Recognition</span>
+          <span class="count">03</span>
+        </div>
+        <div class="about-list">
+          <div class="about-row">
+            <div class="about-year">2026</div>
+            <div class="about-content">
+              <div class="about-title">National Skill Competency Test &mdash; 92.2 percentile</div>
+              <div class="about-org">NSCT · Pakistan</div>
+              <p class="about-note">Top marks in Programming, Database, and AI/ML &amp; Data Analytics across a 10-subject national competency exam.</p>
+            </div>
+          </div>
+          <div class="about-row">
+            <div class="about-year">2022</div>
+            <div class="about-content">
+              <div class="about-title">Sindh Talent Hunt Program scholarship</div>
+              <div class="about-org">STHP · Government of Sindh</div>
+              <p class="about-note">Fully-funded merit scholarship covering BS Computer Science at Sukkur IBA University.</p>
+            </div>
+          </div>
+          <div class="about-row">
+            <div class="about-year">2025 — 26</div>
+            <div class="about-content">
+              <div class="about-title">Three production pipelines shipped</div>
+              <div class="about-org">Personal · Open source</div>
+              <p class="about-note">Streaming, CDC, and medallion lakehouse &mdash; each fully containerized and orchestrated, all deployed.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 </section>
@@ -1448,9 +1672,9 @@
 <section class="contact" id="contact">
   <div class="container">
     <span class="eyebrow reveal">§ 04 / Get in touch</span>
-    <h2 class="reveal">Let's build <em>something good.</em></h2>
+    <h2 class="reveal">Let&apos;s build <em>something good.</em></h2>
     <p class="contact-blurb reveal">
-      Open to junior data engineering roles, freelance work, and collaborations &mdash; remote, hybrid, or on-site in Pakistan. The fastest way to reach me is email.
+      Open to data engineering roles, freelance work, and serious collaborations &mdash; remote, hybrid, or on-site in Pakistan. The fastest way to reach me is email.
     </p>
 
     <div class="cta-row reveal" style="justify-content: center;">
@@ -1464,10 +1688,6 @@
         <div class="label">Email</div>
         <div class="val">kelash.iba22@gmail.com</div>
       </a>
-      <a class="contact-item" href="tel:+923303141082" data-cursor-hover>
-        <div class="label">Phone</div>
-        <div class="val">+92 330 3141082</div>
-      </a>
       <a class="contact-item" href="https://linkedin.com/in/kelashkumar-iba" target="_blank" rel="noopener" data-cursor-hover>
         <div class="label">LinkedIn</div>
         <div class="val">@kelashkumar-iba</div>
@@ -1480,18 +1700,15 @@
   </div>
 </section>
 
-<!-- ========== FOOTER ========== -->
+<!-- ========== FOOTER (centered) ========== -->
 <footer>
   <div class="container foot-row">
-    <span>© <span id="year">2026</span> Kelash Kumar</span>
-    <span>Sukkur · Pakistan</span>
+    <span>© <span id="year">2026</span> Kelash Kumar &nbsp;·&nbsp; Sukkur &nbsp;·&nbsp; Pakistan</span>
   </div>
 </footer>
 
 <script>
-  /* ============================================
-     YEAR
-     ============================================ */
+  /* Year */
   document.getElementById('year').textContent = new Date().getFullYear();
 
   /* ============================================
@@ -1553,7 +1770,7 @@
   })();
 
   /* ============================================
-     CUSTOM CURSOR — smooth follow + magnetic hover
+     CUSTOM CURSOR
      ============================================ */
   (function() {
     if (window.matchMedia('(hover: none)').matches) return;
@@ -1635,7 +1852,7 @@
   })();
 
   /* ============================================
-     STICKY HEADER — adds border on scroll
+     STICKY HEADER
      ============================================ */
   (function() {
     const header = document.querySelector('header.top');
@@ -1655,7 +1872,7 @@
   })();
 
   /* ============================================
-     ROLE ROTATOR — kinetic typography in hero
+     ROLE ROTATOR
      ============================================ */
   (function() {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
