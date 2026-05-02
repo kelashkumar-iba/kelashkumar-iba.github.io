@@ -15,7 +15,7 @@
 <meta name="theme-color" content="#0A0E14" media="(prefers-color-scheme: dark)" />
 <meta name="theme-color" content="#F7F2E3" media="(prefers-color-scheme: light)" />
 
-<link rel="icon" href='data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" fill="%230A0E14"/><text x="50%25" y="58%25" font-family="Georgia,serif" font-size="22" font-weight="600" font-style="italic" fill="%23E0A93C" text-anchor="middle" dominant-baseline="middle">k</text></svg>' />
+<link rel="icon" href='data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><circle cx="16" cy="16" r="15" fill="%230A0E14" stroke="%23E0A93C" stroke-width="1.5"/><text x="50%25" y="55%25" font-family="Inter,system-ui,sans-serif" font-size="18" font-weight="700" fill="%23E0A93C" text-anchor="middle" dominant-baseline="middle">K</text></svg>' />
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -189,16 +189,13 @@
 
   .brand {
     font-family: var(--serif);
-    font-style: italic;
-    font-weight: 400;
+    font-style: normal;
+    font-weight: 500;
     font-size: 22px;
     letter-spacing: -0.015em;
     color: var(--fg);
     transition: var(--tx);
-    font-variation-settings: "opsz" 144, "SOFT" 70;
-  }
-  .brand .dot {
-    color: var(--accent);
+    font-variation-settings: "opsz" 144, "SOFT" 50;
   }
 
   .top-right {
@@ -407,87 +404,201 @@
     transform: translateY(-8px);
   }
 
-  /* NOW panel — fills right empty space */
-  .now-panel {
+  /* SYSTEM STATUS PANEL — fills right empty space, alive */
+  .sys-panel {
     border: 1px solid var(--line-strong);
-    background: color-mix(in srgb, var(--bg-elev) 80%, transparent);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    padding: 28px 28px 24px;
-    border-radius: 4px;
+    background: color-mix(in srgb, var(--bg-elev) 92%, transparent);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 6px;
     transition: var(--tx);
     position: relative;
     overflow: hidden;
-  }
-  .now-panel::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, var(--accent), transparent);
-    transition: var(--tx);
+    box-shadow: 0 20px 60px -30px color-mix(in srgb, var(--accent) 30%, transparent);
   }
 
-  .now-head {
+  /* Top status bar (terminal-style) */
+  .sys-bar {
     display: flex;
+    align-items: center;
     justify-content: space-between;
-    align-items: baseline;
-    margin-bottom: 18px;
+    padding: 10px 16px;
+    background: var(--bg-pop);
+    border-bottom: 1px solid var(--line);
     font-family: var(--mono);
-    font-size: 10px;
-    letter-spacing: 0.2em;
+    font-size: 9.5px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--fg-mute);
+    transition: var(--tx);
+  }
+  .sys-bar-l {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .sys-bar-dots {
+    display: flex;
+    gap: 5px;
+  }
+  .sys-bar-dots span {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--line-strong);
+  }
+  .sys-bar-dots span:first-child { background: color-mix(in srgb, var(--accent) 60%, var(--line-strong)); }
+  .sys-bar-title {
+    margin-left: 6px;
+    color: var(--fg-dim);
+  }
+  .sys-bar-title b {
+    color: var(--fg);
+    font-weight: 500;
+  }
+  .sys-bar-r {
+    color: var(--signal);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .sys-body {
+    padding: 22px 22px 20px;
+  }
+
+  /* Main system row — the headline status */
+  .sys-headline {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 18px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid var(--line);
+    transition: var(--tx);
+  }
+  .sys-headline-l { min-width: 0; }
+  .sys-prod {
+    font-family: var(--mono);
+    font-size: 9.5px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--fg-mute);
+    margin-bottom: 6px;
+  }
+  .sys-name {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: 22px;
+    line-height: 1.1;
+    color: var(--fg);
+    letter-spacing: -0.015em;
+    font-variation-settings: "opsz" 60;
+  }
+  .sys-name a {
+    background-image: linear-gradient(var(--accent), var(--accent));
+    background-size: 0% 1px;
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    transition: background-size 0.4s cubic-bezier(0.5, 0, 0.2, 1), color 0.2s;
+  }
+  .sys-name a:hover {
+    color: var(--accent);
+    background-size: 100% 1px;
+  }
+  .sys-status-tag {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 9px;
+    border: 1px solid color-mix(in srgb, var(--signal) 40%, transparent);
+    border-radius: 100px;
+    font-family: var(--mono);
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--signal);
+    background: color-mix(in srgb, var(--signal) 10%, transparent);
+  }
+
+  /* Metric grid inside the panel */
+  .sys-metrics {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px 18px;
+  }
+  .sys-metric {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+  .sys-metric-key {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.18em;
     text-transform: uppercase;
     color: var(--fg-mute);
   }
-  .now-head .now-eye {
-    color: var(--accent);
+  .sys-metric-val {
+    font-family: var(--mono);
+    font-size: 18px;
     font-weight: 600;
-  }
-
-  .now-blurb {
-    font-family: var(--serif);
-    font-size: 16.5px;
-    line-height: 1.5;
-    color: var(--fg-dim);
-    margin-bottom: 22px;
+    color: var(--fg);
     letter-spacing: -0.005em;
-    font-variation-settings: "opsz" 60;
-  }
-
-  .now-divider {
-    height: 1px;
-    background: var(--line);
-    margin-bottom: 18px;
-    transition: var(--tx);
-  }
-
-  .now-stats {
-    display: grid;
-    gap: 14px;
-  }
-  .stat-row {
-    display: grid;
-    grid-template-columns: 70px 1fr;
+    line-height: 1.1;
+    display: flex;
     align-items: baseline;
-    gap: 16px;
+    gap: 4px;
   }
-  .stat-val {
-    font-family: var(--serif);
-    font-size: 24px;
-    color: var(--accent);
-    font-weight: 500;
-    letter-spacing: -0.02em;
-    font-variation-settings: "opsz" 60;
+  .sys-metric-val .unit {
+    font-size: 11px;
+    font-weight: 400;
+    color: var(--fg-mute);
+    letter-spacing: 0.04em;
   }
-  .stat-key {
+  .sys-metric-val.accent { color: var(--accent); }
+  .sys-metric-val.live { color: var(--signal); }
+
+  /* Live event ticker */
+  .sys-ticker {
+    margin-top: 18px;
+    padding-top: 16px;
+    border-top: 1px solid var(--line);
+    transition: var(--tx);
     font-family: var(--mono);
     font-size: 10.5px;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
+    line-height: 1.7;
     color: var(--fg-mute);
+    height: 19px;
+    overflow: hidden;
+    position: relative;
   }
+  .sys-ticker-line {
+    transition: opacity 0.4s ease, transform 0.4s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+  }
+  .sys-ticker-line.out {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  .sys-ticker-line .dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--signal);
+    flex-shrink: 0;
+  }
+  .sys-ticker-line .ts {
+    color: var(--fg);
+    font-weight: 500;
+  }
+  .sys-ticker-line .arr { color: var(--accent); }
 
   /* CTA row at hero bottom — no scroll element */
   .cta-row {
@@ -875,7 +986,9 @@
     background: var(--bg-elev);
     transform: translateY(-2px);
   }
-  .tool::before {
+
+  /* Mask-based icon (Simple Icons CDN) */
+  .tool[style*="--icon"]::before {
     content: "";
     display: inline-block;
     width: 16px;
@@ -889,20 +1002,26 @@
     mask-position: center;
     -webkit-mask-repeat: no-repeat;
     mask-repeat: no-repeat;
-    transition: var(--tx), background-color 0.25s ease;
+    transition: background-color 0.25s ease;
     flex-shrink: 0;
   }
-  .tool:hover::before { background-color: var(--accent); }
-  .tool.no-icon::before {
-    background-color: var(--accent);
-    -webkit-mask: none;
-    mask: none;
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    margin-left: 4px;
+  .tool[style*="--icon"]:hover::before { background-color: var(--accent); }
+
+  /* Inline SVG glyph */
+  .tool .glyph {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    color: var(--fg-dim);
+    transition: color 0.25s ease;
   }
-  .tool.no-icon { padding-left: 12px; }
+  .tool:hover .glyph { color: var(--accent); }
+  .tool .glyph svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
 
   /* =====================================================================
      ABOUT — editorial timeline
@@ -982,6 +1101,141 @@
     color: var(--fg-dim);
     line-height: 1.65;
     max-width: 60ch;
+  }
+
+  /* Certification cards — horizontal grid, designed for future cert images + verification links */
+  .cert-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+  }
+  @media (max-width: 880px) { .cert-grid { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 580px) { .cert-grid { grid-template-columns: 1fr; } }
+
+  .cert-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--line-strong);
+    border-radius: 6px;
+    background: var(--bg-elev);
+    overflow: hidden;
+    transition: var(--tx), border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: none;
+  }
+  @media (hover: none) { .cert-card { cursor: auto; } }
+
+  .cert-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-3px);
+    box-shadow: 0 18px 40px -22px color-mix(in srgb, var(--accent) 55%, transparent);
+  }
+
+  /* Image placeholder area — ready for certificate image */
+  .cert-thumb {
+    aspect-ratio: 16 / 10;
+    background:
+      linear-gradient(135deg, color-mix(in srgb, var(--accent) 8%, var(--bg-pop)), var(--bg-pop));
+    border-bottom: 1px solid var(--line);
+    display: grid;
+    place-items: center;
+    position: relative;
+    overflow: hidden;
+    transition: var(--tx);
+  }
+  .cert-thumb::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(var(--grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size: 22px 22px;
+    opacity: 0.5;
+    transition: var(--tx);
+  }
+  .cert-thumb svg {
+    position: relative;
+    width: 38px;
+    height: 38px;
+    color: var(--accent);
+    opacity: 0.85;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+  .cert-card:hover .cert-thumb svg {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+
+  .cert-meta-bar {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    right: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: var(--mono);
+    font-size: 9.5px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--fg-dim);
+    pointer-events: none;
+  }
+  .cert-meta-bar .cert-year {
+    color: var(--fg);
+    font-weight: 600;
+  }
+  .cert-meta-bar .cert-status {
+    color: var(--accent);
+  }
+
+  .cert-body {
+    padding: 18px 20px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1;
+  }
+  .cert-org {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--fg-mute);
+  }
+  .cert-title {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: 19px;
+    line-height: 1.25;
+    color: var(--fg);
+    letter-spacing: -0.01em;
+    font-variation-settings: "opsz" 60;
+  }
+  .cert-foot {
+    margin-top: auto;
+    padding-top: 14px;
+    border-top: 1px dashed var(--line);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--fg-mute);
+    transition: var(--tx);
+  }
+  .cert-foot .verify {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    color: var(--fg-dim);
+    transition: color 0.2s ease;
+  }
+  .cert-card:hover .cert-foot .verify {
+    color: var(--accent);
   }
 
   /* =====================================================================
@@ -1150,7 +1404,7 @@
 <!-- ========== HEADER ========== -->
 <header class="top" id="top">
   <div class="container top-row">
-    <a href="#hero" class="brand" data-scroll>Kelash<span class="dot">.</span></a>
+    <a href="#hero" class="brand" data-scroll>Kelash</a>
 
     <div class="top-right">
       <nav class="primary" aria-label="Primary">
@@ -1202,44 +1456,77 @@
         </p>
       </div>
 
-      <aside class="now-panel" aria-label="Current status and stats">
-        <div class="now-head">
-          <span class="now-eye">● Now</span>
-          <span>/ 01.2026</span>
+      <aside class="sys-panel" aria-label="System status: live production pipeline">
+
+        <div class="sys-bar">
+          <div class="sys-bar-l">
+            <div class="sys-bar-dots" aria-hidden="true">
+              <span></span><span></span><span></span>
+            </div>
+            <span class="sys-bar-title"><b>system</b> · production</span>
+          </div>
+          <div class="sys-bar-r">
+            <span class="signal-dot" aria-hidden="true"></span>
+            ONLINE
+          </div>
         </div>
 
-        <p class="now-blurb">
-          Final-year CS at Sukkur IBA. Shipping data pipelines, deploying to free-tier cloud, breaking things on purpose.
-        </p>
+        <div class="sys-body">
 
-        <div class="now-divider"></div>
+          <div class="sys-headline">
+            <div class="sys-headline-l">
+              <div class="sys-prod">Pipeline 01 · Streaming</div>
+              <div class="sys-name">
+                <a href="https://streaming-pipeline.kelash.me" target="_blank" rel="noopener" data-cursor-hover>
+                  Real-Time Crypto Streaming
+                </a>
+              </div>
+            </div>
+            <span class="sys-status-tag">
+              <span class="signal-dot" aria-hidden="true"></span>
+              Live
+            </span>
+          </div>
 
-        <div class="now-stats">
-          <div class="stat-row">
-            <span class="stat-val">03</span>
-            <span class="stat-key">Pipelines shipped</span>
+          <div class="sys-metrics">
+            <div class="sys-metric">
+              <span class="sys-metric-key">Throughput</span>
+              <span class="sys-metric-val accent">14.4K<span class="unit">/day</span></span>
+            </div>
+            <div class="sys-metric">
+              <span class="sys-metric-key">Freshness</span>
+              <span class="sys-metric-val">&lt; 5<span class="unit">min</span></span>
+            </div>
+            <div class="sys-metric">
+              <span class="sys-metric-key">Containers</span>
+              <span class="sys-metric-val">8<span class="unit">running</span></span>
+            </div>
+            <div class="sys-metric">
+              <span class="sys-metric-key">Deploy</span>
+              <span class="sys-metric-val live">~ 90<span class="unit">s</span></span>
+            </div>
           </div>
-          <div class="stat-row">
-            <span class="stat-val">14.4K</span>
-            <span class="stat-key">Events / day live</span>
+
+          <div class="sys-ticker" aria-live="polite" aria-atomic="true">
+            <div class="sys-ticker-line" id="sysTickerLine">
+              <span class="dot"></span>
+              <span class="ts">14:02:18</span>
+              <span class="arr">→</span>
+              <span>BTC priced · Redpanda offset 89412</span>
+            </div>
           </div>
-          <div class="stat-row">
-            <span class="stat-val">92.2</span>
-            <span class="stat-key">NSCT percentile</span>
-          </div>
-          <div class="stat-row">
-            <span class="stat-val">2026</span>
-            <span class="stat-key">Class of</span>
-          </div>
+
         </div>
+
       </aside>
+
 
     </div>
   </div>
 
   <div class="container">
     <div class="cta-row">
-      <a href="https://kelash-crypto.duckdns.org" target="_blank" rel="noopener" class="btn btn--primary" data-cursor-hover>
+      <a href="https://streaming-pipeline.kelash.me" target="_blank" rel="noopener" class="btn btn--primary" data-cursor-hover>
         View Live Pipeline <span class="arrow">→</span>
       </a>
       <a href="https://github.com/kelashkumar-iba" target="_blank" rel="noopener" class="btn" data-cursor-hover>GitHub</a>
@@ -1329,7 +1616,7 @@
         </div>
 
         <div class="project-links">
-          <a href="https://kelash-crypto.duckdns.org" target="_blank" rel="noopener" data-cursor-hover>Live demo →</a>
+          <a href="https://streaming-pipeline.kelash.me" target="_blank" rel="noopener" data-cursor-hover>Live demo →</a>
           <a href="https://github.com/kelashkumar-iba/crypto-streaming-pipeline" target="_blank" rel="noopener" data-cursor-hover>GitHub →</a>
         </div>
       </div>
@@ -1505,7 +1792,7 @@
         </div>
         <div class="tools">
           <span class="tool" style="--icon: url('https://cdn.simpleicons.org/python');">Python</span>
-          <span class="tool no-icon">SQL</span>
+          <span class="tool"><span class="glyph" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="8" cy="3.5" rx="5" ry="1.6"/><path d="M3 3.5v9c0 .9 2.2 1.6 5 1.6s5-.7 5-1.6v-9"/><path d="M3 7.5c0 .9 2.2 1.6 5 1.6s5-.7 5-1.6"/></svg></span>SQL</span>
           <span class="tool" style="--icon: url('https://cdn.simpleicons.org/gnubash');">Bash</span>
           <span class="tool" style="--icon: url('https://cdn.simpleicons.org/openjdk');">Java</span>
         </div>
@@ -1518,12 +1805,12 @@
         </div>
         <div class="tools">
           <span class="tool" style="--icon: url('https://cdn.simpleicons.org/apacheairflow');">Apache Airflow</span>
-          <span class="tool" style="--icon: url('https://cdn.simpleicons.org/dbt');">dbt</span>
+          <span class="tool"><span class="glyph" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="11.5" cy="8" r="3.2"/><path d="M2 8h6.3"/><circle cx="2.6" cy="8" r="0.6" fill="currentColor"/></svg></span>dbt</span>
           <span class="tool" style="--icon: url('https://cdn.simpleicons.org/apachekafka');">Kafka</span>
-          <span class="tool no-icon">Redpanda</span>
-          <span class="tool no-icon">Debezium</span>
+          <span class="tool"><span class="glyph" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11c0-3 2-5 5-5s5 2 5 5"/><circle cx="5.5" cy="9" r="0.6" fill="currentColor" stroke="none"/><circle cx="10.5" cy="9" r="0.6" fill="currentColor" stroke="none"/><path d="M3 11l-1 2M13 11l1 2"/></svg></span>Redpanda</span>
+          <span class="tool"><span class="glyph" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2l4 3v6L8 14l-4-3V5z"/><path d="M8 2v12M4 5l8 6M12 5l-8 6"/></svg></span>Debezium</span>
           <span class="tool" style="--icon: url('https://cdn.simpleicons.org/pandas');">Pandas</span>
-          <span class="tool no-icon">Great Expectations</span>
+          <span class="tool"><span class="glyph" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M8 1.5l5 2v5c0 3-2.2 5.3-5 6-2.8-.7-5-3-5-6v-5z"/><path d="M5.5 8l1.8 1.8L10.8 6"/></svg></span>Great Expectations</span>
         </div>
       </div>
 
@@ -1535,8 +1822,8 @@
         <div class="tools">
           <span class="tool" style="--icon: url('https://cdn.simpleicons.org/postgresql');">PostgreSQL</span>
           <span class="tool" style="--icon: url('https://cdn.simpleicons.org/duckdb');">DuckDB</span>
-          <span class="tool no-icon">MinIO</span>
-          <span class="tool no-icon">Apache Parquet</span>
+          <span class="tool" style="--icon: url('https://cdn.simpleicons.org/minio');">MinIO</span>
+          <span class="tool" style="--icon: url('https://cdn.simpleicons.org/apacheparquet');">Apache Parquet</span>
           <span class="tool" style="--icon: url('https://cdn.simpleicons.org/mongodb');">MongoDB</span>
         </div>
       </div>
@@ -1550,9 +1837,9 @@
           <span class="tool" style="--icon: url('https://cdn.simpleicons.org/docker');">Docker</span>
           <span class="tool" style="--icon: url('https://cdn.simpleicons.org/linux');">Linux</span>
           <span class="tool" style="--icon: url('https://cdn.simpleicons.org/githubactions');">GitHub Actions</span>
-          <span class="tool" style="--icon: url('https://cdn.simpleicons.org/oracle');">Oracle Cloud</span>
+          <span class="tool"><span class="glyph" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="8" cy="8" rx="6" ry="4"/><ellipse cx="8" cy="8" rx="2.5" ry="4"/></svg></span>Oracle Cloud</span>
           <span class="tool" style="--icon: url('https://cdn.simpleicons.org/pytest');">pytest</span>
-          <span class="tool no-icon">Caddy</span>
+          <span class="tool" style="--icon: url('https://cdn.simpleicons.org/caddy');">Caddy</span>
         </div>
       </div>
 
@@ -1565,8 +1852,8 @@
           <span class="tool" style="--icon: url('https://cdn.simpleicons.org/metabase');">Metabase</span>
           <span class="tool" style="--icon: url('https://cdn.simpleicons.org/grafana');">Grafana</span>
           <span class="tool" style="--icon: url('https://cdn.simpleicons.org/plotly');">Plotly</span>
-          <span class="tool" style="--icon: url('https://cdn.simpleicons.org/powerbi');">Power BI</span>
-          <span class="tool" style="--icon: url('https://cdn.simpleicons.org/tableau');">Tableau</span>
+          <span class="tool"><span class="glyph" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="9" width="2.5" height="5"/><rect x="6.75" y="6" width="2.5" height="8"/><rect x="11.5" y="2.5" width="2.5" height="11.5"/></svg></span>Power BI</span>
+          <span class="tool"><span class="glyph" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M8 1.5v3M8 11.5v3M1.5 8h3M11.5 8h3M3.5 3.5l2 2M10.5 10.5l2 2M3.5 12.5l2-2M10.5 5.5l2-2"/><circle cx="8" cy="8" r="1.5"/></svg></span>Tableau</span>
         </div>
       </div>
 
@@ -1606,28 +1893,71 @@
           <span>Certifications</span>
           <span class="count">03</span>
         </div>
-        <div class="about-list">
-          <div class="about-row">
-            <div class="about-year">2026</div>
-            <div class="about-content">
-              <div class="about-title">Google Cloud Data Engineer</div>
-              <div class="about-org">Coursera</div>
+        <div class="cert-grid">
+
+          <a class="cert-card" href="#" target="_blank" rel="noopener" data-cursor-hover aria-label="Google Cloud Data Engineer certificate (verification coming soon)">
+            <div class="cert-thumb">
+              <div class="cert-meta-bar">
+                <span class="cert-year">2026</span>
+                <span class="cert-status">● Active</span>
+              </div>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M12 2l8 3v6c0 5-3.5 9-8 11-4.5-2-8-6-8-11V5z"/>
+                <path d="M8.5 12l2.5 2.5L16 9.5"/>
+              </svg>
             </div>
-          </div>
-          <div class="about-row">
-            <div class="about-year">2025</div>
-            <div class="about-content">
-              <div class="about-title">IBM Data Engineering</div>
-              <div class="about-org">Coursera</div>
+            <div class="cert-body">
+              <span class="cert-org">Coursera · Google Cloud</span>
+              <h4 class="cert-title">Google Cloud Data Engineer</h4>
+              <div class="cert-foot">
+                <span>Professional</span>
+                <span class="verify">Verify <span aria-hidden="true">→</span></span>
+              </div>
             </div>
-          </div>
-          <div class="about-row">
-            <div class="about-year">2025</div>
-            <div class="about-content">
-              <div class="about-title">Google Data Analytics</div>
-              <div class="about-org">Coursera</div>
+          </a>
+
+          <a class="cert-card" href="#" target="_blank" rel="noopener" data-cursor-hover aria-label="IBM Data Engineering certificate (verification coming soon)">
+            <div class="cert-thumb">
+              <div class="cert-meta-bar">
+                <span class="cert-year">2025</span>
+                <span class="cert-status">● Active</span>
+              </div>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M12 2l8 3v6c0 5-3.5 9-8 11-4.5-2-8-6-8-11V5z"/>
+                <path d="M8.5 12l2.5 2.5L16 9.5"/>
+              </svg>
             </div>
-          </div>
+            <div class="cert-body">
+              <span class="cert-org">Coursera · IBM</span>
+              <h4 class="cert-title">IBM Data Engineering</h4>
+              <div class="cert-foot">
+                <span>Professional</span>
+                <span class="verify">Verify <span aria-hidden="true">→</span></span>
+              </div>
+            </div>
+          </a>
+
+          <a class="cert-card" href="#" target="_blank" rel="noopener" data-cursor-hover aria-label="Google Data Analytics certificate (verification coming soon)">
+            <div class="cert-thumb">
+              <div class="cert-meta-bar">
+                <span class="cert-year">2025</span>
+                <span class="cert-status">● Active</span>
+              </div>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M12 2l8 3v6c0 5-3.5 9-8 11-4.5-2-8-6-8-11V5z"/>
+                <path d="M8.5 12l2.5 2.5L16 9.5"/>
+              </svg>
+            </div>
+            <div class="cert-body">
+              <span class="cert-org">Coursera · Google</span>
+              <h4 class="cert-title">Google Data Analytics</h4>
+              <div class="cert-foot">
+                <span>Professional</span>
+                <span class="verify">Verify <span aria-hidden="true">→</span></span>
+              </div>
+            </div>
+          </a>
+
         </div>
       </div>
 
@@ -1897,6 +2227,51 @@
         node.classList.remove('out');
       }, 500);
     }, 3200);
+  })();
+
+  /* ============================================
+     SYSTEM TICKER — fakes live pipeline events
+     ============================================ */
+  (function() {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    const line = document.getElementById('sysTickerLine');
+    if (!line) return;
+
+    const coins = ['BTC', 'ETH', 'SOL', 'BNB', 'XRP', 'ADA', 'DOT', 'AVAX', 'MATIC', 'LINK'];
+    const events = [
+      (coin, off) => `${coin} priced · Redpanda offset ${off}`,
+      (coin, off) => `dbt model run · ${coin}_mart refreshed`,
+      (coin, off) => `${coin} ingested · stg_crypto_prices`,
+      (coin, off) => `Airflow DAG tick · ${coin} batch healthy`,
+      (coin, off) => `Metabase query · ${coin} 24h delta`,
+      (coin, off) => `consumer commit · partition 0 · offset ${off}`
+    ];
+
+    let baseOffset = 89412;
+
+    function pad(n) { return n < 10 ? '0' + n : '' + n; }
+    function nowStamp() {
+      const d = new Date();
+      return pad(d.getHours()) + ':' + pad(d.getMinutes()) + ':' + pad(d.getSeconds());
+    }
+
+    function nextLine() {
+      const coin = coins[Math.floor(Math.random() * coins.length)];
+      baseOffset += Math.floor(Math.random() * 14) + 3;
+      const tpl = events[Math.floor(Math.random() * events.length)];
+      const text = tpl(coin, baseOffset);
+      const ts = nowStamp();
+      return `<span class="dot"></span><span class="ts">${ts}</span><span class="arr">→</span><span>${text}</span>`;
+    }
+
+    setInterval(() => {
+      line.classList.add('out');
+      setTimeout(() => {
+        line.innerHTML = nextLine();
+        line.classList.remove('out');
+      }, 400);
+    }, 2600);
   })();
 
   /* ============================================
