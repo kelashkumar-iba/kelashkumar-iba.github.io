@@ -320,13 +320,16 @@
     100% { box-shadow: 0 0 0 0 transparent; }
   }
 
-  /* Hero grid: name+lede LEFT, NOW panel RIGHT */
+  /* Hero grid: name+lede LEFT, system panel RIGHT — locked widths, no oscillation */
   .hero-grid {
     display: grid;
-    grid-template-columns: 1.5fr 1fr;
+    grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
     gap: clamp(32px, 5vw, 80px);
     align-items: start;
   }
+  .hero-left { min-width: 0; }
+  /* Right grid cell wraps system panel — both share 100% width of the cell */
+  .hero-grid > aside.sys-panel { min-width: 0; }
   @media (max-width: 880px) {
     .hero-grid { grid-template-columns: 1fr; gap: 48px; }
   }
@@ -389,23 +392,33 @@
     max-width: 32ch;
     font-variation-settings: "opsz" 60;
   }
+  /* Rotator: host is sized by the widest ghost word, so width never changes */
   .hero-lede .rotate-host {
     color: var(--accent);
     font-style: italic;
-    display: inline-block;
-    min-width: 11ch;
+    font-weight: 400;
+    display: inline-grid;
+    vertical-align: baseline;
+  }
+  .hero-lede .rotate-host > * {
+    grid-area: 1 / 1;
+  }
+  .hero-lede .rotate-ghost {
+    visibility: hidden;
+    pointer-events: none;
+    user-select: none;
   }
   .hero-lede .rotate-word {
-    display: inline-block;
-    transition: opacity 0.5s ease, transform 0.5s ease;
+    transition: opacity 0.45s ease, transform 0.45s ease;
   }
   .hero-lede .rotate-word.out {
     opacity: 0;
-    transform: translateY(-8px);
+    transform: translateY(-6px);
   }
 
   /* SYSTEM STATUS PANEL — fills right empty space, alive */
   .sys-panel {
+    width: 100%;
     border: 1px solid var(--line-strong);
     background: color-mix(in srgb, var(--bg-elev) 92%, transparent);
     backdrop-filter: blur(10px);
@@ -572,16 +585,22 @@
     font-size: 10.5px;
     line-height: 1.7;
     color: var(--fg-mute);
-    height: 19px;
+    height: 36px;            /* fixed height incl. padding-top */
     overflow: hidden;
     position: relative;
   }
   .sys-ticker-line {
+    position: absolute;       /* removes from layout flow → can't push panel wider */
+    top: 16px;
+    left: 0;
+    right: 0;
     transition: opacity 0.4s ease, transform 0.4s ease;
     display: flex;
     align-items: center;
     gap: 8px;
     white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   .sys-ticker-line.out {
     opacity: 0;
@@ -1452,7 +1471,7 @@
         </div>
 
         <p class="hero-lede">
-          I ship <span class="rotate-host"><span class="rotate-word" id="rotator">streaming pipelines</span></span> &mdash; production-grade, observable, and built to survive load.
+          I ship <span class="rotate-host"><span class="rotate-ghost" aria-hidden="true">orchestrated workflows</span><span class="rotate-word" id="rotator">streaming pipelines</span></span> &mdash; production-grade, observable, and built to survive load.
         </p>
       </div>
 
@@ -1499,7 +1518,7 @@
             </div>
             <div class="sys-metric">
               <span class="sys-metric-key">Containers</span>
-              <span class="sys-metric-val">8<span class="unit">running</span></span>
+              <span class="sys-metric-val">9<span class="unit">running</span></span>
             </div>
             <div class="sys-metric">
               <span class="sys-metric-key">Deploy</span>
@@ -1568,18 +1587,18 @@
         </div>
 
         <p class="project-lead">
-          A six-stage streaming system pulling live crypto prices from CoinGecko through Redpanda, persisting them in PostgreSQL, transforming with dbt, orchestrating with Airflow, and surfacing them in a Metabase dashboard. Eight containers, end-to-end. Deployed to Oracle Cloud&apos;s free-tier ARM VM with CI/CD shipping changes in ninety seconds.
+          A seven-stage streaming system pulling live crypto prices from CoinGecko through Redpanda, persisting them in PostgreSQL, transforming with dbt, orchestrating with Airflow, and surfacing them in a Metabase dashboard. Nine containers, end-to-end. Deployed to Oracle Cloud&apos;s free-tier ARM VM with CI/CD shipping changes in ninety seconds.
         </p>
 
         <div class="arch">
           <div class="arch-head">
-            <span><span class="arch-tag">Architecture</span> &nbsp;/&nbsp; 6 stages · 8 containers</span>
+            <span><span class="arch-tag">Architecture</span> &nbsp;/&nbsp; 7 stages · 9 containers</span>
             <span>End-to-end · dockerized</span>
           </div>
           <div class="arch-row">
             <span class="arch-num">01</span>
             <span class="arch-key">Source</span>
-            <span class="arch-val">CoinGecko REST API · 10 crypto assets · <code>60s</code> polling cadence</span>
+            <span class="arch-val">CoinGecko REST API · 10 crypto assets · <code>~30s</code> polling cadence</span>
           </div>
           <div class="arch-row">
             <span class="arch-num">02</span>
@@ -1594,7 +1613,7 @@
           <div class="arch-row">
             <span class="arch-num">04</span>
             <span class="arch-key">Transform</span>
-            <span class="arch-val">dbt three-layer models · <code>staging → intermediate → mart</code> · LAG windows, moving averages, daily summaries</span>
+            <span class="arch-val">dbt three-layer models · <code>staging → intermediate → mart</code> · 14 automated tests · LAG windows, moving averages, daily summaries</span>
           </div>
           <div class="arch-row">
             <span class="arch-num">05</span>
@@ -1606,13 +1625,18 @@
             <span class="arch-key">Analyze</span>
             <span class="arch-val">Metabase six-panel live dashboard · price trends, deltas, top movers, volumes &mdash; refreshed in near real-time</span>
           </div>
+          <div class="arch-row">
+            <span class="arch-num">07</span>
+            <span class="arch-key">Serve</span>
+            <span class="arch-val">FastAPI live stats endpoint behind Caddy reverse proxy · auto-HTTPS via Let&apos;s Encrypt · public at <code>streaming-pipeline.kelash.me</code></span>
+          </div>
         </div>
 
         <div class="metrics">
           <div class="metric"><div class="metric-val">14,400/day</div><div class="metric-key">Throughput</div></div>
           <div class="metric"><div class="metric-val">&lt; 5 min</div><div class="metric-key">Freshness</div></div>
           <div class="metric"><div class="metric-val">~ 90 s</div><div class="metric-key">Deploy</div></div>
-          <div class="metric"><div class="metric-val">8 svc</div><div class="metric-key">Containers</div></div>
+          <div class="metric"><div class="metric-val">9 svc</div><div class="metric-key">Containers</div></div>
         </div>
 
         <div class="project-links">
@@ -2202,7 +2226,8 @@
   })();
 
   /* ============================================
-     ROLE ROTATOR
+     ROLE ROTATOR — kinetic phrase in lede
+     Layout is stable: ghost element pre-sizes the host
      ============================================ */
   (function() {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
@@ -2225,7 +2250,7 @@
         i = (i + 1) % words.length;
         node.textContent = words[i];
         node.classList.remove('out');
-      }, 500);
+      }, 450);
     }, 3200);
   })();
 
