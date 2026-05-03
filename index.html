@@ -230,6 +230,142 @@
   nav.primary a:hover { color: var(--fg); }
   nav.primary a:hover::after { right: 0; }
 
+  /* Header résumé button — engineered with corner brackets + glow halo */
+  .header-resume {
+    --brk: 7px;          /* bracket arm length */
+    --brk-gap: 6px;      /* bracket distance from text */
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    height: 38px;
+    padding: 0 18px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: var(--fg);
+    background: transparent;
+    border: 0;
+    transition: color 0.3s ease;
+    isolation: isolate;
+  }
+
+  /* Inner panel — fills, has subtle accent tint */
+  .header-resume::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 2px;
+    background: linear-gradient(180deg,
+      color-mix(in srgb, var(--accent) 6%, transparent),
+      color-mix(in srgb, var(--accent) 2%, transparent));
+    border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
+    transition: background 0.35s ease, border-color 0.35s ease, box-shadow 0.4s ease;
+    z-index: -1;
+  }
+
+  /* Sheen sweep — diagonal highlight that crosses on hover */
+  .header-resume::after {
+    content: "";
+    position: absolute;
+    inset: 1px;
+    border-radius: 2px;
+    background: linear-gradient(115deg,
+      transparent 30%,
+      color-mix(in srgb, var(--accent) 18%, transparent) 50%,
+      transparent 70%);
+    transform: translateX(-110%);
+    transition: transform 0.7s cubic-bezier(0.5, 0, 0.2, 1);
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  /* Corner brackets via inset SVG-style borders on a wrapping element */
+  .header-resume .brk {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    border: 1.4px solid var(--accent);
+    transition: opacity 0.35s ease, transform 0.4s cubic-bezier(0.5, 0, 0.2, 1);
+    opacity: 0;
+    pointer-events: none;
+  }
+  .header-resume .brk-tl { top: -3px; left: -3px;  border-right: 0; border-bottom: 0; transform: translate(4px, 4px); }
+  .header-resume .brk-tr { top: -3px; right: -3px; border-left: 0;  border-bottom: 0; transform: translate(-4px, 4px); }
+  .header-resume .brk-bl { bottom: -3px; left: -3px;  border-right: 0; border-top: 0; transform: translate(4px, -4px); }
+  .header-resume .brk-br { bottom: -3px; right: -3px; border-left: 0;  border-top: 0; transform: translate(-4px, -4px); }
+
+  .header-resume:hover { color: var(--accent); }
+  .header-resume:hover::before {
+    background: linear-gradient(180deg,
+      color-mix(in srgb, var(--accent) 14%, transparent),
+      color-mix(in srgb, var(--accent) 6%, transparent));
+    border-color: var(--accent);
+    box-shadow:
+      0 0 0 1px color-mix(in srgb, var(--accent) 25%, transparent),
+      0 8px 24px -8px color-mix(in srgb, var(--accent) 50%, transparent);
+  }
+  .header-resume:hover::after { transform: translateX(110%); }
+  .header-resume:hover .brk {
+    opacity: 1;
+    transform: translate(0, 0);
+  }
+  .header-resume:active::before { transform: translateY(1px); }
+
+  @media (max-width: 540px) {
+    .header-resume { padding: 0 12px; height: 34px; font-size: 10.5px; letter-spacing: 0.18em; }
+  }
+
+  /* Download icon used by both résumé buttons */
+  .resume-icon {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    width: 11px;
+    height: 13px;
+    margin-top: -1px;     /* optical baseline alignment with mono text */
+  }
+  .btn--resume .resume-icon {
+    width: 12px;
+    height: 14px;
+  }
+  .resume-icon .arr,
+  .resume-icon .tray {
+    position: absolute;
+    left: 50%;
+    transform-origin: center;
+    transition: transform 0.35s cubic-bezier(0.5, 0, 0.2, 1);
+    color: currentColor;
+  }
+  .resume-icon .arr {
+    top: 0;
+    width: 100%;
+    height: 72%;
+    transform: translateX(-50%);
+  }
+  .resume-icon .arr svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+  .resume-icon .tray {
+    bottom: 0;
+    width: 100%;
+    height: 0;
+    transform: translateX(-50%);
+    border-bottom: 1.4px solid currentColor;
+  }
+  /* Hover: arrow nudges down, tray stays put — clear "download" gesture */
+  .header-resume:hover .resume-icon .arr,
+  .btn--resume:hover .resume-icon .arr {
+    transform: translateX(-50%) translateY(2px);
+  }
+
   .theme-toggle {
     width: 42px;
     height: 42px;
@@ -658,8 +794,79 @@
     color: var(--bg);
     transform: translateY(-1px);
   }
+  /* Resume button — accent outline; sits between primary and secondary in weight */
   .btn .arrow { transition: transform 0.25s ease; }
   .btn:hover .arrow { transform: translateX(3px); }
+
+  /* Hero résumé button — engineered design with brackets + glow + sheen */
+  .btn.btn--resume {
+    position: relative;
+    isolation: isolate;
+    background: transparent;
+    border: 0;
+    padding: 13px 26px;
+    color: var(--fg);
+    overflow: visible;
+    transition: color 0.3s ease;
+  }
+  .btn.btn--resume::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 2px;
+    background: linear-gradient(180deg,
+      color-mix(in srgb, var(--accent) 8%, transparent),
+      color-mix(in srgb, var(--accent) 3%, transparent));
+    border: 1px solid color-mix(in srgb, var(--accent) 40%, transparent);
+    transition: background 0.35s ease, border-color 0.35s ease, box-shadow 0.4s ease;
+    z-index: -1;
+  }
+  .btn.btn--resume::after {
+    content: "";
+    position: absolute;
+    inset: 1px;
+    border-radius: 2px;
+    background: linear-gradient(115deg,
+      transparent 30%,
+      color-mix(in srgb, var(--accent) 22%, transparent) 50%,
+      transparent 70%);
+    transform: translateX(-110%);
+    transition: transform 0.75s cubic-bezier(0.5, 0, 0.2, 1);
+    pointer-events: none;
+    z-index: -1;
+  }
+  .btn.btn--resume .brk {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border: 1.5px solid var(--accent);
+    transition: opacity 0.35s ease, transform 0.45s cubic-bezier(0.5, 0, 0.2, 1);
+    opacity: 0;
+    pointer-events: none;
+  }
+  .btn.btn--resume .brk-tl { top: -4px; left: -4px;  border-right: 0; border-bottom: 0; transform: translate(5px, 5px); }
+  .btn.btn--resume .brk-tr { top: -4px; right: -4px; border-left: 0;  border-bottom: 0; transform: translate(-5px, 5px); }
+  .btn.btn--resume .brk-bl { bottom: -4px; left: -4px;  border-right: 0; border-top: 0; transform: translate(5px, -5px); }
+  .btn.btn--resume .brk-br { bottom: -4px; right: -4px; border-left: 0;  border-top: 0; transform: translate(-5px, -5px); }
+
+  .btn.btn--resume:hover {
+    color: var(--accent);
+    transform: translateY(-1px);
+  }
+  .btn.btn--resume:hover::before {
+    background: linear-gradient(180deg,
+      color-mix(in srgb, var(--accent) 16%, transparent),
+      color-mix(in srgb, var(--accent) 7%, transparent));
+    border-color: var(--accent);
+    box-shadow:
+      0 0 0 1px color-mix(in srgb, var(--accent) 25%, transparent),
+      0 12px 32px -10px color-mix(in srgb, var(--accent) 55%, transparent);
+  }
+  .btn.btn--resume:hover::after { transform: translateX(110%); }
+  .btn.btn--resume:hover .brk {
+    opacity: 1;
+    transform: translate(0, 0);
+  }
 
   /* =====================================================================
      SECTIONS
@@ -1433,6 +1640,23 @@
         <a href="#contact" data-scroll>Contact</a>
       </nav>
 
+      <a href="resume.pdf" target="_blank" rel="noopener" class="header-resume" data-cursor-hover aria-label="View résumé (opens PDF in new tab)">
+        <span class="brk brk-tl" aria-hidden="true"></span>
+        <span class="brk brk-tr" aria-hidden="true"></span>
+        <span class="brk brk-bl" aria-hidden="true"></span>
+        <span class="brk brk-br" aria-hidden="true"></span>
+        <span class="resume-icon" aria-hidden="true">
+          <span class="arr">
+            <svg viewBox="0 0 12 10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M6 0.5v8"/>
+              <path d="M2.5 5.5L6 9l3.5-3.5"/>
+            </svg>
+          </span>
+          <span class="tray"></span>
+        </span>
+        Résumé
+      </a>
+
       <button class="theme-toggle" id="themeToggle" aria-label="Toggle color theme" data-cursor-hover>
         <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
@@ -1547,6 +1771,22 @@
     <div class="cta-row">
       <a href="https://streaming-pipeline.kelash.me" target="_blank" rel="noopener" class="btn btn--primary" data-cursor-hover>
         View Live Pipeline <span class="arrow">→</span>
+      </a>
+      <a href="resume.pdf" target="_blank" rel="noopener" class="btn btn--resume" data-cursor-hover aria-label="View résumé (opens PDF in new tab)">
+        <span class="brk brk-tl" aria-hidden="true"></span>
+        <span class="brk brk-tr" aria-hidden="true"></span>
+        <span class="brk brk-bl" aria-hidden="true"></span>
+        <span class="brk brk-br" aria-hidden="true"></span>
+        <span class="resume-icon" aria-hidden="true">
+          <span class="arr">
+            <svg viewBox="0 0 14 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M7 0.5v9.5"/>
+              <path d="M3 6.5L7 10.5l4-4"/>
+            </svg>
+          </span>
+          <span class="tray"></span>
+        </span>
+        Résumé
       </a>
       <a href="https://github.com/kelashkumar-iba" target="_blank" rel="noopener" class="btn" data-cursor-hover>GitHub</a>
       <a href="https://linkedin.com/in/kelashkumar-iba" target="_blank" rel="noopener" class="btn" data-cursor-hover>LinkedIn</a>
