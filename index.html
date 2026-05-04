@@ -2314,8 +2314,7 @@
     const STORAGE_KEY = 'kk-theme';
 
     const stored = localStorage.getItem(STORAGE_KEY);
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    const initial = stored || (prefersDark ? 'dark' : 'light');
+    const initial = stored ?? 'dark';
     root.dataset.theme = initial;
 
     function setTheme(next, ev) {
