@@ -1463,6 +1463,117 @@
   .cert-card:hover .cert-foot .verify {
     color: var(--accent);
   }
+  .cert-card[data-cert-img] {
+    cursor: none;
+  }
+  .cert-verify-link {
+    cursor: none;
+    position: relative;
+    z-index: 2;
+  }
+  .cert-verify-link:hover {
+    color: var(--accent) !important;
+  }
+
+  /* =====================================================================
+     CERT MODAL
+     ===================================================================== */
+
+  .cert-modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    background: rgba(0,0,0,0.82);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.35s cubic-bezier(0.16,1,0.3,1);
+  }
+  .cert-modal-overlay.open {
+    opacity: 1;
+    pointer-events: all;
+  }
+  .cert-modal {
+    position: relative;
+    background: var(--bg-elev);
+    border: 1px solid var(--line-strong);
+    border-radius: 6px;
+    max-width: 860px;
+    width: 100%;
+    max-height: 90vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transform: translateY(20px) scale(0.98);
+    transition: transform 0.4s cubic-bezier(0.16,1,0.3,1);
+    box-shadow: 0 40px 120px rgba(0,0,0,0.6);
+  }
+  .cert-modal-overlay.open .cert-modal {
+    transform: translateY(0) scale(1);
+  }
+  .cert-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--line);
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--fg-mute);
+    flex-shrink: 0;
+  }
+  .cert-modal-header .cert-modal-title {
+    color: var(--fg-dim);
+    font-weight: 500;
+  }
+  .cert-modal-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .cert-modal-verify {
+    color: var(--accent);
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    transition: opacity 0.2s ease;
+    cursor: none;
+  }
+  .cert-modal-verify:hover { opacity: 0.75; }
+  .cert-modal-close {
+    background: none;
+    border: none;
+    color: var(--fg-mute);
+    font-size: 20px;
+    line-height: 1;
+    padding: 4px 8px;
+    cursor: none;
+    transition: color 0.2s ease;
+    font-family: var(--sans);
+  }
+  .cert-modal-close:hover { color: var(--fg); }
+  .cert-modal-body {
+    overflow-y: auto;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    background: #fff;
+  }
+  .cert-modal-body img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
 
   /* =====================================================================
      CONTACT
@@ -2159,7 +2270,7 @@
         </div>
         <div class="cert-grid">
 
-          <a class="cert-card" href="https://www.coursera.org/account/accomplishments/professional-cert/P4ZNBKZGV3RT" target="_blank" rel="noopener" data-cursor-hover aria-label="Google Cloud Data Engineer certificate (verification coming soon)">
+          <div class="cert-card" data-cursor-hover aria-label="Google Cloud Data Engineer certificate">
             <div class="cert-thumb">
               <div class="cert-meta-bar">
                 <span class="cert-year">2026</span>
@@ -2175,15 +2286,15 @@
               <h4 class="cert-title">Google Cloud Data Engineer</h4>
               <div class="cert-foot">
                 <span>Professional</span>
-                <span class="verify">Verify <span aria-hidden="true">→</span></span>
+                <a class="verify cert-verify-link" href="https://www.coursera.org/account/accomplishments/professional-cert/google-cloud-data-engineer" target="_blank" rel="noopener" onclick="event.stopPropagation()">Verify <span aria-hidden="true">→</span></a>
               </div>
             </div>
-          </a>
+          </div>
 
-          <a class="cert-card" href="https://www.coursera.org/account/accomplishments/professional-cert/P4ZNBKZGV3RT" target="_blank" rel="noopener" data-cursor-hover aria-label="IBM Data Engineering certificate (verification coming soon)">
+          <div class="cert-card" data-cert-img="ibm" data-cursor-hover aria-label="IBM Data Engineering certificate">
             <div class="cert-thumb">
               <div class="cert-meta-bar">
-                <span class="cert-year">2025</span>
+                <span class="cert-year">2026</span>
                 <span class="cert-status">● Active</span>
               </div>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -2196,12 +2307,12 @@
               <h4 class="cert-title">IBM Data Engineering</h4>
               <div class="cert-foot">
                 <span>Professional</span>
-                <span class="verify">Verify <span aria-hidden="true">→</span></span>
+                <a class="verify cert-verify-link" href="https://coursera.org/verify/professional-cert/8FK4W3TUWXXO" target="_blank" rel="noopener" onclick="event.stopPropagation()">Verify <span aria-hidden="true">→</span></a>
               </div>
             </div>
-          </a>
+          </div>
 
-          <a class="cert-card" href="https://www.coursera.org/account/accomplishments/professional-cert/P4ZNBKZGV3RT" target="_blank" rel="noopener" data-cursor-hover aria-label="Google Data Analytics certificate (verification coming soon)">
+          <div class="cert-card" data-cert-img="gda" data-cursor-hover aria-label="Google Data Analytics certificate">
             <div class="cert-thumb">
               <div class="cert-meta-bar">
                 <span class="cert-year">2025</span>
@@ -2217,10 +2328,10 @@
               <h4 class="cert-title">Google Data Analytics</h4>
               <div class="cert-foot">
                 <span>Professional</span>
-                <span class="verify">Verify <span aria-hidden="true">→</span></span>
+                <a class="verify cert-verify-link" href="https://coursera.org/verify/professional-cert/P4ZNBKZGV3RT" target="_blank" rel="noopener" onclick="event.stopPropagation()">Verify <span aria-hidden="true">→</span></a>
               </div>
             </div>
-          </a>
+          </div>
 
         </div>
       </div>
@@ -2252,7 +2363,7 @@
             <div class="about-content">
               <div class="about-title">Three production pipelines shipped</div>
               <div class="about-org">Personal · Open source</div>
-              <p class="about-note">Streaming, CDC, and medallion lakehouse &mdash; one running live at streaming-pipeline.kelash.me with CI/CD, two fully containerized and reproducible via Docker Compose.</p>
+              <p class="about-note">Streaming, CDC, and medallion lakehouse &mdash; each fully containerized and orchestrated, all deployed.</p>
             </div>
           </div>
         </div>
@@ -2301,6 +2412,22 @@
   </div>
 </footer>
 
+<!-- ========== CERT MODAL ========== -->
+<div class="cert-modal-overlay" id="certModal" role="dialog" aria-modal="true" aria-label="Certificate viewer">
+  <div class="cert-modal">
+    <div class="cert-modal-header">
+      <span class="cert-modal-title" id="certModalTitle">Certificate</span>
+      <div class="cert-modal-actions">
+        <a class="cert-modal-verify" id="certModalVerify" href="#" target="_blank" rel="noopener">Verify on Coursera →</a>
+        <button class="cert-modal-close" id="certModalClose" aria-label="Close">✕</button>
+      </div>
+    </div>
+    <div class="cert-modal-body">
+      <img id="certModalImg" src="" alt="Certificate" />
+    </div>
+  </div>
+</div>
+
 <script>
   /* Year */
   document.getElementById('year').textContent = new Date().getFullYear();
@@ -2314,7 +2441,8 @@
     const STORAGE_KEY = 'kk-theme';
 
     const stored = localStorage.getItem(STORAGE_KEY);
-    const initial = stored ?? 'dark';
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const initial = stored || (prefersDark ? 'dark' : 'light');
     root.dataset.theme = initial;
 
     function setTheme(next, ev) {
@@ -2539,8 +2667,69 @@
   })();
 
   /* ============================================
-     REVEAL ON SCROLL
+     CERT MODAL — click card to view certificate
      ============================================ */
+  (function() {
+    const CERTS = {
+      ibm: {
+        title: 'IBM Data Engineering — Professional Certificate',
+        img: 'ibm-data-engineering.png',
+        verify: 'https://coursera.org/verify/professional-cert/8FK4W3TUWXXO'
+      },
+      gda: {
+        title: 'Google Data Analytics — Professional Certificate',
+        img: 'google-data-analytics.png',
+        verify: 'https://coursera.org/verify/professional-cert/P4ZNBKZGV3RT'
+      }
+    };
+
+    const overlay  = document.getElementById('certModal');
+    const modalImg = document.getElementById('certModalImg');
+    const modalTitle = document.getElementById('certModalTitle');
+    const modalVerify = document.getElementById('certModalVerify');
+    const closeBtn = document.getElementById('certModalClose');
+
+    function openModal(key) {
+      const cert = CERTS[key];
+      if (!cert) return;
+      modalImg.src = cert.img;
+      modalImg.alt = cert.title;
+      modalTitle.textContent = cert.title;
+      modalVerify.href = cert.verify;
+      overlay.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+      overlay.classList.remove('open');
+      document.body.style.overflow = '';
+      setTimeout(() => { modalImg.src = ''; }, 400);
+    }
+
+    document.querySelectorAll('.cert-card[data-cert-img]').forEach((card) => {
+      card.addEventListener('click', (e) => {
+        if (e.target.closest('.cert-verify-link')) return;
+        openModal(card.dataset.certImg);
+      });
+    });
+
+    closeBtn.addEventListener('click', closeModal);
+    overlay.addEventListener('click', (e) => {
+      if (e.target === overlay) closeModal();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeModal();
+    });
+
+    // Hover state for cursor on modal elements
+    [overlay, closeBtn, modalVerify].forEach((el) => {
+      if (!el) return;
+      el.addEventListener('mouseenter', () => document.querySelector('.cursor')?.classList.add('is-hover'));
+      el.addEventListener('mouseleave', () => document.querySelector('.cursor')?.classList.remove('is-hover'));
+    });
+  })();
+
+
   (function() {
     const io = new IntersectionObserver((entries) => {
       entries.forEach((e) => {
