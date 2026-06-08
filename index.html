@@ -399,6 +399,81 @@
   }
 
   /* =====================================================================
+     MOBILE NAV — hamburger + drawer
+     ===================================================================== */
+
+  .nav-hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 36px;
+    height: 36px;
+    padding: 6px;
+    border: 1px solid var(--line-strong);
+    border-radius: 3px;
+    background: transparent;
+    transition: border-color 0.2s ease;
+  }
+  .nav-hamburger:hover { border-color: var(--accent); }
+  .nav-hamburger span {
+    display: block;
+    height: 1px;
+    background: var(--fg);
+    transition: transform 0.35s cubic-bezier(0.5,0,0.2,1), opacity 0.2s ease, width 0.3s ease;
+    transform-origin: center;
+  }
+  .nav-hamburger span:nth-child(3) { width: 65%; }
+  .nav-hamburger.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+  .nav-hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+  .nav-hamburger.open span:nth-child(3) { width: 100%; transform: translateY(-6px) rotate(-45deg); }
+  @media (max-width: 720px) { .nav-hamburger { display: flex; } }
+
+  .nav-drawer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 49;
+    background: color-mix(in srgb, var(--bg) 96%, transparent);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s cubic-bezier(0.16,1,0.3,1);
+  }
+  .nav-drawer.open {
+    opacity: 1;
+    pointer-events: all;
+  }
+  .nav-drawer a {
+    font-family: var(--serif);
+    font-size: clamp(32px, 10vw, 52px);
+    font-weight: 380;
+    letter-spacing: -0.025em;
+    color: var(--fg-dim);
+    font-variation-settings: "opsz" 144, "SOFT" 50;
+    transition: color 0.2s ease, transform 0.2s ease;
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  .nav-drawer.open a {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .nav-drawer.open a:nth-child(1) { transition-delay: 0.05s; }
+  .nav-drawer.open a:nth-child(2) { transition-delay: 0.10s; }
+  .nav-drawer.open a:nth-child(3) { transition-delay: 0.15s; }
+  .nav-drawer.open a:nth-child(4) { transition-delay: 0.20s; }
+  .nav-drawer a:hover { color: var(--accent); transform: translateX(6px); }
+
+  /* =====================================================================
      HERO
      ===================================================================== */
 
@@ -418,11 +493,11 @@
     position: absolute;
     inset: 0;
     background:
-      radial-gradient(ellipse 70% 50% at 80% 20%, color-mix(in srgb, var(--accent) 7%, transparent) 0%, transparent 60%),
-      radial-gradient(ellipse 35% 35% at 10% 90%, color-mix(in srgb, var(--signal) 5%, transparent) 0%, transparent 60%);
+      radial-gradient(ellipse 70% 50% at calc(80% + var(--px, 0px)) calc(20% + var(--py, 0px)), color-mix(in srgb, var(--accent) 7%, transparent) 0%, transparent 60%),
+      radial-gradient(ellipse 35% 35% at calc(10% - var(--px, 0px)) calc(90% - var(--py, 0px)), color-mix(in srgb, var(--signal) 5%, transparent) 0%, transparent 60%);
     z-index: -1;
     pointer-events: none;
-    transition: var(--tx);
+    transition: var(--tx), background 0.1s ease;
   }
 
   .status-pill {
@@ -564,6 +639,12 @@
     position: relative;
     overflow: hidden;
     box-shadow: 0 20px 60px -30px color-mix(in srgb, var(--accent) 30%, transparent);
+    opacity: 0;
+    transform: translateY(24px);
+    animation: sysPanelIn 1.1s cubic-bezier(0.16, 1, 0.3, 1) 0.55s forwards;
+  }
+  @keyframes sysPanelIn {
+    to { opacity: 1; transform: translateY(0); }
   }
 
   /* Top status bar (terminal-style) */
@@ -922,6 +1003,24 @@
     padding: 60px 0;
     border-bottom: 1px solid var(--line);
     transition: var(--tx);
+    position: relative;
+  }
+  .project::before {
+    content: "";
+    position: absolute;
+    left: -var(--gutter, 24px);
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, transparent, var(--accent), transparent);
+    opacity: 0;
+    transform: scaleY(0);
+    transform-origin: top;
+    transition: opacity 0.4s ease, transform 0.6s cubic-bezier(0.16,1,0.3,1);
+  }
+  .project:hover::before {
+    opacity: 1;
+    transform: scaleY(1);
   }
   .project:last-child { border-bottom: 0; padding-bottom: 0; }
   @media (max-width: 720px) {
@@ -937,6 +1036,11 @@
     color: var(--fg-mute);
     letter-spacing: -0.03em;
     font-variation-settings: "opsz" 144;
+    transition: color 0.4s ease, font-size 0.4s cubic-bezier(0.16,1,0.3,1), transform 0.4s cubic-bezier(0.16,1,0.3,1);
+  }
+  .project:hover .project-num {
+    color: var(--accent);
+    transform: scale(1.08);
   }
 
   .project-body {
@@ -1205,13 +1309,31 @@
     letter-spacing: 0.02em;
     color: var(--fg);
     background: color-mix(in srgb, var(--bg-elev) 50%, transparent);
-    transition: var(--tx), border-color 0.25s ease, background 0.25s ease, transform 0.2s ease;
+    transition: var(--tx), border-color 0.25s ease, background 0.25s ease, transform 0.2s ease, box-shadow 0.25s ease;
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+  }
+  .tool::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(110deg,
+      transparent 30%,
+      color-mix(in srgb, var(--accent) 22%, transparent) 50%,
+      transparent 70%);
+    transform: translateX(-120%);
+    transition: transform 0.65s cubic-bezier(0.5, 0, 0.2, 1);
+    pointer-events: none;
+    border-radius: 100px;
   }
   .tool:hover {
     border-color: var(--accent);
     background: var(--bg-elev);
     transform: translateY(-2px);
+    box-shadow: 0 8px 20px -8px color-mix(in srgb, var(--accent) 35%, transparent);
   }
+  .tool:hover::after { transform: translateX(120%); }
 
   /* Mask-based icon (Simple Icons CDN) */
   .tool[style*="--icon"]::before {
@@ -1281,15 +1403,23 @@
     display: grid;
     grid-template-columns: 130px 1fr;
     gap: clamp(20px, 4vw, 56px);
-    padding: 22px 0;
+    padding: 22px 12px;
     border-bottom: 1px solid var(--line);
     align-items: baseline;
-    transition: var(--tx);
+    transition: var(--tx), background 0.3s ease;
+    border-radius: 4px;
+    margin: 0 -12px;
   }
   .about-row:last-child { border-bottom: 0; }
+  .about-row:hover {
+    background: color-mix(in srgb, var(--accent) 4%, var(--bg-elev));
+  }
+  .about-row:hover .about-year {
+    color: var(--accent);
+  }
 
   @media (max-width: 720px) {
-    .about-row { grid-template-columns: 1fr; gap: 8px; }
+    .about-row { grid-template-columns: 1fr; gap: 8px; margin: 0; padding: 22px 0; }
   }
 
   .about-year {
@@ -1380,6 +1510,23 @@
     opacity: 0.5;
     transition: var(--tx);
   }
+  /* Blurred cert preview image — shown when data-cert-img is present */
+  .cert-card[data-cert-img] .cert-thumb {
+    background: var(--bg-pop);
+  }
+  .cert-thumb-bg {
+    position: absolute;
+    inset: -4px;
+    background-size: cover;
+    background-position: top center;
+    filter: blur(6px) brightness(0.35) saturate(0.6);
+    transform: scale(1.08);
+    transition: filter 0.4s ease, transform 0.4s ease;
+  }
+  .cert-card:hover .cert-thumb-bg {
+    filter: blur(4px) brightness(0.45) saturate(0.8);
+    transform: scale(1.12);
+  }
   .cert-thumb svg {
     position: relative;
     width: 38px;
@@ -1387,10 +1534,36 @@
     color: var(--accent);
     opacity: 0.85;
     transition: opacity 0.3s ease, transform 0.3s ease;
+    z-index: 1;
   }
   .cert-card:hover .cert-thumb svg {
     opacity: 1;
     transform: scale(1.05);
+  }
+  /* "Click to view" hint overlay */
+  .cert-click-hint {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%) translateY(4px);
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--fg-dim);
+    background: color-mix(in srgb, var(--bg) 80%, transparent);
+    border: 1px solid var(--line-strong);
+    padding: 3px 10px;
+    border-radius: 100px;
+    opacity: 0;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    pointer-events: none;
+    z-index: 2;
+    white-space: nowrap;
+  }
+  .cert-card[data-cert-img]:hover .cert-click-hint {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
   }
 
   .cert-meta-bar {
@@ -1660,24 +1833,55 @@
   .contact-item:hover .val { color: var(--accent); }
 
   /* =====================================================================
-     FOOTER — centered
+     FOOTER — elevated, not an afterthought
      ===================================================================== */
 
   footer {
-    padding: 32px 0;
+    padding: 48px 0 36px;
     border-top: 1px solid var(--line);
     transition: var(--tx);
+    position: relative;
+    overflow: hidden;
+  }
+  footer::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 240px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
   }
   .foot-row {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
-    text-align: center;
+    flex-wrap: wrap;
+    gap: 16px;
     font-family: var(--mono);
     font-size: 10.5px;
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--fg-mute);
+  }
+  .foot-copy { flex-shrink: 0; }
+  .foot-links {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+  }
+  .foot-links a {
+    color: var(--fg-mute);
+    transition: color 0.2s ease;
+    letter-spacing: 0.14em;
+  }
+  .foot-links a:hover { color: var(--accent); }
+  .foot-status {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    color: var(--signal);
   }
 
   /* =====================================================================
@@ -1719,6 +1923,7 @@
     }
     .reveal { opacity: 1; transform: none; }
     .hero h1 .first, .hero h1 .last { transform: none; opacity: 1; }
+    .sys-panel { opacity: 1; transform: none; animation: none; }
     body { cursor: auto; }
     .cursor, .cursor-dot { display: none; }
   }
@@ -1742,15 +1947,15 @@
   <div class="container top-row">
     <a href="#hero" class="brand" data-scroll>Kelash</a>
 
-    <div class="top-right">
-      <nav class="primary" aria-label="Primary">
-        <a href="#work" data-scroll>Work</a>
-        <a href="#stack" data-scroll>Stack</a>
-        <a href="#about" data-scroll>About</a>
-        <a href="#contact" data-scroll>Contact</a>
-      </nav>
+      <div class="top-right">
+        <nav class="primary" aria-label="Primary">
+          <a href="#work" data-scroll>Work</a>
+          <a href="#stack" data-scroll>Stack</a>
+          <a href="#about" data-scroll>About</a>
+          <a href="#contact" data-scroll>Contact</a>
+        </nav>
 
-      <a href="resume.pdf" target="_blank" rel="noopener" class="header-resume" data-cursor-hover aria-label="View résumé (opens PDF in new tab)">
+        <a href="resume.pdf" target="_blank" rel="noopener" class="header-resume" data-cursor-hover aria-label="View résumé (opens PDF in new tab)">
         <span class="brk brk-tl" aria-hidden="true"></span>
         <span class="brk brk-tr" aria-hidden="true"></span>
         <span class="brk brk-bl" aria-hidden="true"></span>
@@ -1767,18 +1972,31 @@
         Résumé
       </a>
 
-      <button class="theme-toggle" id="themeToggle" aria-label="Toggle color theme" data-cursor-hover>
-        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-        </svg>
-        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <circle cx="12" cy="12" r="4"/>
-          <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
-        </svg>
-      </button>
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle color theme" data-cursor-hover>
+          <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="4"/>
+            <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+          </svg>
+        </button>
+
+        <button class="nav-hamburger" id="navHamburger" aria-label="Open navigation" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
     </div>
   </div>
 </header>
+
+<!-- Mobile nav drawer -->
+<nav class="nav-drawer" id="navDrawer" aria-label="Mobile navigation">
+  <a href="#work" data-scroll data-drawer>Work</a>
+  <a href="#stack" data-scroll data-drawer>Stack</a>
+  <a href="#about" data-scroll data-drawer>About</a>
+  <a href="#contact" data-scroll data-drawer>Contact</a>
+</nav>
 
 <!-- ========== HERO ========== -->
 <section class="hero" id="hero">
@@ -2292,6 +2510,7 @@
 
           <div class="cert-card" data-cert-img="ibm" data-cursor-hover aria-label="IBM Data Engineering certificate">
             <div class="cert-thumb">
+              <div class="cert-thumb-bg" style="background-image: url('ibm-data-engineering.png')"></div>
               <div class="cert-meta-bar">
                 <span class="cert-year">2026</span>
                 <span class="cert-status">● Active</span>
@@ -2300,6 +2519,7 @@
                 <path d="M12 2l8 3v6c0 5-3.5 9-8 11-4.5-2-8-6-8-11V5z"/>
                 <path d="M8.5 12l2.5 2.5L16 9.5"/>
               </svg>
+              <span class="cert-click-hint">Click to view</span>
             </div>
             <div class="cert-body">
               <span class="cert-org">Coursera · IBM</span>
@@ -2313,6 +2533,7 @@
 
           <div class="cert-card" data-cert-img="gda" data-cursor-hover aria-label="Google Data Analytics certificate">
             <div class="cert-thumb">
+              <div class="cert-thumb-bg" style="background-image: url('google-data-analytics.png')"></div>
               <div class="cert-meta-bar">
                 <span class="cert-year">2025</span>
                 <span class="cert-status">● Active</span>
@@ -2321,6 +2542,7 @@
                 <path d="M12 2l8 3v6c0 5-3.5 9-8 11-4.5-2-8-6-8-11V5z"/>
                 <path d="M8.5 12l2.5 2.5L16 9.5"/>
               </svg>
+              <span class="cert-click-hint">Click to view</span>
             </div>
             <div class="cert-body">
               <span class="cert-org">Coursera · Google</span>
@@ -2404,10 +2626,19 @@
   </div>
 </section>
 
-<!-- ========== FOOTER (centered) ========== -->
+<!-- ========== FOOTER ========== -->
 <footer>
   <div class="container foot-row">
-    <span>© <span id="year">2026</span> Kelash Kumar &nbsp;·&nbsp; Sukkur &nbsp;·&nbsp; Pakistan</span>
+    <span class="foot-copy">© <span id="year">2026</span> Kelash Kumar &nbsp;·&nbsp; Pakistan</span>
+    <div class="foot-links">
+      <a href="https://github.com/kelashkumar-iba" target="_blank" rel="noopener" data-cursor-hover>GitHub</a>
+      <a href="https://linkedin.com/in/kelashkumar-iba" target="_blank" rel="noopener" data-cursor-hover>LinkedIn</a>
+      <a href="mailto:kelash.iba22@gmail.com" data-cursor-hover>Email</a>
+    </div>
+    <span class="foot-status">
+      <span class="signal-dot" aria-hidden="true"></span>
+      All systems live
+    </span>
   </div>
 </footer>
 
@@ -2730,6 +2961,107 @@
   })();
 
 
+  /* ============================================
+     SCROLL-TRIGGERED NUMBER COUNTERS
+     ============================================ */
+  (function() {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    function parseNum(str) {
+      const clean = str.replace(/,/g, '');
+      const m = clean.match(/[\d.]+/);
+      return m ? parseFloat(m[0]) : null;
+    }
+
+    function animateCounter(el, target, duration) {
+      const original = el.textContent;
+      const m = original.replace(/,/g,'').match(/[\d.]+/);
+      if (!m) return;
+      const numStr = m[0];
+      const idx = original.indexOf(numStr);
+      const pre = original.slice(0, idx);
+      const suf = original.slice(idx + numStr.length);
+      const isFloat = numStr.includes('.');
+      let start = null;
+
+      function easeOut(t) { return 1 - Math.pow(1 - t, 3); }
+      function fmt(n) {
+        const v = isFloat ? n.toFixed(1) : Math.round(n);
+        return String(v).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+      }
+
+      function step(ts) {
+        if (!start) start = ts;
+        const progress = Math.min((ts - start) / duration, 1);
+        el.textContent = pre + fmt(easeOut(progress) * target) + suf;
+        if (progress < 1) requestAnimationFrame(step);
+        else el.textContent = original;
+      }
+      requestAnimationFrame(step);
+    }
+
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        if (!e.isIntersecting) return;
+        const el = e.target;
+        const target = parseNum(el.textContent);
+        if (target !== null && target > 1) animateCounter(el, target, 1400);
+        io.unobserve(el);
+      });
+    }, { threshold: 0.6 });
+
+    document.querySelectorAll('.metric-val').forEach((el) => io.observe(el));
+  })();
+
+  /* ============================================
+     HERO PARALLAX — subtle gradient drift on mousemove
+     ============================================ */
+  (function() {
+    if (window.matchMedia('(hover: none)').matches) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const hero = document.querySelector('.hero');
+    if (!hero) return;
+    let tx = 0, ty = 0, cx = 0, cy = 0;
+    window.addEventListener('mousemove', (e) => {
+      tx = (e.clientX / window.innerWidth - 0.5) * 36;
+      ty = (e.clientY / window.innerHeight - 0.5) * 20;
+    }, { passive: true });
+    (function tick() {
+      cx += (tx - cx) * 0.04;
+      cy += (ty - cy) * 0.04;
+      hero.style.setProperty('--px', cx.toFixed(2) + 'px');
+      hero.style.setProperty('--py', cy.toFixed(2) + 'px');
+      requestAnimationFrame(tick);
+    })();
+  })();
+
+  /* ============================================
+     MOBILE NAV DRAWER
+     ============================================ */
+  (function() {
+    const btn = document.getElementById('navHamburger');
+    const drawer = document.getElementById('navDrawer');
+    if (!btn || !drawer) return;
+    function openDrawer() {
+      btn.classList.add('open');
+      drawer.classList.add('open');
+      btn.setAttribute('aria-expanded', 'true');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeDrawer() {
+      btn.classList.remove('open');
+      drawer.classList.remove('open');
+      btn.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+    }
+    btn.addEventListener('click', () => btn.classList.contains('open') ? closeDrawer() : openDrawer());
+    drawer.querySelectorAll('a[data-drawer]').forEach((a) => a.addEventListener('click', closeDrawer));
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeDrawer(); });
+  })();
+
+  /* ============================================
+     REVEAL ON SCROLL
+     ============================================ */
   (function() {
     const io = new IntersectionObserver((entries) => {
       entries.forEach((e) => {
