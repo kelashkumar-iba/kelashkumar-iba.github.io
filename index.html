@@ -1487,9 +1487,10 @@
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
-    padding: 24px;
+    padding: 32px 24px;
+    overflow-y: auto;
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.35s cubic-bezier(0.16,1,0.3,1);
@@ -1505,13 +1506,12 @@
     border-radius: 6px;
     max-width: 860px;
     width: 100%;
-    max-height: 90vh;
-    overflow: hidden;
     display: flex;
     flex-direction: column;
     transform: translateY(20px) scale(0.98);
     transition: transform 0.4s cubic-bezier(0.16,1,0.3,1);
     box-shadow: 0 40px 120px rgba(0,0,0,0.6);
+    margin: auto;
   }
   .cert-modal-overlay.open .cert-modal {
     transform: translateY(0) scale(1);
@@ -1528,6 +1528,10 @@
     text-transform: uppercase;
     color: var(--fg-mute);
     flex-shrink: 0;
+    position: sticky;
+    top: 0;
+    background: var(--bg-elev);
+    z-index: 2;
   }
   .cert-modal-header .cert-modal-title {
     color: var(--fg-dim);
@@ -1561,12 +1565,7 @@
   }
   .cert-modal-close:hover { color: var(--fg); }
   .cert-modal-body {
-    overflow-y: auto;
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0;
+    display: block;
     background: #fff;
   }
   .cert-modal-body img {
@@ -2697,6 +2696,7 @@
       modalTitle.textContent = cert.title;
       modalVerify.href = cert.verify;
       overlay.classList.add('open');
+      overlay.scrollTop = 0;
       document.body.style.overflow = 'hidden';
     }
 
