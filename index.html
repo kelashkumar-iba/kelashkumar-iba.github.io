@@ -19,7 +19,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,30..100;1,9..144,300..900,30..100&family=IBM+Plex+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,30..100;1,9..144,300..900,30..100&family=IBM+Plex+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&family=Syne:wght@700;800&display=swap" rel="stylesheet">
 
 <style>
   /* =====================================================================
@@ -42,21 +42,21 @@
     --grid:         rgba(237, 230, 214, 0.035);
   }
 
-  /* Light: SHARP cream paper · vivid terracotta · forest signal */
+  /* Light: Cool slate-white · vivid indigo-violet · emerald signal */
   :root[data-theme="light"] {
-    --bg:           #F7F2E3;
-    --bg-elev:      #EFE9D5;
-    --bg-pop:       #E5DCC0;
-    --line:         rgba(20, 16, 11, 0.16);
-    --line-strong:  rgba(20, 16, 11, 0.36);
-    --fg:           #14100B;
-    --fg-dim:       #3A332A;
-    --fg-mute:      #7C7263;
-    --accent:       #C8451B;
-    --accent-soft:  #E55D2F;
-    --accent-deep:  #9E3414;
-    --signal:       #156639;
-    --grid:         rgba(20, 16, 11, 0.045);
+    --bg:           #F0F2F7;
+    --bg-elev:      #E6E9F2;
+    --bg-pop:       #D8DCF0;
+    --line:         rgba(18, 20, 48, 0.12);
+    --line-strong:  rgba(18, 20, 48, 0.28);
+    --fg:           #12142A;
+    --fg-dim:       #2E3258;
+    --fg-mute:      #737899;
+    --accent:       #5C3FE8;
+    --accent-soft:  #7B61F5;
+    --accent-deep:  #4329C4;
+    --signal:       #0D8A5C;
+    --grid:         rgba(18, 20, 48, 0.04);
   }
 
   :root {
@@ -224,7 +224,7 @@
     left: 0;
     right: 100%;
     height: 1px;
-    background: var(--accent);
+    background: var(--signal);
     transition: right 0.4s cubic-bezier(0.5, 0, 0.5, 1);
   }
   nav.primary a:hover { color: var(--fg); }
@@ -993,70 +993,339 @@
   }
 
   /* =====================================================================
-     PROJECTS
+     PROJECTS — Interactive Pipeline Showcase
+     The concept: each project is displayed as a large "open file" panel.
+     On the LEFT: a giant italic project number fused with the title —
+       typographic art. Below: description, stack pills, links.
+     On the RIGHT: a live animated pipeline flow — the architecture
+       rendered as actual connected nodes with animated data particles
+       flowing along SVG paths. Hovering a node reveals its detail tooltip.
+     The three projects each have their own accent hue that bleeds into
+     the background as a soft radial glow — making them visually distinct.
      ===================================================================== */
 
-  .project {
-    display: grid;
-    grid-template-columns: 84px 1fr;
-    gap: clamp(16px, 3vw, 40px);
-    padding: 60px 0;
-    border-bottom: 1px solid var(--line);
-    transition: var(--tx);
-    position: relative;
-  }
-  .project::before {
-    content: "";
-    position: absolute;
-    left: -var(--gutter, 24px);
-    top: 0;
-    bottom: 0;
-    width: 2px;
-    background: linear-gradient(to bottom, transparent, var(--accent), transparent);
-    opacity: 0;
-    transform: scaleY(0);
-    transform-origin: top;
-    transition: opacity 0.4s ease, transform 0.6s cubic-bezier(0.16,1,0.3,1);
-  }
-  .project:hover::before {
-    opacity: 1;
-    transform: scaleY(1);
-  }
-  .project:last-child { border-bottom: 0; padding-bottom: 0; }
-  @media (max-width: 720px) {
-    .project { grid-template-columns: 1fr; gap: 18px; padding: 40px 0; }
-  }
-
-  .project-num {
-    font-family: var(--serif);
-    font-style: italic;
-    font-weight: 280;
-    font-size: 64px;
-    line-height: 1;
-    color: var(--fg-mute);
-    letter-spacing: -0.03em;
-    font-variation-settings: "opsz" 144;
-    transition: color 0.4s ease, font-size 0.4s cubic-bezier(0.16,1,0.3,1), transform 0.4s cubic-bezier(0.16,1,0.3,1);
-  }
-  .project:hover .project-num {
-    color: var(--accent);
-    transform: scale(1.08);
-  }
-
-  .project-body {
+  /* ── PROJECT WRAPPER ── */
+  .projects-list {
     display: flex;
     flex-direction: column;
-    gap: 22px;
-    min-width: 0; /* prevent overflow */
+    gap: 0;
   }
 
-  .project-meta {
+  .pj {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 580px;
+    border-bottom: 1px solid var(--line);
+    overflow: hidden;
+    transition: var(--tx);
+  }
+  .pj:last-child { border-bottom: 0; }
+
+  /* alternating layout — odd projects: text left / pipeline right
+     even projects: pipeline left / text right */
+  .pj.pj--flip { direction: rtl; }
+  .pj.pj--flip > * { direction: ltr; }
+
+  @media (max-width: 860px) {
+    .pj, .pj.pj--flip { grid-template-columns: 1fr; direction: ltr; min-height: auto; }
+  }
+
+  /* ── PROJECT GLOW — each project has its own hue ── */
+  .pj::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0;
+    transition: opacity 0.7s ease;
+  }
+  .pj:hover::before { opacity: 1; }
+  .pj--01::before {
+    background: radial-gradient(ellipse 55% 70% at 20% 50%,
+      color-mix(in srgb, var(--signal) 9%, transparent), transparent 70%);
+  }
+  .pj--02::before {
+    background: radial-gradient(ellipse 55% 70% at 80% 50%,
+      color-mix(in srgb, var(--signal) 9%, transparent), transparent 70%);
+  }
+  .pj--03::before {
+    background: radial-gradient(ellipse 55% 70% at 20% 50%,
+      color-mix(in srgb, var(--signal) 9%, transparent), transparent 70%);
+  }
+
+  /* ── LEFT PANEL — typographic identity ── */
+  .pj-identity {
+    position: relative;
+    z-index: 1;
+    padding: clamp(36px, 5vw, 72px) clamp(28px, 4vw, 60px);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 32px;
+    border-right: 1px solid var(--line);
+    transition: var(--tx);
+  }
+  .pj--flip .pj-identity { border-right: 0; border-left: 1px solid var(--line); }
+  @media (max-width: 860px) {
+    .pj-identity, .pj--flip .pj-identity { border-right: 0; border-left: 0; border-bottom: 1px solid var(--line); }
+  }
+
+  /* Big ghost number — positioned absolutely, bleeds behind title */
+  .pj-ghost-num { display: none; }
+
+  .pj-top { position: relative; z-index: 1; }
+
+  .pj-eyebrow {
     display: flex;
     align-items: center;
-    gap: 10px;
-    flex-wrap: wrap;
+    gap: 12px;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--fg-mute);
+    margin-bottom: 16px;
+  }
+  .pj-eyebrow-line {
+    height: 1px;
+    width: 32px;
+    background: var(--signal);
+    flex-shrink: 0;
+    transition: var(--tx);
+  }
+  .pj--02 .pj-eyebrow-line { background: var(--signal); }
+  .pj--03 .pj-eyebrow-line { background: var(--signal); }
+
+  .pj-title {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(26px, 3.2vw, 44px);
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    color: var(--fg);
+    font-variation-settings: "opsz" 144, "SOFT" 60;
+    transition: var(--tx);
+  }
+  .pj-title a {
+    transition: color 0.2s ease;
+  }
+  .pj-title a:hover { color: var(--signal); }
+  .pj--02 .pj-title a:hover { color: var(--signal); }
+  .pj--03 .pj-title a:hover { color: var(--signal); }
+
+  .pj-desc {
+    font-family: var(--sans);
+    font-size: clamp(13.5px, 1.2vw, 15px);
+    line-height: 1.72;
+    color: var(--fg-dim);
+    max-width: 46ch;
+    transition: var(--tx);
   }
 
+  /* Stack pills — tiny, inline */
+  .pj-stack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .pj-pill {
+    font-family: var(--mono);
+    font-size: 9.5px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 100px;
+    border: 1px solid var(--line-strong);
+    color: var(--fg-mute);
+    background: color-mix(in srgb, var(--bg-pop) 50%, transparent);
+    transition: var(--tx), border-color 0.2s, color 0.2s;
+  }
+  .pj:hover .pj-pill { border-color: color-mix(in srgb, var(--signal) 30%, var(--line-strong)); }
+  .pj--02:hover .pj-pill { border-color: color-mix(in srgb, var(--signal) 30%, var(--line-strong)); }
+  .pj--03:hover .pj-pill { border-color: color-mix(in srgb, var(--signal) 30%, var(--line-strong)); }
+
+  /* Bottom row — metrics + links */
+  .pj-bottom {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .pj-metrics {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  @media (max-width: 1100px) {
+    .pj-metrics { grid-template-columns: repeat(2, 1fr); }
+  }
+  .pj-metric {
+    padding: 12px 14px;
+    border-right: 1px solid var(--line);
+    transition: background 0.2s;
+  }
+  .pj-metric:last-child { border-right: 0; }
+  @media (max-width: 1100px) {
+    .pj-metric:nth-child(2n) { border-right: 0; }
+    .pj-metric:nth-child(1),
+    .pj-metric:nth-child(2) { border-bottom: 1px solid var(--line); }
+  }
+  .pj-metric:hover { background: var(--bg-pop); }
+  .pj-metric-val {
+    font-family: var(--mono);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--signal);
+    letter-spacing: -0.01em;
+    margin-bottom: 2px;
+    transition: var(--tx);
+  }
+  .pj--02 .pj-metric-val { color: var(--signal); }
+  .pj--03 .pj-metric-val { color: var(--signal); }
+  .pj-metric-key {
+    font-family: var(--mono);
+    font-size: 8.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--fg-mute);
+    transition: var(--tx);
+  }
+
+  .pj-links {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .pj-link {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--fg-dim);
+    padding: 9px 18px;
+    border: 1px solid var(--line-strong);
+    border-radius: 2px;
+    transition: color 0.2s, border-color 0.2s, background 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+  }
+  .pj-link:hover {
+    color: var(--signal);
+    border-color: var(--signal);
+    background: color-mix(in srgb, var(--signal) 7%, transparent);
+  }
+  .pj--02 .pj-link:hover {
+    color: var(--signal);
+    border-color: var(--signal);
+    background: color-mix(in srgb, var(--signal) 7%, transparent);
+  }
+  .pj--03 .pj-link:hover {
+    color: var(--signal);
+    border-color: var(--signal);
+    background: color-mix(in srgb, var(--signal) 7%, transparent);
+  }
+  .pj-link--primary {
+    background: var(--signal);
+    border-color: var(--signal);
+    color: var(--bg);
+    font-weight: 600;
+  }
+  .pj-link--primary:hover {
+    background: color-mix(in srgb, var(--signal) 80%, white) !important;
+    border-color: color-mix(in srgb, var(--signal) 80%, white) !important;
+    color: var(--bg) !important;
+  }
+
+  /* ── RIGHT PANEL — Pipeline Flow Canvas ── */
+  .pj-pipeline {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: clamp(24px, 3vw, 48px);
+    background: color-mix(in srgb, var(--bg-pop) 30%, transparent);
+    overflow: hidden;
+    transition: var(--tx);
+    min-height: 400px;
+  }
+
+  /* The SVG pipeline diagram */
+  .pipe-svg {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    inset: 0;
+    overflow: visible;
+  }
+
+  /* Pipeline node — the interactive boxes */
+  .pipe-node {
+    cursor: default;
+    transition: filter 0.3s ease;
+  }
+  .pipe-node:hover { filter: brightness(1.15); }
+
+  .pipe-node-rect {
+    rx: 5px;
+    transition: all 0.3s ease;
+  }
+
+  /* Node tooltip on hover */
+  .pipe-tooltip {
+    position: absolute;
+    pointer-events: none;
+    z-index: 10;
+    background: var(--bg-pop);
+    border: 1px solid var(--line-strong);
+    border-radius: 4px;
+    padding: 10px 14px;
+    font-family: var(--mono);
+    font-size: 10.5px;
+    line-height: 1.6;
+    color: var(--fg);
+    max-width: 220px;
+    white-space: normal;
+    box-shadow: 0 12px 32px -8px rgba(0,0,0,0.4);
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+  }
+  .pipe-tooltip.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .pipe-tooltip b {
+    color: var(--accent);
+    display: block;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-size: 9.5px;
+    margin-bottom: 3px;
+  }
+
+  /* animated data particle on SVG paths */
+  @keyframes particle-flow {
+    0%   { offset-distance: 0%; opacity: 0; }
+    8%   { opacity: 1; }
+    92%  { opacity: 1; }
+    100% { offset-distance: 100%; opacity: 0; }
+  }
+  .data-particle {
+    offset-rotate: 0deg;
+    animation: particle-flow linear infinite;
+  }
+
+  /* Badge — reused */
   .badge {
     display: inline-flex;
     align-items: center;
@@ -1077,190 +1346,8 @@
     border-color: color-mix(in srgb, var(--signal) 40%, transparent);
   }
 
-  .project h3 {
-    font-family: var(--serif);
-    font-weight: 400;
-    font-size: clamp(28px, 3.6vw, 42px);
-    line-height: 1.05;
-    letter-spacing: -0.02em;
-    margin-top: 4px;
-    font-variation-settings: "opsz" 144, "SOFT" 50;
-  }
-  .project h3 a {
-    background-image: linear-gradient(var(--accent), var(--accent));
-    background-size: 0% 1px;
-    background-position: 0 100%;
-    background-repeat: no-repeat;
-    transition: background-size 0.4s cubic-bezier(0.5, 0, 0.2, 1), color 0.2s;
-  }
-  .project h3 a:hover {
-    color: var(--accent);
-    background-size: 100% 1px;
-  }
-
-  .project-stack {
-    font-family: var(--mono);
-    font-size: 11px;
-    letter-spacing: 0.06em;
-    color: var(--fg-mute);
-    line-height: 1.7;
-    text-transform: uppercase;
-  }
-
-  .project-lead {
-    color: var(--fg);
-    font-family: var(--serif);
-    font-weight: 360;
-    font-size: clamp(17px, 1.8vw, 19.5px);
-    line-height: 1.6;
-    max-width: 64ch;
-    letter-spacing: -0.005em;
-    font-variation-settings: "opsz" 60;
-  }
-
-  /* Architecture table — text-based, structured, elegant */
-  .arch {
-    border: 1px solid var(--line);
-    border-radius: 4px;
-    overflow: hidden;
-    background: var(--bg-elev);
-    margin-top: 4px;
-    transition: var(--tx);
-  }
-  .arch-head {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    gap: 16px;
-    padding: 14px 20px;
-    background: color-mix(in srgb, var(--bg-pop) 70%, transparent);
-    border-bottom: 1px solid var(--line);
-    font-family: var(--mono);
-    font-size: 10px;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--fg-mute);
-    transition: var(--tx);
-  }
-  .arch-head .arch-tag { color: var(--accent); font-weight: 600; }
-
-  .arch-row {
-    display: grid;
-    grid-template-columns: 50px 130px 1fr;
-    gap: 18px;
-    padding: 14px 20px;
-    border-top: 1px solid var(--line);
-    align-items: baseline;
-    transition: var(--tx), background 0.3s ease;
-  }
-  .arch-row:first-child { border-top: 0; }
-  .arch-row:hover { background: color-mix(in srgb, var(--accent) 5%, transparent); }
-
-  .arch-num {
-    font-family: var(--mono);
-    font-size: 10px;
-    color: var(--fg-mute);
-    letter-spacing: 0.1em;
-  }
-  .arch-key {
-    font-family: var(--mono);
-    font-size: 10.5px;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: var(--accent);
-    font-weight: 600;
-  }
-  .arch-val {
-    font-family: var(--sans);
-    font-size: 13.5px;
-    color: var(--fg);
-    line-height: 1.55;
-    letter-spacing: -0.005em;
-  }
-  .arch-val code {
-    font-family: var(--mono);
-    font-size: 12px;
-    background: color-mix(in srgb, var(--accent) 12%, transparent);
-    color: var(--accent);
-    padding: 1px 6px;
-    border-radius: 2px;
-  }
-
-  @media (max-width: 720px) {
-    .arch-row {
-      grid-template-columns: 36px 1fr;
-      gap: 12px;
-    }
-    .arch-row .arch-key {
-      grid-column: 2;
-      margin-bottom: -8px;
-    }
-    .arch-row .arch-val { grid-column: 2; }
-  }
-
-  /* Metrics tiles */
-  .metrics {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 0;
-    border: 1px solid var(--line);
-    border-radius: 4px;
-    overflow: hidden;
-    transition: var(--tx);
-  }
-  @media (max-width: 720px) {
-    .metrics { grid-template-columns: repeat(2, 1fr); }
-  }
-
-  .metric {
-    padding: 18px 18px;
-    border-right: 1px solid var(--line);
-    transition: background 0.3s ease, var(--tx);
-  }
-  .metric:last-child { border-right: 0; }
-  @media (max-width: 720px) {
-    .metric { border-bottom: 1px solid var(--line); }
-    .metric:nth-child(2n) { border-right: 0; }
-    .metric:nth-last-child(-n+2) { border-bottom: 0; }
-  }
-  .metric:hover { background: var(--bg-pop); }
-
-  .metric-val {
-    font-family: var(--mono);
-    font-size: 16px;
-    font-weight: 600;
-    color: var(--accent);
-    letter-spacing: -0.01em;
-    margin-bottom: 4px;
-  }
-  .metric-key {
-    font-family: var(--mono);
-    font-size: 9.5px;
-    text-transform: uppercase;
-    letter-spacing: 0.16em;
-    color: var(--fg-mute);
-  }
-
-  .project-links {
-    display: flex;
-    gap: 22px;
-    flex-wrap: wrap;
-    margin-top: 6px;
-  }
-  .project-links a {
-    font-family: var(--mono);
-    font-size: 11px;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--fg-dim);
-    padding-bottom: 4px;
-    border-bottom: 1px solid var(--line-strong);
-    transition: color 0.2s ease, border-color 0.2s ease;
-  }
-  .project-links a:hover {
-    color: var(--accent);
-    border-bottom-color: var(--accent);
-  }
+  /* project class alias kept for scroll reveal */
+  .project { }
 
   /* =====================================================================
      TECH STACK — pills with brand logos via CSS mask
@@ -1276,7 +1363,7 @@
     font-size: 10.5px;
     letter-spacing: 0.2em;
     text-transform: uppercase;
-    color: var(--accent);
+    color: var(--signal);
     margin-bottom: 18px;
     padding-bottom: 10px;
     border-bottom: 1px dashed var(--line-strong);
@@ -1328,10 +1415,10 @@
     border-radius: 100px;
   }
   .tool:hover {
-    border-color: var(--accent);
+    border-color: var(--signal);
     background: var(--bg-elev);
     transform: translateY(-2px);
-    box-shadow: 0 8px 20px -8px color-mix(in srgb, var(--accent) 35%, transparent);
+    box-shadow: 0 8px 20px -8px color-mix(in srgb, var(--signal) 35%, transparent);
   }
   .tool:hover::after { transform: translateX(120%); }
 
@@ -1458,6 +1545,519 @@
     line-height: 1.65;
     max-width: 60ch;
   }
+
+  /* ── Honors & Recognition — NSCT feature card ── */
+  .nsct-card {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr 220px;
+    gap: 32px;
+    border: 1px solid var(--line-strong);
+    border-radius: 10px;
+    background: var(--bg-elev);
+    padding: 32px 28px 28px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  @media (max-width: 680px) {
+    .nsct-card { grid-template-columns: 1fr; }
+    .nsct-right { display: none; }
+  }
+  .nsct-card::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--signal) 0%, color-mix(in srgb, var(--signal) 40%, transparent) 60%, transparent 100%);
+  }
+  .nsct-card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 60% 80% at 10% 50%, color-mix(in srgb, var(--signal) 5%, transparent), transparent 70%);
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+    opacity: 0;
+  }
+  .nsct-card:hover {
+    border-color: color-mix(in srgb, var(--signal) 45%, var(--line-strong));
+    transform: translateY(-2px);
+    box-shadow: 0 20px 48px -20px color-mix(in srgb, var(--signal) 22%, transparent);
+  }
+  .nsct-card:hover::after { opacity: 1; }
+
+  .nsct-bg-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(var(--grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size: 28px 28px;
+    pointer-events: none;
+    opacity: 0.6;
+  }
+
+  .nsct-left { position: relative; z-index: 1; }
+
+  .nsct-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--fg-mute);
+    margin-bottom: 14px;
+  }
+  .nsct-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--signal);
+    box-shadow: 0 0 6px var(--signal);
+    animation: pulse-dot 2.4s ease-in-out infinite;
+    flex-shrink: 0;
+  }
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 1; box-shadow: 0 0 6px var(--signal); }
+    50% { opacity: 0.5; box-shadow: 0 0 14px var(--signal); }
+  }
+
+  .nsct-stat {
+    font-family: 'Syne', var(--sans);
+    font-style: normal;
+    font-weight: 800;
+    font-size: clamp(56px, 9vw, 88px);
+    line-height: 0.92;
+    color: var(--signal);
+    letter-spacing: -0.04em;
+    margin-bottom: 16px;
+  }
+  .nsct-sup {
+    font-family: var(--mono);
+    font-style: normal;
+    font-weight: 500;
+    font-size: 0.22em;
+    vertical-align: super;
+    color: var(--fg-mute);
+    letter-spacing: 0.06em;
+    margin-left: 2px;
+  }
+  .nsct-pct {
+    font-family: var(--mono);
+    font-style: normal;
+    font-weight: 400;
+    font-size: 0.24em;
+    color: color-mix(in srgb, var(--signal) 55%, var(--fg-mute));
+    letter-spacing: 0.06em;
+    margin-left: 4px;
+  }
+
+  .nsct-title {
+    font-family: var(--sans);
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--fg);
+    letter-spacing: -0.01em;
+    margin-bottom: 8px;
+  }
+  .nsct-desc {
+    font-family: var(--sans);
+    font-size: 13.5px;
+    color: var(--fg-dim);
+    line-height: 1.65;
+    max-width: 52ch;
+    margin-bottom: 18px;
+  }
+  .nsct-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .nsct-tag {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--signal);
+    border: 1px solid color-mix(in srgb, var(--signal) 30%, transparent);
+    border-radius: 4px;
+    padding: 3px 8px;
+    background: color-mix(in srgb, var(--signal) 6%, transparent);
+  }
+
+  /* right side — preview thumbnail */
+  .nsct-right {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: flex-end;
+  }
+  .nsct-preview-wrap {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+  .nsct-preview-inner {
+    width: 100%;
+    aspect-ratio: 3/2;
+    border-radius: 6px;
+    border: 1px solid var(--line-strong);
+    overflow: hidden;
+    background: var(--bg-pop);
+    position: relative;
+    transition: border-color 0.3s ease;
+  }
+  .nsct-card:hover .nsct-preview-inner {
+    border-color: color-mix(in srgb, var(--signal) 50%, var(--line-strong));
+  }
+  .nsct-thumb-img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .nsct-preview-placeholder {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    color: var(--fg-mute);
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .nsct-preview-inner:has(.nsct-thumb-img[src]) .nsct-preview-placeholder { display: none; }
+  .nsct-preview-inner.nsct-no-img .nsct-thumb-img { display: none; }
+
+  .nsct-view-hint {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--signal);
+    opacity: 0.7;
+    transition: opacity 0.2s ease;
+  }
+  .nsct-card:hover .nsct-view-hint { opacity: 1; }
+
+  /* ── NSCT Modal ── */
+  .nsct-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 9000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.25s ease;
+  }
+  .nsct-modal.open {
+    pointer-events: all;
+    opacity: 1;
+  }
+  .nsct-modal-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.75);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    cursor: pointer;
+  }
+  .nsct-modal-box {
+    position: relative;
+    z-index: 1;
+    background: var(--bg-elev);
+    border: 1px solid var(--line-strong);
+    border-radius: 10px;
+    width: min(680px, 100%);
+    overflow: hidden;
+    transform: scale(0.94) translateY(12px);
+    transition: transform 0.28s cubic-bezier(0.34,1.56,0.64,1);
+    box-shadow: 0 32px 80px -20px rgba(0,0,0,0.6);
+  }
+  .nsct-modal.open .nsct-modal-box {
+    transform: scale(1) translateY(0);
+  }
+  .nsct-modal-close {
+    position: absolute;
+    top: 14px; right: 14px;
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    border: 1px solid var(--line-strong);
+    background: var(--bg-pop);
+    color: var(--fg-dim);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    transition: border-color 0.2s, color 0.2s;
+    z-index: 2;
+  }
+  .nsct-modal-close:hover { border-color: var(--signal); color: var(--signal); }
+  .nsct-modal-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 20px 14px;
+    border-bottom: 1px solid var(--line);
+  }
+  .nsct-modal-badge {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--fg-mute);
+  }
+  .nsct-modal-rank {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--signal);
+    border: 1px solid color-mix(in srgb, var(--signal) 35%, transparent);
+    border-radius: 4px;
+    padding: 2px 8px;
+    background: color-mix(in srgb, var(--signal) 7%, transparent);
+  }
+  .nsct-modal-img-wrap {
+    padding: 20px;
+    position: relative;
+    min-height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .nsct-modal-img {
+    width: 100%;
+    border-radius: 6px;
+    display: block;
+  }
+  .nsct-modal-img-placeholder {
+    text-align: center;
+    color: var(--fg-mute);
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    padding: 40px 0;
+  }
+  .nsct-modal-img-placeholder p { margin: 0; line-height: 1.6; }
+  .nsct-modal-img-placeholder code {
+    color: var(--signal);
+    background: color-mix(in srgb, var(--signal) 8%, transparent);
+    border: 1px solid color-mix(in srgb, var(--signal) 25%, transparent);
+    border-radius: 4px;
+    padding: 2px 7px;
+  }
+  .nsct-modal-img:not([src]), .nsct-modal-img[src=""] { display: none; }
+  /* hide placeholder when image loads */
+  .nsct-modal-img-wrap:has(.nsct-modal-img[src]:not([src=""])) .nsct-modal-img-placeholder { display: none; }
+
+  /* ── Résumé card ── */
+  .resume-card {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr 160px;
+    gap: 28px;
+    border: 1px solid var(--line-strong);
+    border-radius: 10px;
+    background: var(--bg-elev);
+    padding: 28px 24px 24px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  @media (max-width: 600px) { .resume-card { grid-template-columns: 1fr; } .resume-right { display: none; } }
+  .resume-card::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, var(--accent) 0%, color-mix(in srgb, var(--accent) 35%, transparent) 60%, transparent 100%);
+  }
+  .resume-card:hover {
+    border-color: color-mix(in srgb, var(--accent) 45%, var(--line-strong));
+    transform: translateY(-2px);
+    box-shadow: 0 20px 48px -20px color-mix(in srgb, var(--accent) 20%, transparent);
+  }
+  .resume-bg-grid {
+    position: absolute; inset: 0;
+    background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size: 28px 28px;
+    pointer-events: none; opacity: 0.6;
+  }
+  .resume-left { position: relative; z-index: 1; }
+  .resume-eyebrow {
+    display: flex; align-items: center; gap: 8px;
+    font-family: var(--mono); font-size: 10.5px;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--fg-mute); margin-bottom: 14px;
+  }
+  .resume-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 6px var(--accent);
+    flex-shrink: 0;
+  }
+  .resume-label {
+    font-family: 'Syne', var(--sans);
+    font-weight: 800;
+    font-size: clamp(36px, 6vw, 56px);
+    line-height: 0.92;
+    letter-spacing: -0.04em;
+    color: var(--accent);
+    margin-bottom: 14px;
+  }
+  .resume-desc {
+    font-family: var(--sans); font-size: 13.5px;
+    color: var(--fg-dim); line-height: 1.65;
+    max-width: 50ch; margin-bottom: 18px;
+  }
+  .resume-actions { display: flex; align-items: center; gap: 12px; }
+  .resume-btn {
+    font-family: var(--mono); font-size: 10px;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--accent);
+    border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
+    border-radius: 4px; padding: 5px 12px;
+    background: color-mix(in srgb, var(--accent) 7%, transparent);
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .resume-card:hover .resume-btn {
+    border-color: color-mix(in srgb, var(--accent) 60%, transparent);
+    background: color-mix(in srgb, var(--accent) 12%, transparent);
+  }
+  .resume-dl {
+    font-family: var(--mono); font-size: 10px;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--fg-mute); text-decoration: none;
+    display: flex; align-items: center; gap: 5px;
+    transition: color 0.2s;
+  }
+  .resume-dl:hover { color: var(--accent); }
+  .resume-right { position: relative; z-index: 1; display: flex; align-items: center; justify-content: flex-end; }
+  .resume-preview {
+    width: 120px;
+    border: 1px solid var(--line-strong);
+    border-radius: 6px;
+    background: var(--bg-pop);
+    padding: 12px 10px 10px;
+    display: flex; flex-direction: column; gap: 8px;
+    transition: border-color 0.3s;
+  }
+  .resume-card:hover .resume-preview { border-color: color-mix(in srgb, var(--accent) 45%, var(--line-strong)); }
+  .resume-preview-lines { display: flex; flex-direction: column; gap: 5px; }
+  .resume-preview-lines span {
+    display: block; height: 2px; border-radius: 1px;
+    background: var(--line-strong);
+  }
+  .resume-preview-lines .resume-preview-short { width: 60%; }
+  .resume-preview-hint {
+    font-family: var(--mono); font-size: 9px;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--fg-mute);
+    display: flex; align-items: center; gap: 4px;
+    border-top: 1px solid var(--line); padding-top: 7px;
+  }
+
+  /* ── Resume Modal ── */
+  .resume-modal {
+    position: fixed; inset: 0; z-index: 9000;
+    display: flex; align-items: center; justify-content: center;
+    padding: 20px; pointer-events: none;
+    opacity: 0; transition: opacity 0.25s ease;
+  }
+  .resume-modal.open { pointer-events: all; opacity: 1; }
+  .resume-modal-backdrop {
+    position: absolute; inset: 0;
+    background: rgba(0,0,0,0.8);
+    backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+    cursor: pointer;
+  }
+  .resume-modal-box {
+    position: relative; z-index: 1;
+    background: var(--bg-elev);
+    border: 1px solid var(--line-strong);
+    border-radius: 10px;
+    width: min(860px, 100%);
+    height: min(90vh, 700px);
+    display: flex; flex-direction: column;
+    overflow: hidden;
+    transform: scale(0.94) translateY(12px);
+    transition: transform 0.28s cubic-bezier(0.34,1.56,0.64,1);
+    box-shadow: 0 32px 80px -20px rgba(0,0,0,0.6);
+  }
+  .resume-modal.open .resume-modal-box { transform: scale(1) translateY(0); }
+  .resume-modal-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 13px 16px; border-bottom: 1px solid var(--line); flex-shrink: 0;
+  }
+  .resume-modal-badge {
+    font-family: var(--mono); font-size: 10px;
+    letter-spacing: 0.16em; text-transform: uppercase; color: var(--fg-mute);
+  }
+  .resume-modal-actions { display: flex; align-items: center; gap: 8px; }
+  .resume-modal-dl {
+    font-family: var(--mono); font-size: 10px;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--accent); text-decoration: none;
+    border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
+    border-radius: 4px; padding: 4px 10px;
+    display: flex; align-items: center; gap: 5px;
+    background: color-mix(in srgb, var(--accent) 7%, transparent);
+    transition: background 0.2s;
+  }
+  .resume-modal-dl:hover { background: color-mix(in srgb, var(--accent) 14%, transparent); }
+  .resume-modal-close {
+    width: 28px; height: 28px; border-radius: 50%;
+    border: 1px solid var(--line-strong); background: var(--bg-pop);
+    color: var(--fg-dim); display: flex; align-items: center; justify-content: center;
+    cursor: pointer; transition: border-color 0.2s, color 0.2s;
+  }
+  .resume-modal-close:hover { border-color: var(--accent); color: var(--accent); }
+  .resume-modal-embed { flex: 1; position: relative; }
+  #resume-iframe {
+    width: 100%; height: 100%; border: none; display: block;
+    background: var(--bg-pop);
+  }
+  .resume-modal-fallback {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 14px;
+    color: var(--fg-mute); font-family: var(--mono);
+    font-size: 12px; letter-spacing: 0.06em;
+    text-align: center; padding: 40px;
+  }
+  .resume-modal-fallback p { margin: 0; line-height: 1.7; }
+  .resume-modal-fallback code {
+    color: var(--accent); background: color-mix(in srgb, var(--accent) 8%, transparent);
+    border: 1px solid color-mix(in srgb, var(--accent) 25%, transparent);
+    border-radius: 4px; padding: 2px 7px;
+  }
+  .resume-fallback-dl {
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em;
+    color: var(--accent); text-decoration: none;
+    border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
+    border-radius: 4px; padding: 6px 14px;
+    transition: background 0.2s;
+  }
+  .resume-fallback-dl:hover { background: color-mix(in srgb, var(--accent) 10%, transparent); }
+  /* hide fallback when iframe loads */
+  #resume-iframe[src]:not([src=""]) + .resume-modal-fallback { display: none; }
 
   /* Certification cards — horizontal grid, designed for future cert images + verification links */
   .cert-grid {
@@ -1851,7 +2451,7 @@
     transform: translateX(-50%);
     width: 240px;
     height: 1px;
-    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    background: linear-gradient(90deg, transparent, var(--signal), transparent);
   }
   .foot-row {
     display: flex;
@@ -1934,6 +2534,265 @@
     border-radius: 2px;
   }
 
+
+  /* ═══════════════════════════════════════════════════════════
+     DUAL CARDS ROW — Resume (left) + NSCT (right)
+     ═══════════════════════════════════════════════════════════ */
+
+  .dual-cards-row {
+    display: grid;
+    grid-template-columns: 1fr 1px 1fr;
+    gap: 0;
+    align-items: stretch;
+    border: 1px solid var(--line-strong);
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--bg-elev);
+  }
+
+  .dual-divider {
+    background: var(--line-strong);
+    align-self: stretch;
+  }
+
+  .dual-card {
+    position: relative;
+    padding: 28px 28px 24px;
+    cursor: pointer;
+    overflow: hidden;
+    transition: background 0.3s ease;
+  }
+  .dual-card:hover { background: color-mix(in srgb, var(--bg-pop) 70%, transparent); }
+
+  .dual-card-bg {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(var(--grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size: 32px 32px;
+    pointer-events: none;
+    opacity: 0.5;
+  }
+
+  .dual-card-accent-bar {
+    position: absolute;
+    top: 0; left: 0; right: 0; height: 2px;
+    pointer-events: none;
+  }
+  .dual-card-accent-bar--gold {
+    background: linear-gradient(90deg, var(--accent), color-mix(in srgb, var(--accent) 20%, transparent) 80%, transparent);
+  }
+  .dual-card-accent-bar--green {
+    background: linear-gradient(90deg, var(--signal), color-mix(in srgb, var(--signal) 20%, transparent) 80%, transparent);
+  }
+
+  .dual-card-inner { position: relative; z-index: 1; height: 100%; }
+
+  /* Two-column layout inside each card: text left, preview right */
+  .dual-top {
+    display: grid;
+    grid-template-columns: 1fr 130px;
+    gap: 20px;
+    align-items: start;
+    height: 100%;
+  }
+  .dual-content { display: flex; flex-direction: column; }
+
+  /* Eyebrow */
+  .dual-eyebrow {
+    display: flex; align-items: center; gap: 8px;
+    font-family: var(--mono); font-size: 9.5px;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--fg-mute); margin-bottom: 16px;
+  }
+  .dual-dot {
+    width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0;
+  }
+  .dual-dot--gold { background: var(--accent); box-shadow: 0 0 6px var(--accent); }
+  .dual-dot--green {
+    background: var(--signal); box-shadow: 0 0 6px var(--signal);
+    animation: pulse-dot 2.4s ease-in-out infinite;
+  }
+
+  /* ── RESUME heading — Inter/system weight 800, tight tracked ── */
+  .dual-heading--resume {
+    font-family: 'IBM Plex Sans', system-ui, sans-serif;
+    font-weight: 600;
+    font-size: 28px;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    color: var(--accent);
+    margin-bottom: 12px;
+    text-transform: none;
+  }
+
+  /* ── NSCT stat heading ── */
+  .dual-heading--nsct {
+    font-family: 'IBM Plex Sans', system-ui, sans-serif;
+    font-weight: 600;
+    font-size: 28px;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    color: var(--signal);
+    margin-bottom: 8px;
+  }
+  .dual-sup {
+    font-family: var(--mono);
+    font-weight: 500;
+    font-size: 0.48em;
+    vertical-align: super;
+    color: var(--fg-mute);
+    letter-spacing: 0.04em;
+    margin-left: 1px;
+  }
+  .dual-pct {
+    font-family: var(--mono);
+    font-weight: 400;
+    font-size: 0.5em;
+    color: color-mix(in srgb, var(--signal) 60%, var(--fg-mute));
+    letter-spacing: 0.04em;
+    margin-left: 3px;
+  }
+
+  .dual-sub {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--fg-dim);
+    margin-bottom: 10px;
+    font-weight: 500;
+  }
+
+  .dual-desc {
+    font-family: var(--sans);
+    font-size: 13px;
+    color: var(--fg-dim);
+    line-height: 1.6;
+    margin-bottom: 16px;
+    flex: 1;
+  }
+
+  .dual-actions { display: flex; align-items: center; gap: 10px; }
+  .dual-btn {
+    font-family: var(--mono); font-size: 9.5px;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    border-radius: 4px; padding: 4px 12px;
+    transition: border-color 0.2s, background 0.2s;
+    cursor: pointer;
+  }
+  .dual-btn--gold {
+    color: var(--accent);
+    border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
+    background: color-mix(in srgb, var(--accent) 7%, transparent);
+  }
+  .dual-card--resume:hover .dual-btn--gold {
+    border-color: var(--accent);
+    background: color-mix(in srgb, var(--accent) 14%, transparent);
+  }
+  .dual-dl {
+    font-family: var(--mono); font-size: 9.5px;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--fg-mute);
+    display: flex; align-items: center; gap: 5px;
+    transition: color 0.2s;
+  }
+  .dual-dl:hover { color: var(--accent); }
+
+  .dual-tags { display: flex; flex-wrap: wrap; gap: 5px; }
+  .dual-tag {
+    font-family: var(--mono); font-size: 9.5px;
+    letter-spacing: 0.10em; text-transform: uppercase;
+    border-radius: 4px; padding: 3px 8px;
+  }
+  .dual-tag--green {
+    color: var(--signal);
+    border: 1px solid color-mix(in srgb, var(--signal) 30%, transparent);
+    background: color-mix(in srgb, var(--signal) 6%, transparent);
+  }
+
+  /* ── Preview panel (right side of each card) ── */
+  .dual-preview-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  /* The rounded box — mimics the screenshot reference */
+  .dual-preview-box {
+    width: 100%;
+    aspect-ratio: 3 / 4;
+    border-radius: 8px;
+    border: 1px solid var(--line-strong);
+    background: var(--bg-pop);
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: border-color 0.3s ease;
+  }
+  .dual-card--resume:hover .dual-preview-box { border-color: color-mix(in srgb, var(--accent) 50%, var(--line-strong)); }
+  .dual-card--nsct:hover   .dual-preview-box { border-color: color-mix(in srgb, var(--signal) 50%, var(--line-strong)); }
+
+  /* Resume mock-doc lines inside the preview box */
+  .dual-preview-doc {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 14px 12px;
+    width: 100%;
+  }
+  .dual-preview-doc span {
+    display: block;
+    height: 2px;
+    border-radius: 1px;
+    background: var(--line-strong);
+    width: 100%;
+  }
+  .dual-preview-doc span.s { width: 55%; }
+
+  /* NSCT image */
+  .dual-preview-img {
+    width: 100%; height: 100%;
+    object-fit: cover; display: block;
+  }
+  .dual-preview-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    color: var(--fg-mute);
+    font-family: var(--mono); font-size: 9px;
+    letter-spacing: 0.1em; text-transform: uppercase;
+  }
+
+  /* Label below the box — matches the "⊕ VIEW RESULT" style from screenshot */
+  .dual-preview-label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-family: var(--mono); font-size: 9.5px;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    opacity: 0.6;
+    transition: opacity 0.25s ease;
+  }
+  .dual-card:hover .dual-preview-label { opacity: 1; }
+  .dual-preview-label--gold { color: var(--accent); }
+  .dual-preview-label--green { color: var(--signal); }
+
+  /* Hover glow */
+  .dual-card--resume:hover { box-shadow: inset 0 0 80px -30px color-mix(in srgb, var(--accent) 7%, transparent); }
+  .dual-card--nsct:hover   { box-shadow: inset 0 0 80px -30px color-mix(in srgb, var(--signal) 7%, transparent); }
+
+  @media (max-width: 780px) {
+    .dual-cards-row { grid-template-columns: 1fr; }
+    .dual-divider { width: 100%; height: 1px; }
+    .dual-top { grid-template-columns: 1fr; }
+    .dual-preview-panel { display: none; }
+  }
+
 </style>
 </head>
 <body>
@@ -1949,9 +2808,9 @@
 
       <div class="top-right">
         <nav class="primary" aria-label="Primary">
+          <a href="#about" data-scroll>About</a>
           <a href="#work" data-scroll>Work</a>
           <a href="#stack" data-scroll>Stack</a>
-          <a href="#about" data-scroll>About</a>
           <a href="#contact" data-scroll>Contact</a>
         </nav>
 
@@ -1992,9 +2851,9 @@
 
 <!-- Mobile nav drawer -->
 <nav class="nav-drawer" id="navDrawer" aria-label="Mobile navigation">
+  <a href="#about" data-scroll data-drawer>About</a>
   <a href="#work" data-scroll data-drawer>Work</a>
   <a href="#stack" data-scroll data-drawer>Stack</a>
-  <a href="#about" data-scroll data-drawer>About</a>
   <a href="#contact" data-scroll data-drawer>Contact</a>
 </nav>
 
@@ -2123,247 +2982,407 @@
   </div>
 </section>
 
+
+<!-- ========== ABOUT ========== -->
+<section class="layer" id="about">
+  <div class="container">
+    <div class="section-head reveal">
+      <h2>About &amp; <em>record</em></h2>
+      <span class="num">§ 01 / Background</span>
+    </div>
+
+    <div class="about-cats">
+
+      <div class="about-cat reveal">
+        <div class="about-cat-head">
+          <span>Education</span>
+          <span class="count">01</span>
+        </div>
+        <div class="about-list">
+          <div class="about-row">
+            <div class="about-year">2022 — 2026</div>
+            <div class="about-content">
+              <div class="about-title">BS Computer Science</div>
+              <div class="about-org">Sukkur IBA University · Pakistan</div>
+              <p class="about-note">Database Systems · Data Structures &amp; Algorithms · Operating Systems · Computer Networks · Software Engineering · System Design.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="about-cat reveal">
+        <div class="about-cat-head">
+          <span>Certifications</span>
+          <span class="count">03</span>
+        </div>
+        <div class="cert-grid">
+
+          <div class="cert-card" data-cert-img="ibm" data-cursor-hover aria-label="IBM Data Engineering certificate">
+            <div class="cert-thumb">
+              <div class="cert-thumb-bg" style="background-image: url('ibm-data-engineering.png')"></div>
+              <div class="cert-meta-bar">
+                <span class="cert-year">2026</span>
+                <span class="cert-status">● Active</span>
+              </div>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M12 2l8 3v6c0 5-3.5 9-8 11-4.5-2-8-6-8-11V5z"/>
+                <path d="M8.5 12l2.5 2.5L16 9.5"/>
+              </svg>
+              <span class="cert-click-hint">Click to view</span>
+            </div>
+            <div class="cert-body">
+              <span class="cert-org">Coursera · IBM</span>
+              <h4 class="cert-title">IBM Data Engineering</h4>
+              <div class="cert-foot">
+                <span>Professional</span>
+                <a class="verify cert-verify-link" href="https://coursera.org/verify/professional-cert/8FK4W3TUWXXO" target="_blank" rel="noopener" onclick="event.stopPropagation()">Verify <span aria-hidden="true">→</span></a>
+              </div>
+            </div>
+          </div>
+
+          <div class="cert-card" data-cert-img="msbd" data-cursor-hover aria-label="Microsoft Big Data Management certificate">
+            <div class="cert-thumb">
+              <div class="cert-thumb-bg" style="background-image: url('microsoft-big-data.png')"></div>
+              <div class="cert-meta-bar">
+                <span class="cert-year">2026</span>
+                <span class="cert-status">● Active</span>
+              </div>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M12 2l8 3v6c0 5-3.5 9-8 11-4.5-2-8-6-8-11V5z"/>
+                <path d="M8.5 12l2.5 2.5L16 9.5"/>
+              </svg>
+              <span class="cert-click-hint">Click to view</span>
+            </div>
+            <div class="cert-body">
+              <span class="cert-org">Coursera · Microsoft</span>
+              <h4 class="cert-title">Microsoft Big Data Management</h4>
+              <div class="cert-foot">
+                <span>Professional</span>
+                <a class="verify cert-verify-link" href="https://www.coursera.org/specializations/microsoft-big-data-management-and-analytics" target="_blank" rel="noopener" onclick="event.stopPropagation()">Verify <span aria-hidden="true">→</span></a>
+              </div>
+            </div>
+          </div>
+
+          <div class="cert-card" data-cert-img="gda" data-cursor-hover aria-label="Google Data Analytics certificate">
+            <div class="cert-thumb">
+              <div class="cert-thumb-bg" style="background-image: url('google-data-analytics.png')"></div>
+              <div class="cert-meta-bar">
+                <span class="cert-year">2025</span>
+                <span class="cert-status">● Active</span>
+              </div>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M12 2l8 3v6c0 5-3.5 9-8 11-4.5-2-8-6-8-11V5z"/>
+                <path d="M8.5 12l2.5 2.5L16 9.5"/>
+              </svg>
+              <span class="cert-click-hint">Click to view</span>
+            </div>
+            <div class="cert-body">
+              <span class="cert-org">Coursera · Google</span>
+              <h4 class="cert-title">Google Data Analytics</h4>
+              <div class="cert-foot">
+                <span>Professional</span>
+                <a class="verify cert-verify-link" href="https://coursera.org/verify/professional-cert/P4ZNBKZGV3RT" target="_blank" rel="noopener" onclick="event.stopPropagation()">Verify <span aria-hidden="true">→</span></a>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ═══ Resume + NSCT — side-by-side row ═══ -->
+      <div class="dual-cards-row reveal">
+
+        <!-- LEFT: Résumé -->
+        <div class="dual-card dual-card--resume" id="resume-card" role="button" tabindex="0" aria-label="View résumé">
+          <div class="dual-card-bg"></div>
+          <div class="dual-card-accent-bar dual-card-accent-bar--gold"></div>
+          <div class="dual-card-inner">
+            <div class="dual-top">
+              <div class="dual-content">
+                <div class="dual-eyebrow">
+                  <span class="dual-dot dual-dot--gold"></span>
+                  <span>Kelash Kumar · Data Engineer · 2026</span>
+                </div>
+                <div class="dual-heading dual-heading--resume">Resume</div>
+                <p class="dual-desc">One-page overview of my stack, three production projects, education, and certifications.</p>
+                <div class="dual-actions">
+                  <span class="dual-btn dual-btn--gold">View PDF</span>
+                  <a class="dual-dl" href="resume.pdf" download onclick="event.stopPropagation()">
+                    <svg width="12" height="12" viewBox="0 0 13 13" fill="none"><path d="M6.5 1v8M3.5 6.5l3 3 3-3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M1.5 11.5h10" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+                    Download
+                  </a>
+                </div>
+              </div>
+              <div class="dual-preview-panel dual-preview-panel--resume">
+                <div class="dual-preview-box">
+                  <div class="dual-preview-doc">
+                    <span></span><span></span><span></span>
+                    <span class="s"></span>
+                    <span></span><span></span>
+                    <span class="s"></span>
+                    <span></span><span></span><span></span>
+                    <span class="s"></span>
+                  </div>
+                </div>
+                <div class="dual-preview-label dual-preview-label--gold">
+                  <svg width="12" height="12" viewBox="0 0 14 14" fill="none"><path d="M2 3.5h10M2 7h7M2 10.5h5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+                  View PDF
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- DIVIDER -->
+        <div class="dual-divider" aria-hidden="true"></div>
+
+        <!-- RIGHT: NSCT -->
+        <div class="dual-card dual-card--nsct" id="nsct-card" role="button" tabindex="0" aria-label="View NSCT result">
+          <div class="dual-card-bg"></div>
+          <div class="dual-card-accent-bar dual-card-accent-bar--green"></div>
+          <div class="dual-card-inner">
+            <div class="dual-top">
+              <div class="dual-content">
+                <div class="dual-eyebrow">
+                  <span class="dual-dot dual-dot--green"></span>
+                  <span>NSCT · Pakistan · 2026</span>
+                </div>
+                <div class="dual-heading dual-heading--nsct">92.2<span class="dual-sup">nd</span><span class="dual-pct"> %ile</span></div>
+                <div class="dual-sub">National Skill Competency Test</div>
+                <p class="dual-desc">Top marks in Programming, Database, and AI/ML &amp; Data Analytics across a 10-subject national competency exam.</p>
+                <div class="dual-tags">
+                  <span class="dual-tag dual-tag--green">Programming</span>
+                  <span class="dual-tag dual-tag--green">Database</span>
+                  <span class="dual-tag dual-tag--green">AI/ML &amp; Data</span>
+                </div>
+              </div>
+              <div class="dual-preview-panel dual-preview-panel--nsct">
+                <div class="dual-preview-box">
+                  <img src="nsct_result.png" alt="NSCT Result" class="dual-preview-img" onerror="this.style.display='none'" />
+                  <div class="dual-preview-placeholder">
+                    <svg width="28" height="28" viewBox="0 0 32 32" fill="none"><rect x="3" y="4" width="26" height="24" rx="3" stroke="currentColor" stroke-width="1.5"/><path d="M3 10h26" stroke="currentColor" stroke-width="1.5"/><rect x="8" y="15" width="7" height="5" rx="1" fill="currentColor" opacity=".25"/><rect x="17" y="15" width="8" height="2" rx="1" fill="currentColor" opacity=".25"/><rect x="17" y="19" width="5" height="1.5" rx=".75" fill="currentColor" opacity=".15"/></svg>
+                  </div>
+                </div>
+                <div class="dual-preview-label dual-preview-label--green">
+                  <svg width="12" height="12" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5.5" stroke="currentColor" stroke-width="1.2"/><path d="M5 7h4M7 5v4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+                  View Result
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <!-- ════════════════════════════════════════ -->
+
+      <!-- Resume Modal -->
+      <div class="resume-modal" id="resume-modal" role="dialog" aria-modal="true" aria-label="Résumé">
+        <div class="resume-modal-backdrop" id="resume-backdrop"></div>
+        <div class="resume-modal-box">
+          <div class="resume-modal-header">
+            <span class="resume-modal-badge">Kelash Kumar · Data Engineer</span>
+            <div class="resume-modal-actions">
+              <a class="resume-modal-dl" href="resume.pdf" download onclick="event.stopPropagation()">
+                <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M6.5 1v8M3.5 6.5l3 3 3-3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M1.5 11.5h10" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+                Download
+              </a>
+              <button class="resume-modal-close" id="resume-close" aria-label="Close">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 2l10 10M12 2L2 12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+              </button>
+            </div>
+          </div>
+          <div class="resume-modal-embed">
+            <iframe id="resume-iframe" title="Résumé" allowfullscreen></iframe>
+            <div class="resume-modal-fallback">
+              <svg width="40" height="40" viewBox="0 0 40 40" fill="none"><rect x="5" y="3" width="30" height="34" rx="3" stroke="currentColor" stroke-width="1.4"/><path d="M5 11h30" stroke="currentColor" stroke-width="1.4"/><path d="M12 18h16M12 23h12M12 28h8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+              <p>Place <code>resume.pdf</code> in your root folder to enable inline preview.</p>
+              <a href="resume.pdf" download class="resume-fallback-dl">Download résumé →</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- NSCT Modal -->
+      <div class="nsct-modal" id="nsct-modal" role="dialog" aria-modal="true" aria-label="NSCT Result">
+        <div class="nsct-modal-backdrop" id="nsct-backdrop"></div>
+        <div class="nsct-modal-box">
+          <button class="nsct-modal-close" id="nsct-close" aria-label="Close">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 2l12 12M14 2L2 14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          </button>
+          <div class="nsct-modal-header">
+            <span class="nsct-modal-badge">NSCT · 2026</span>
+            <span class="nsct-modal-rank">92.2nd percentile</span>
+          </div>
+          <div class="nsct-modal-img-wrap">
+            <img src="nsct_result.png" alt="NSCT Result Card" class="nsct-modal-img" />
+            <div class="nsct-modal-img-placeholder">
+              <svg width="48" height="48" viewBox="0 0 48 48" fill="none"><rect x="4" y="6" width="40" height="36" rx="4" stroke="currentColor" stroke-width="1.5"/><path d="M4 15h40" stroke="currentColor" stroke-width="1.5"/><rect x="10" y="22" width="12" height="9" rx="2" fill="currentColor" opacity=".2"/><rect x="26" y="22" width="12" height="3" rx="1.5" fill="currentColor" opacity=".2"/><rect x="26" y="27" width="8" height="2" rx="1" fill="currentColor" opacity=".15"/></svg>
+              <p>Place <code>nsct_result.png</code> in your root folder</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
 <!-- ========== WORK ========== -->
 <section class="layer" id="work">
   <div class="container">
     <div class="section-head reveal">
       <h2>Selected <em>work</em></h2>
-      <span class="num">§ 01 / Pipelines</span>
+      <span class="num">§ 02 / Selected work</span>
     </div>
 
-    <!-- Project 01 — Crypto Streaming -->
-    <article class="project reveal">
-      <div class="project-num">01</div>
-      <div class="project-body">
-        <div class="project-meta">
-          <span class="badge badge--live">
-            <span class="signal-dot" aria-hidden="true"></span>
-            Live
-          </span>
-          <span class="badge">Streaming</span>
-          <span class="badge">Production</span>
-        </div>
+    <div class="projects-list">
 
-        <h3>
-          <a href="https://github.com/kelashkumar-iba/crypto-streaming-pipeline" target="_blank" rel="noopener" data-cursor-hover>
-            Real-Time Crypto Streaming Pipeline
-          </a>
-        </h3>
+    <!-- ═══════════════════════════════════════════════
+         PROJECT 01 — Real-Time Crypto Streaming
+    ════════════════════════════════════════════════ -->
+    <article class="project pj pj--01 reveal">
 
-        <div class="project-stack">
-          Python · Redpanda · PostgreSQL · dbt · Airflow · Metabase · Docker · Oracle Cloud
-        </div>
+      <!-- Ghost number -->
+      <span class="pj-ghost-num" aria-hidden="true">01</span>
 
-        <p class="project-lead">
-          A seven-stage streaming system pulling live crypto prices from CoinGecko through Redpanda, persisting them in PostgreSQL, transforming with dbt, orchestrating with Airflow, and surfacing them in a Metabase dashboard. Nine containers, end-to-end. Deployed to Oracle Cloud&apos;s free-tier ARM VM with CI/CD shipping changes in ninety seconds.
-        </p>
-
-        <div class="arch">
-          <div class="arch-head">
-            <span><span class="arch-tag">Architecture</span> &nbsp;/&nbsp; 7 stages · 9 containers</span>
-            <span>End-to-end · dockerized</span>
+      <!-- LEFT: Identity -->
+      <div class="pj-identity">
+        <div class="pj-top">
+          <div class="pj-eyebrow">
+            <span class="pj-eyebrow-line"></span>
+            <span>Pipeline 01</span>
+            <span class="badge badge--live"><span class="signal-dot" aria-hidden="true"></span>Live</span>
+            <span class="badge">Streaming</span>
           </div>
-          <div class="arch-row">
-            <span class="arch-num">01</span>
-            <span class="arch-key">Source</span>
-            <span class="arch-val">CoinGecko REST API · 10 crypto assets · <code>~30s</code> polling cadence</span>
-          </div>
-          <div class="arch-row">
-            <span class="arch-num">02</span>
-            <span class="arch-key">Ingest</span>
-            <span class="arch-val">Redpanda event broker · Python producer publishes to <code>crypto-prices</code> · consumer commits safely with poison-pill handling</span>
-          </div>
-          <div class="arch-row">
-            <span class="arch-num">03</span>
-            <span class="arch-key">Store</span>
-            <span class="arch-val">PostgreSQL raw warehouse · indexed for read · volume-persisted across container restarts</span>
-          </div>
-          <div class="arch-row">
-            <span class="arch-num">04</span>
-            <span class="arch-key">Transform</span>
-            <span class="arch-val">dbt three-layer models · <code>staging → intermediate → mart</code> · 14 automated tests · LAG windows, moving averages, daily summaries</span>
-          </div>
-          <div class="arch-row">
-            <span class="arch-num">05</span>
-            <span class="arch-key">Orchestrate</span>
-            <span class="arch-val">Apache Airflow · 5-minute schedule · freshness gates · automatic retries · task-level observability</span>
-          </div>
-          <div class="arch-row">
-            <span class="arch-num">06</span>
-            <span class="arch-key">Analyze</span>
-            <span class="arch-val">Metabase six-panel live dashboard · price trends, deltas, top movers, volumes &mdash; refreshed in near real-time</span>
-          </div>
-          <div class="arch-row">
-            <span class="arch-num">07</span>
-            <span class="arch-key">Serve</span>
-            <span class="arch-val">FastAPI live stats endpoint behind Caddy reverse proxy · auto-HTTPS via Let&apos;s Encrypt · public at <code>streaming-pipeline.kelash.me</code></span>
+          <h3 class="pj-title">
+            <a href="https://github.com/kelashkumar-iba/crypto-streaming-pipeline" target="_blank" rel="noopener" data-cursor-hover>
+              Real-Time Crypto<br>Streaming Pipeline
+            </a>
+          </h3>
+          <p class="pj-desc" style="margin-top:18px;">
+            Seven-stage streaming system pulling live crypto prices through Redpanda into PostgreSQL, transforming with dbt, orchestrating via Airflow, and surfacing in a live Metabase dashboard. Nine containers, end-to-end, deployed to Oracle Cloud ARM with 90-second CI/CD.
+          </p>
+          <div class="pj-stack" style="margin-top:18px;">
+            <span class="pj-pill">Python</span><span class="pj-pill">Redpanda</span><span class="pj-pill">PostgreSQL</span><span class="pj-pill">dbt</span><span class="pj-pill">Airflow</span><span class="pj-pill">Metabase</span><span class="pj-pill">Docker</span><span class="pj-pill">Oracle Cloud</span>
           </div>
         </div>
-
-        <div class="metrics">
-          <div class="metric"><div class="metric-val">14,400/day</div><div class="metric-key">Throughput</div></div>
-          <div class="metric"><div class="metric-val">&lt; 5 min</div><div class="metric-key">Freshness</div></div>
-          <div class="metric"><div class="metric-val">~ 90 s</div><div class="metric-key">Deploy</div></div>
-          <div class="metric"><div class="metric-val">9 svc</div><div class="metric-key">Containers</div></div>
-        </div>
-
-        <div class="project-links">
-          <a href="https://streaming-pipeline.kelash.me" target="_blank" rel="noopener" data-cursor-hover>Live demo →</a>
-          <a href="https://github.com/kelashkumar-iba/crypto-streaming-pipeline" target="_blank" rel="noopener" data-cursor-hover>GitHub →</a>
+        <div class="pj-bottom">
+          <div class="pj-metrics">
+            <div class="pj-metric"><div class="pj-metric-val">14.4K</div><div class="pj-metric-key">Records/day</div></div>
+            <div class="pj-metric"><div class="pj-metric-val">&lt;5 min</div><div class="pj-metric-key">Freshness</div></div>
+            <div class="pj-metric"><div class="pj-metric-val">~90 s</div><div class="pj-metric-key">Deploy</div></div>
+            <div class="pj-metric"><div class="pj-metric-val">9 svc</div><div class="pj-metric-key">Containers</div></div>
+          </div>
+          <div class="pj-links">
+            <a href="https://streaming-pipeline.kelash.me" target="_blank" rel="noopener" class="pj-link pj-link--primary" data-cursor-hover>Live demo →</a>
+            <a href="https://github.com/kelashkumar-iba/crypto-streaming-pipeline" target="_blank" rel="noopener" class="pj-link" data-cursor-hover>GitHub →</a>
+          </div>
         </div>
       </div>
+
+      <!-- RIGHT: Pipeline flow diagram -->
+      <div class="pj-pipeline" id="pipe01-wrap">
+        <svg class="pipe-svg" id="pipe01" viewBox="0 0 420 460" preserveAspectRatio="xMidYMid meet" aria-label="Pipeline architecture diagram"></svg>
+        <div class="pipe-tooltip" id="pipe01-tip"></div>
+      </div>
+
     </article>
 
-    <!-- Project 02 — CDC Pipeline -->
-    <article class="project reveal">
-      <div class="project-num">02</div>
-      <div class="project-body">
-        <div class="project-meta">
-          <span class="badge">CDC</span>
-          <span class="badge">Open Source</span>
-        </div>
+    <!-- ═══════════════════════════════════════════════
+         PROJECT 02 — Change-Data-Capture
+    ════════════════════════════════════════════════ -->
+    <article class="project pj pj--02 pj--flip reveal">
 
-        <h3>
-          <a href="https://github.com/kelashkumar-iba" target="_blank" rel="noopener" data-cursor-hover>
-            Change-Data-Capture Pipeline
-          </a>
-        </h3>
+      <span class="pj-ghost-num" aria-hidden="true">02</span>
 
-        <div class="project-stack">
-          PostgreSQL · Debezium · Redpanda · Python · dbt · Airflow · Docker
-        </div>
-
-        <p class="project-lead">
-          Log-based replication that turns hourly batches into sub-ten-second streams. Six containerized services capture WAL events from a source PostgreSQL via Debezium, stream them through Redpanda, and apply them idempotently to a target database. Bad records flow to a DLQ; dbt builds the analytical layer with full SCD Type 2 history.
-        </p>
-
-        <div class="arch">
-          <div class="arch-head">
-            <span><span class="arch-tag">Architecture</span> &nbsp;/&nbsp; 6 services · sub-10s lag</span>
-            <span>Docker compose</span>
+      <div class="pj-identity">
+        <div class="pj-top">
+          <div class="pj-eyebrow">
+            <span class="pj-eyebrow-line"></span>
+            <span>Pipeline 02</span>
+            <span class="badge">CDC</span>
+            <span class="badge">Open Source</span>
           </div>
-          <div class="arch-row">
-            <span class="arch-num">01</span>
-            <span class="arch-key">Source</span>
-            <span class="arch-val">Source PostgreSQL <code>:5433</code> · <code>wal_level=logical</code> · production database</span>
-          </div>
-          <div class="arch-row">
-            <span class="arch-num">02</span>
-            <span class="arch-key">Capture</span>
-            <span class="arch-val">Debezium <code>:8083</code> · <code>pgoutput</code> plugin · streams CDC events from WAL</span>
-          </div>
-          <div class="arch-row">
-            <span class="arch-num">03</span>
-            <span class="arch-key">Stream</span>
-            <span class="arch-val">Redpanda <code>:9092</code> · zero-JVM Kafka API · message broker</span>
-          </div>
-          <div class="arch-row">
-            <span class="arch-num">04</span>
-            <span class="arch-key">Consume</span>
-            <span class="arch-val">Python consumer · <code>confluent-kafka</code> · <code>ON CONFLICT</code> upserts to target <code>:5434</code> · DLQ for bad records</span>
-          </div>
-          <div class="arch-row">
-            <span class="arch-num">05</span>
-            <span class="arch-key">Model</span>
-            <span class="arch-val">dbt · 3 models · 9 tests · staging → marts · SCD Type 2 with <code>valid_from / valid_to</code> dimensions</span>
-          </div>
-          <div class="arch-row">
-            <span class="arch-num">06</span>
-            <span class="arch-key">Orchestrate</span>
-            <span class="arch-val">Airflow <code>:8085</code> · <code>cdc_pipeline_monitor</code> DAG · 30-min cadence · check_cdc_lag → snapshot → test → healthy</span>
+          <h3 class="pj-title">
+            <a href="https://github.com/kelashkumar-iba" target="_blank" rel="noopener" data-cursor-hover>
+              Change-Data-Capture<br>Pipeline
+            </a>
+          </h3>
+          <p class="pj-desc" style="margin-top:18px;">
+            Log-based replication turning hourly batches into sub-10-second streams. Debezium captures WAL events from source PostgreSQL, routes through Redpanda, and upserts idempotently to the target. Bad records hit a DLQ; dbt builds SCD Type 2 analytical history.
+          </p>
+          <div class="pj-stack" style="margin-top:18px;">
+            <span class="pj-pill">PostgreSQL</span><span class="pj-pill">Debezium</span><span class="pj-pill">Redpanda</span><span class="pj-pill">Python</span><span class="pj-pill">dbt</span><span class="pj-pill">Airflow</span><span class="pj-pill">Docker</span>
           </div>
         </div>
-
-        <div class="metrics">
-          <div class="metric"><div class="metric-val">&lt; 10 s</div><div class="metric-key">Replication lag</div></div>
-          <div class="metric"><div class="metric-val">9 / 3</div><div class="metric-key">Tests / models</div></div>
-          <div class="metric"><div class="metric-val">SCD T2</div><div class="metric-key">History</div></div>
-          <div class="metric"><div class="metric-val">At-least-once</div><div class="metric-key">Semantics</div></div>
-        </div>
-
-        <div class="project-links">
-          <a href="https://github.com/kelashkumar-iba" target="_blank" rel="noopener" data-cursor-hover>GitHub →</a>
+        <div class="pj-bottom">
+          <div class="pj-metrics">
+            <div class="pj-metric"><div class="pj-metric-val">&lt;10 s</div><div class="pj-metric-key">Replication lag</div></div>
+            <div class="pj-metric"><div class="pj-metric-val">9 / 3</div><div class="pj-metric-key">Tests / models</div></div>
+            <div class="pj-metric"><div class="pj-metric-val">SCD T2</div><div class="pj-metric-key">History</div></div>
+            <div class="pj-metric"><div class="pj-metric-val">At-least-once</div><div class="pj-metric-key">Semantics</div></div>
+          </div>
+          <div class="pj-links">
+            <a href="https://github.com/kelashkumar-iba" target="_blank" rel="noopener" class="pj-link" data-cursor-hover>GitHub →</a>
+          </div>
         </div>
       </div>
+
+      <div class="pj-pipeline" id="pipe02-wrap">
+        <svg class="pipe-svg" id="pipe02" viewBox="0 0 420 460" preserveAspectRatio="xMidYMid meet" aria-label="CDC pipeline diagram"></svg>
+        <div class="pipe-tooltip" id="pipe02-tip"></div>
+      </div>
+
     </article>
 
-    <!-- Project 03 — Medallion Lakehouse -->
-    <article class="project reveal">
-      <div class="project-num">03</div>
-      <div class="project-body">
-        <div class="project-meta">
-          <span class="badge">Lakehouse</span>
-          <span class="badge">Quality Gates</span>
-        </div>
+    <!-- ═══════════════════════════════════════════════
+         PROJECT 03 — Medallion Lakehouse
+    ════════════════════════════════════════════════ -->
+    <article class="project pj pj--03 reveal">
 
-        <h3>
-          <a href="https://github.com/kelashkumar-iba" target="_blank" rel="noopener" data-cursor-hover>
-            Medallion Data Lakehouse
-          </a>
-        </h3>
+      <span class="pj-ghost-num" aria-hidden="true">03</span>
 
-        <div class="project-stack">
-          MinIO · DuckDB · Open-Meteo · Great Expectations · Airflow · Parquet · Docker
-        </div>
-
-        <p class="project-lead">
-          A four-layer lakehouse on object storage. MinIO holds Bronze, Silver, and Gold buckets; DuckDB reads and transforms Parquet directly from S3-compatible storage via the <code>httpfs</code> extension; Great Expectations gates every layer transition &mdash; the pipeline halts when validation fails, so the warehouse never silently corrupts.
-        </p>
-
-        <div class="arch">
-          <div class="arch-head">
-            <span><span class="arch-tag">Architecture</span> &nbsp;/&nbsp; 4 layers · 5-task DAG</span>
-            <span>medallion_weather</span>
+      <div class="pj-identity">
+        <div class="pj-top">
+          <div class="pj-eyebrow">
+            <span class="pj-eyebrow-line"></span>
+            <span>Pipeline 03</span>
+            <span class="badge">Lakehouse</span>
+            <span class="badge">Quality Gates</span>
           </div>
-          <div class="arch-row">
-            <span class="arch-num">01</span>
-            <span class="arch-key">Lakehouse</span>
-            <span class="arch-val">MinIO S3-compatible store · <code>bronze/</code> raw · <code>silver/</code> cleaned · <code>gold/</code> curated marts</span>
-          </div>
-          <div class="arch-row">
-            <span class="arch-num">02</span>
-            <span class="arch-key">Compute</span>
-            <span class="arch-val">DuckDB embedded with <code>httpfs</code> extension · reads Parquet from MinIO · transforms · writes Parquet back</span>
-          </div>
-          <div class="arch-row">
-            <span class="arch-num">03</span>
-            <span class="arch-key">Ingest</span>
-            <span class="arch-val">Python script · Open-Meteo public API → raw Parquet in <code>bronze/</code></span>
-          </div>
-          <div class="arch-row">
-            <span class="arch-num">04</span>
-            <span class="arch-key">Govern</span>
-            <span class="arch-val">Great Expectations validation suites at Bronze and Silver · pipeline FAILS if expectations break</span>
-          </div>
-          <div class="arch-row">
-            <span class="arch-num">05</span>
-            <span class="arch-key">Refine</span>
-            <span class="arch-val">DuckDB cleans &amp; deduplicates Bronze → partitioned Parquet in <code>silver/</code></span>
-          </div>
-          <div class="arch-row">
-            <span class="arch-num">06</span>
-            <span class="arch-key">Aggregate</span>
-            <span class="arch-val">DuckDB rolls Silver → business marts in <code>gold/</code> &mdash; <code>city_weekly_summary</code>, <code>regional_daily</code>, <code>city_extremes</code></span>
-          </div>
-          <div class="arch-row">
-            <span class="arch-num">07</span>
-            <span class="arch-key">Orchestrate</span>
-            <span class="arch-val">Airflow 2.9.1 LocalExecutor · DAG: <code>bronze_ingest → bronze_gate → silver_transform → silver_gate → gold_transform</code></span>
+          <h3 class="pj-title">
+            <a href="https://github.com/kelashkumar-iba" target="_blank" rel="noopener" data-cursor-hover>
+              Medallion Data<br>Lakehouse
+            </a>
+          </h3>
+          <p class="pj-desc" style="margin-top:18px;">
+            Four-layer lakehouse on object storage. MinIO holds Bronze, Silver, and Gold buckets; DuckDB transforms Parquet via the httpfs extension. Great Expectations gates every layer transition — the pipeline halts when validation fails, so the warehouse never silently corrupts.
+          </p>
+          <div class="pj-stack" style="margin-top:18px;">
+            <span class="pj-pill">MinIO</span><span class="pj-pill">DuckDB</span><span class="pj-pill">Open-Meteo</span><span class="pj-pill">Great Expectations</span><span class="pj-pill">Airflow</span><span class="pj-pill">Parquet</span><span class="pj-pill">Docker</span>
           </div>
         </div>
-
-        <div class="metrics">
-          <div class="metric"><div class="metric-val">3 layers</div><div class="metric-key">Bronze · Silver · Gold</div></div>
-          <div class="metric"><div class="metric-val">GE gates</div><div class="metric-key">Quality validation</div></div>
-          <div class="metric"><div class="metric-val">Idempotent</div><div class="metric-key">Backfills</div></div>
-          <div class="metric"><div class="metric-val">Parquet</div><div class="metric-key">Columnar storage</div></div>
-        </div>
-
-        <div class="project-links">
-          <a href="https://github.com/kelashkumar-iba" target="_blank" rel="noopener" data-cursor-hover>GitHub →</a>
+        <div class="pj-bottom">
+          <div class="pj-metrics">
+            <div class="pj-metric"><div class="pj-metric-val">3 layers</div><div class="pj-metric-key">Bronze·Silver·Gold</div></div>
+            <div class="pj-metric"><div class="pj-metric-val">GE gates</div><div class="pj-metric-key">Quality</div></div>
+            <div class="pj-metric"><div class="pj-metric-val">Parquet</div><div class="pj-metric-key">Columnar</div></div>
+            <div class="pj-metric"><div class="pj-metric-val">Idempotent</div><div class="pj-metric-key">Backfills</div></div>
+          </div>
+          <div class="pj-links">
+            <a href="https://github.com/kelashkumar-iba" target="_blank" rel="noopener" class="pj-link" data-cursor-hover>GitHub →</a>
+          </div>
         </div>
       </div>
+
+      <div class="pj-pipeline" id="pipe03-wrap">
+        <svg class="pipe-svg" id="pipe03" viewBox="0 0 420 460" preserveAspectRatio="xMidYMid meet" aria-label="Medallion lakehouse diagram"></svg>
+        <div class="pipe-tooltip" id="pipe03-tip"></div>
+      </div>
+
     </article>
+
+    </div><!-- /.projects-list -->
   </div>
 </section>
 
@@ -2372,7 +3391,7 @@
   <div class="container">
     <div class="section-head reveal">
       <h2>Technical <em>stack</em></h2>
-      <span class="num">§ 02 / Tooling</span>
+      <span class="num">§ 03 / Technical stack</span>
     </div>
 
     <div class="stack-categories">
@@ -2453,147 +3472,6 @@
   </div>
 </section>
 
-<!-- ========== ABOUT ========== -->
-<section class="layer" id="about">
-  <div class="container">
-    <div class="section-head reveal">
-      <h2>About &amp; <em>record</em></h2>
-      <span class="num">§ 03 / Background</span>
-    </div>
-
-    <div class="about-cats">
-
-      <div class="about-cat reveal">
-        <div class="about-cat-head">
-          <span>Education</span>
-          <span class="count">01</span>
-        </div>
-        <div class="about-list">
-          <div class="about-row">
-            <div class="about-year">2022 — 2026</div>
-            <div class="about-content">
-              <div class="about-title">BS Computer Science</div>
-              <div class="about-org">Sukkur IBA University · Pakistan</div>
-              <p class="about-note">Database Systems · Data Structures &amp; Algorithms · Operating Systems · Computer Networks · Software Engineering · System Design.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="about-cat reveal">
-        <div class="about-cat-head">
-          <span>Certifications</span>
-          <span class="count">03</span>
-        </div>
-        <div class="cert-grid">
-
-          <div class="cert-card" data-cursor-hover aria-label="Google Cloud Data Engineer certificate">
-            <div class="cert-thumb">
-              <div class="cert-meta-bar">
-                <span class="cert-year">2026</span>
-                <span class="cert-status">● Active</span>
-              </div>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M12 2l8 3v6c0 5-3.5 9-8 11-4.5-2-8-6-8-11V5z"/>
-                <path d="M8.5 12l2.5 2.5L16 9.5"/>
-              </svg>
-            </div>
-            <div class="cert-body">
-              <span class="cert-org">Coursera · Google Cloud</span>
-              <h4 class="cert-title">Google Cloud Data Engineer</h4>
-              <div class="cert-foot">
-                <span>Professional</span>
-                <a class="verify cert-verify-link" href="https://www.coursera.org/account/accomplishments/professional-cert/google-cloud-data-engineer" target="_blank" rel="noopener" onclick="event.stopPropagation()">Verify <span aria-hidden="true">→</span></a>
-              </div>
-            </div>
-          </div>
-
-          <div class="cert-card" data-cert-img="ibm" data-cursor-hover aria-label="IBM Data Engineering certificate">
-            <div class="cert-thumb">
-              <div class="cert-thumb-bg" style="background-image: url('ibm-data-engineering.png')"></div>
-              <div class="cert-meta-bar">
-                <span class="cert-year">2026</span>
-                <span class="cert-status">● Active</span>
-              </div>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M12 2l8 3v6c0 5-3.5 9-8 11-4.5-2-8-6-8-11V5z"/>
-                <path d="M8.5 12l2.5 2.5L16 9.5"/>
-              </svg>
-              <span class="cert-click-hint">Click to view</span>
-            </div>
-            <div class="cert-body">
-              <span class="cert-org">Coursera · IBM</span>
-              <h4 class="cert-title">IBM Data Engineering</h4>
-              <div class="cert-foot">
-                <span>Professional</span>
-                <a class="verify cert-verify-link" href="https://coursera.org/verify/professional-cert/8FK4W3TUWXXO" target="_blank" rel="noopener" onclick="event.stopPropagation()">Verify <span aria-hidden="true">→</span></a>
-              </div>
-            </div>
-          </div>
-
-          <div class="cert-card" data-cert-img="gda" data-cursor-hover aria-label="Google Data Analytics certificate">
-            <div class="cert-thumb">
-              <div class="cert-thumb-bg" style="background-image: url('google-data-analytics.png')"></div>
-              <div class="cert-meta-bar">
-                <span class="cert-year">2025</span>
-                <span class="cert-status">● Active</span>
-              </div>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M12 2l8 3v6c0 5-3.5 9-8 11-4.5-2-8-6-8-11V5z"/>
-                <path d="M8.5 12l2.5 2.5L16 9.5"/>
-              </svg>
-              <span class="cert-click-hint">Click to view</span>
-            </div>
-            <div class="cert-body">
-              <span class="cert-org">Coursera · Google</span>
-              <h4 class="cert-title">Google Data Analytics</h4>
-              <div class="cert-foot">
-                <span>Professional</span>
-                <a class="verify cert-verify-link" href="https://coursera.org/verify/professional-cert/P4ZNBKZGV3RT" target="_blank" rel="noopener" onclick="event.stopPropagation()">Verify <span aria-hidden="true">→</span></a>
-              </div>
-            </div>
-          </div>
-
-        </div>
-      </div>
-
-      <div class="about-cat reveal">
-        <div class="about-cat-head">
-          <span>Honors &amp; Recognition</span>
-          <span class="count">03</span>
-        </div>
-        <div class="about-list">
-          <div class="about-row">
-            <div class="about-year">2026</div>
-            <div class="about-content">
-              <div class="about-title">National Skill Competency Test &mdash; 92.2 percentile</div>
-              <div class="about-org">NSCT · Pakistan</div>
-              <p class="about-note">Top marks in Programming, Database, and AI/ML &amp; Data Analytics across a 10-subject national competency exam.</p>
-            </div>
-          </div>
-          <div class="about-row">
-            <div class="about-year">2022</div>
-            <div class="about-content">
-              <div class="about-title">Sindh Talent Hunt Program scholarship</div>
-              <div class="about-org">STHP · Government of Sindh</div>
-              <p class="about-note">Fully-funded merit scholarship covering BS Computer Science at Sukkur IBA University.</p>
-            </div>
-          </div>
-          <div class="about-row">
-            <div class="about-year">2025 — 26</div>
-            <div class="about-content">
-              <div class="about-title">Three production pipelines shipped</div>
-              <div class="about-org">Personal · Open source</div>
-              <p class="about-note">Streaming, CDC, and medallion lakehouse &mdash; each fully containerized and orchestrated, all deployed.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
 <!-- ========== CONTACT ========== -->
 <section class="contact" id="contact">
   <div class="container">
@@ -2608,37 +3486,15 @@
       <a href="https://linkedin.com/in/kelashkumar-iba" target="_blank" rel="noopener" class="btn" data-cursor-hover>LinkedIn</a>
       <a href="https://github.com/kelashkumar-iba" target="_blank" rel="noopener" class="btn" data-cursor-hover>GitHub</a>
     </div>
-
-    <div class="contact-grid reveal">
-      <a class="contact-item" href="mailto:kelash.iba22@gmail.com" data-cursor-hover>
-        <div class="label">Email</div>
-        <div class="val">kelash.iba22@gmail.com</div>
-      </a>
-      <a class="contact-item" href="https://linkedin.com/in/kelashkumar-iba" target="_blank" rel="noopener" data-cursor-hover>
-        <div class="label">LinkedIn</div>
-        <div class="val">@kelashkumar-iba</div>
-      </a>
-      <a class="contact-item" href="https://github.com/kelashkumar-iba" target="_blank" rel="noopener" data-cursor-hover>
-        <div class="label">GitHub</div>
-        <div class="val">@kelashkumar-iba</div>
-      </a>
-    </div>
-  </div>
+</div>
 </section>
 
 <!-- ========== FOOTER ========== -->
 <footer>
-  <div class="container foot-row">
-    <span class="foot-copy">© <span id="year">2026</span> Kelash Kumar &nbsp;·&nbsp; Pakistan</span>
-    <div class="foot-links">
-      <a href="https://github.com/kelashkumar-iba" target="_blank" rel="noopener" data-cursor-hover>GitHub</a>
-      <a href="https://linkedin.com/in/kelashkumar-iba" target="_blank" rel="noopener" data-cursor-hover>LinkedIn</a>
-      <a href="mailto:kelash.iba22@gmail.com" data-cursor-hover>Email</a>
-    </div>
-    <span class="foot-status">
-      <span class="signal-dot" aria-hidden="true"></span>
-      All systems live
-    </span>
+  <div class="container" style="text-align:center; padding-top:28px; padding-bottom:28px;">
+    <p style="font-family:var(--mono); font-size:11px; letter-spacing:0.14em; color:var(--fg-mute); margin:0;">
+      © <span id="year">2026</span> Kelash Kumar
+    </p>
   </div>
 </footer>
 
@@ -2834,7 +3690,6 @@
 
     const words = [
       'streaming pipelines',
-      'CDC systems',
       'medallion lakehouses',
       'real-time data flows',
       'orchestrated workflows'
@@ -2905,6 +3760,11 @@
         title: 'IBM Data Engineering — Professional Certificate',
         img: 'ibm-data-engineering.png',
         verify: 'https://coursera.org/verify/professional-cert/8FK4W3TUWXXO'
+      },
+      msbd: {
+        title: 'Microsoft Big Data Management & Analytics — Professional Certificate',
+        img: 'microsoft-big-data.png',
+        verify: 'https://www.coursera.org/specializations/microsoft-big-data-management-and-analytics'
       },
       gda: {
         title: 'Google Data Analytics — Professional Certificate',
@@ -3076,6 +3936,325 @@
       el.style.transitionDelay = (Math.min(i, 6) * 80) + 'ms';
       io.observe(el);
     });
+  })();
+
+  /* ============================================================
+     PIPELINE FLOW DIAGRAMS — draws SVG nodes + animated particles
+     ============================================================ */
+  (function() {
+    const NS = 'http://www.w3.org/2000/svg';
+
+    // ── helpers ──────────────────────────────────────────────
+    function el(tag, attrs) {
+      const e = document.createElementNS(NS, tag);
+      for (const [k, v] of Object.entries(attrs)) e.setAttribute(k, v);
+      return e;
+    }
+
+    function getCSSVar(name) {
+      return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+    }
+
+    // Draw a rounded-rect node with icon label + tech name
+    function drawNode(svg, x, y, w, h, label, sublabel, color, iconChar) {
+      const g = el('g', { class: 'pipe-node', 'data-label': label, 'data-sub': sublabel });
+
+      // background rect
+      const rect = el('rect', { x, y, width: w, height: h, rx: 6,
+        fill: 'var(--bg-elev)', stroke: color, 'stroke-width': '0.6',
+        style: 'transition: fill 0.3s, filter 0.3s;'
+      });
+      g.appendChild(rect);
+
+      // top accent bar
+      const bar = el('rect', { x, y, width: w, height: 1.75, rx: 2,
+        fill: color, opacity: '0.9'
+      });
+      g.appendChild(bar);
+
+      // icon glyph (big single char)
+      const icon = el('text', {
+        x: x + 14, y: y + h / 2 + 5,
+        'font-family': 'JetBrains Mono, monospace',
+        'font-size': '15', fill: color, opacity: '0.9',
+        'font-weight': '600'
+      });
+      icon.textContent = iconChar;
+      g.appendChild(icon);
+
+      // label
+      const lbl = el('text', {
+        x: x + 32, y: y + h / 2 - 4,
+        'font-family': 'JetBrains Mono, monospace',
+        'font-size': '9.5', fill: 'var(--fg)',
+        'font-weight': '600', 'letter-spacing': '0.08em',
+        'text-transform': 'uppercase'
+      });
+      lbl.textContent = label.toUpperCase();
+      g.appendChild(lbl);
+
+      // sublabel
+      const sub = el('text', {
+        x: x + 32, y: y + h / 2 + 10,
+        'font-family': 'JetBrains Mono, monospace',
+        'font-size': '8', fill: 'var(--fg-mute)',
+        'letter-spacing': '0.05em'
+      });
+      sub.textContent = sublabel;
+      g.appendChild(sub);
+
+      // hover hit area (invisible)
+      const hit = el('rect', { x: x - 2, y: y - 2, width: w + 4, height: h + 4,
+        rx: 7, fill: 'transparent', 'pointer-events': 'all' });
+      g.appendChild(hit);
+
+      svg.appendChild(g);
+      return g;
+    }
+
+    // Draw curved connector path between nodes
+    function drawEdge(svg, x1, y1, x2, y2, color, id, dashed) {
+      const mx = (x1 + x2) / 2;
+      const d = `M ${x1} ${y1} C ${mx} ${y1}, ${mx} ${y2}, ${x2} ${y2}`;
+      const path = el('path', {
+        d, fill: 'none', stroke: color, 'stroke-width': dashed ? '1' : '1.5',
+        'stroke-dasharray': dashed ? '4 4' : 'none', opacity: dashed ? '0.5' : '0.7',
+        id: id || ''
+      });
+      svg.appendChild(path);
+      return d;
+    }
+
+    // Draw vertical connector
+    function drawVEdge(svg, x, y1, y2, color, id) {
+      const d = `M ${x} ${y1} L ${x} ${y2}`;
+      const path = el('path', { d, fill: 'none', stroke: color,
+        'stroke-width': '1.5', opacity: '0.6', id: id || '' });
+      svg.appendChild(path);
+      return d;
+    }
+
+    // Draw animated particle along path
+    function addParticle(svg, pathId, color, duration, delay) {
+      const circle = el('circle', { r: '3.5', fill: color,
+        style: `offset-path: path('${pathId}'); animation: particle-flow ${duration}s ${delay}s linear infinite;`
+      });
+      // Use CSS offset-path with the actual d string
+      svg.appendChild(circle);
+      return circle;
+    }
+
+    // ── Tooltip logic ─────────────────────────────────────────
+    function attachTooltips(svg, tip) {
+      svg.querySelectorAll('.pipe-node').forEach(node => {
+        node.addEventListener('mouseenter', (e) => {
+          const label = node.dataset.label;
+          const sub = node.dataset.sub;
+          tip.innerHTML = `<b>${label}</b>${sub}`;
+          tip.classList.add('visible');
+        });
+        node.addEventListener('mousemove', (e) => {
+          const wrap = svg.closest('.pj-pipeline');
+          const rect = wrap.getBoundingClientRect();
+          let lx = e.clientX - rect.left + 12;
+          let ly = e.clientY - rect.top + 12;
+          if (lx + 240 > rect.width) lx = e.clientX - rect.left - 240;
+          tip.style.left = lx + 'px';
+          tip.style.top = ly + 'px';
+        });
+        node.addEventListener('mouseleave', () => tip.classList.remove('visible'));
+      });
+    }
+
+    // ─── Shared layout constants — all 3 pipes match ───────────
+    const GRN  = '#6EE39A';
+    const GOLD = '#E0A93C';
+    const DIM  = 'rgba(110,227,154,0.32)';
+    const W = 270, H = 44, GX = 75, VSTEP = 62;
+
+    // ────────────────────────────────────────────────────────────
+    // PIPELINE 01 — Crypto Streaming
+    // ────────────────────────────────────────────────────────────
+    function buildPipe01() {
+      const svg = document.getElementById('pipe01');
+      const tip = document.getElementById('pipe01-tip');
+      if (!svg) return;
+
+      // gold = checkpoint/source, grn = data nodes, dim = infra/sink
+      const nodes = [
+        { label: 'CoinGecko',  sub: 'REST API · 10 assets · 30 s poll',         icon: '◎', clr: GOLD },
+        { label: 'Redpanda',   sub: 'Kafka-compat broker · crypto-prices topic', icon: '⚡', clr: GRN  },
+        { label: 'PostgreSQL', sub: 'Raw warehouse · indexed · persisted',       icon: '⬡', clr: GRN  },
+        { label: 'dbt',        sub: 'staging → intermediate → mart · 14 tests', icon: '◈', clr: GOLD },
+        { label: 'Airflow',    sub: 'DAG · 5-min schedule · retries',            icon: '⟳', clr: GOLD },
+        { label: 'Metabase',   sub: '6-panel dashboard · near real-time',        icon: '▣', clr: GRN  },
+        { label: 'FastAPI',    sub: 'Caddy TLS · streaming-pipeline.kelash.me',  icon: '→', clr: GRN  },
+      ];
+
+      const pathDs = [];
+      nodes.forEach((n, i) => {
+        const y = 24 + i * VSTEP;
+        drawNode(svg, GX, y, W, H, n.label, n.sub, n.clr, n.icon);
+        if (i > 0) {
+          const cx = GX + W / 2;
+          const d = drawVEdge(svg, cx, 24 + (i-1)*VSTEP + H, y, DIM, `p01-e${i}`);
+          pathDs.push(d);
+        }
+      });
+
+      pathDs.forEach((d, i) => {
+        const c = el('circle', { r: '3', fill: GRN });
+        c.style.cssText = `offset-path: path("${d}"); animation: particle-flow ${1.4 + i*0.15}s ${i*0.3}s linear infinite;`;
+        svg.appendChild(c);
+      });
+
+      attachTooltips(svg, tip);
+    }
+
+    // ────────────────────────────────────────────────────────────
+    // PIPELINE 02 — CDC  (vertical, same style as pipe01)
+    // ────────────────────────────────────────────────────────────
+    function buildPipe02() {
+      const svg = document.getElementById('pipe02');
+      const tip = document.getElementById('pipe02-tip');
+      if (!svg) return;
+
+      // gold = orchestration/transform checkpoints, grn = storage/stream nodes
+      const nodes = [
+        { label: 'PostgreSQL Src', sub: 'WAL logical replication · :5433',    icon: '⬡', clr: GOLD },
+        { label: 'Debezium',       sub: 'pgoutput plugin · CDC connector',     icon: '⚡', clr: GOLD },
+        { label: 'Redpanda',       sub: 'Kafka API · :9092 · cdc-events topic',icon: '⚡', clr: GRN  },
+        { label: 'Consumer',       sub: 'confluent-kafka · upsert · DLQ',      icon: '▷', clr: GRN  },
+        { label: 'PostgreSQL Tgt', sub: 'idempotent writes · :5434',           icon: '⬡', clr: GRN  },
+        { label: 'dbt',            sub: 'SCD Type 2 snapshots · 9 tests',      icon: '◈', clr: GOLD },
+        { label: 'Airflow',        sub: 'cdc_pipeline_monitor · 30 min',       icon: '⟳', clr: GOLD },
+      ];
+
+      const pathDs = [];
+      nodes.forEach((n, i) => {
+        const y = 24 + i * VSTEP;
+        drawNode(svg, GX, y, W, H, n.label, n.sub, n.clr, n.icon);
+        if (i > 0) {
+          const cx = GX + W / 2;
+          const d = drawVEdge(svg, cx, 24 + (i-1)*VSTEP + H, y, DIM, `p02-e${i}`);
+          pathDs.push(d);
+        }
+      });
+
+      pathDs.forEach((d, i) => {
+        const c = el('circle', { r: '3', fill: GRN });
+        c.style.cssText = `offset-path: path("${d}"); animation: particle-flow ${1.4 + i*0.15}s ${i*0.3}s linear infinite;`;
+        svg.appendChild(c);
+      });
+
+      attachTooltips(svg, tip);
+    }
+
+    // ────────────────────────────────────────────────────────────
+    // PIPELINE 03 — Medallion Lakehouse (vertical, same style)
+    // ────────────────────────────────────────────────────────────
+    function buildPipe03() {
+      const svg = document.getElementById('pipe03');
+      const tip = document.getElementById('pipe03-tip');
+      if (!svg) return;
+
+      // gold = GE quality gates, grn = storage layers, dim = source/orchestration
+      const nodes = [
+        { label: 'Open-Meteo', sub: 'Public API · weather data · daily fetch',   icon: '◎', clr: GRN  },
+        { label: 'Bronze',     sub: 'MinIO bucket · raw Parquet · append-only',   icon: '⬡', clr: GRN  },
+        { label: 'GE Gate',    sub: 'Expectations suite · fails pipeline on err', icon: '⚑', clr: GOLD },
+        { label: 'Silver',     sub: 'DuckDB clean · deduplicated · typed',        icon: '⬡', clr: GRN  },
+        { label: 'GE Gate',    sub: 'Silver validation · schema + null checks',   icon: '⚑', clr: GOLD },
+        { label: 'Gold',       sub: 'DuckDB marts · city_weekly / regional',      icon: '⬡', clr: GRN  },
+        { label: 'Airflow',    sub: '5-task DAG · LocalExecutor · scheduled',     icon: '⟳', clr: GOLD },
+      ];
+
+      const pathDs = [];
+      nodes.forEach((n, i) => {
+        const y = 24 + i * VSTEP;
+        drawNode(svg, GX, y, W, H, n.label, n.sub, n.clr, n.icon);
+        if (i > 0) {
+          const cx = GX + W / 2;
+          const d = drawVEdge(svg, cx, 24 + (i-1)*VSTEP + H, y, DIM, `p03-e${i}`);
+          pathDs.push(d);
+        }
+      });
+
+      pathDs.forEach((d, i) => {
+        const c = el('circle', { r: '3', fill: GRN });
+        c.style.cssText = `offset-path: path("${d}"); animation: particle-flow ${1.4 + i*0.15}s ${i*0.3}s linear infinite;`;
+        svg.appendChild(c);
+      });
+
+      attachTooltips(svg, tip);
+    }
+
+    // ── NSCT Modal ──────────────────────────────────────────────
+  (function() {
+    const card     = document.getElementById('nsct-card');
+    const modal    = document.getElementById('nsct-modal');
+    const backdrop = document.getElementById('nsct-backdrop');
+    const closeBtn = document.getElementById('nsct-close');
+    if (!card || !modal) return;
+
+    function openModal() {
+      modal.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeModal() {
+      modal.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    card.addEventListener('click', openModal);
+    card.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openModal(); } });
+    backdrop.addEventListener('click', closeModal);
+    closeBtn.addEventListener('click', closeModal);
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+  })();
+
+  // ── Resume Modal ─────────────────────────────────────────────
+  (function() {
+    const card     = document.getElementById('resume-card');
+    const modal    = document.getElementById('resume-modal');
+    const backdrop = document.getElementById('resume-backdrop');
+    const closeBtn = document.getElementById('resume-close');
+    const iframe   = document.getElementById('resume-iframe');
+    if (!card || !modal) return;
+
+    let loaded = false;
+    function openModal() {
+      if (!loaded) { iframe.src = 'resume.pdf'; loaded = true; }
+      modal.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeModal() {
+      modal.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    card.addEventListener('click', openModal);
+    card.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openModal(); } });
+    backdrop.addEventListener('click', closeModal);
+    closeBtn.addEventListener('click', closeModal);
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+  })();
+
+
+    buildPipe01();
+    buildPipe02();
+    buildPipe03();
+
+    // Rebuild on theme change (colors shift)
+    const observer = new MutationObserver(() => {
+      ['pipe01','pipe02','pipe03'].forEach(id => {
+        const s = document.getElementById(id);
+        if (s) { while (s.firstChild) s.removeChild(s.firstChild); }
+      });
+      buildPipe01(); buildPipe02(); buildPipe03();
+    });
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+
   })();
 </script>
 
