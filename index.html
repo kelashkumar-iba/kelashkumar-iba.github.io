@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Kelash Kumar — Data Engineer</title>
-<meta name="description" content="Kelash Kumar — Data Engineer. I build production data systems: real-time streaming, change-data-capture, and medallion lakehouses." />
+<title>Kelash Kumar · Data Engineer</title>
+<meta name="description" content="Kelash Kumar · Data Engineer. I build production data systems: real-time streaming, change-data-capture, and medallion lakehouses." />
 <meta name="author" content="Kelash Kumar" />
 
-<meta property="og:title" content="Kelash Kumar — Data Engineer" />
+<meta property="og:title" content="Kelash Kumar · Data Engineer" />
 <meta property="og:description" content="Production data pipelines: streaming, CDC, and medallion lakehouse. Three end-to-end systems on GitHub." />
 <meta property="og:url" content="https://kelash.me" />
 <meta property="og:type" content="website" />
@@ -2500,6 +2500,21 @@
   }
 
   /* =====================================================================
+     RECRUITER SNAPSHOT + CURRENT FOCUS responsive
+     ===================================================================== */
+
+  .cert-body {
+    display: flex;
+    flex-direction: column;
+  }
+
+  @media (max-width: 680px) {
+    [style*="grid-template-columns: 1fr 1fr"] {
+      grid-template-columns: 1fr !important;
+    }
+  }
+
+  /* =====================================================================
      VIEW TRANSITIONS — circular reveal on theme toggle
      ===================================================================== */
 
@@ -2553,6 +2568,8 @@
   .dual-divider {
     background: var(--line-strong);
     align-self: stretch;
+    min-width: 1px;
+    margin: 16px 0;
   }
 
   .dual-card {
@@ -2753,10 +2770,12 @@
   }
   .dual-preview-doc span.s { width: 55%; }
 
-  /* NSCT image */
+  /* Shared preview image — NSCT (cover) and Resume (blurred) */
   .dual-preview-img {
     width: 100%; height: 100%;
-    object-fit: cover; display: block;
+    object-fit: cover;
+    object-position: top center;
+    display: block;
   }
   .dual-preview-placeholder {
     display: flex;
@@ -2766,6 +2785,57 @@
     color: var(--fg-mute);
     font-family: var(--mono); font-size: 9px;
     letter-spacing: 0.1em; text-transform: uppercase;
+  }
+
+  /* Resume preview — blurred teaser, matches cert-card blur pattern */
+  .dual-preview-box--resume .dual-preview-img {
+    filter: blur(3px) brightness(0.55) saturate(0.5);
+    transform: scale(1.06);
+    transition: filter 0.4s ease, transform 0.4s ease;
+  }
+  .dual-card--resume:hover .dual-preview-box--resume .dual-preview-img {
+    filter: blur(2px) brightness(0.65) saturate(0.6);
+    transform: scale(1.1);
+  }
+  /* NSCT preview — same blur treatment */
+  .dual-preview-box--nsct .dual-preview-img {
+    filter: blur(3px) brightness(0.55) saturate(0.5);
+    transform: scale(1.06);
+    transition: filter 0.4s ease, transform 0.4s ease;
+  }
+  .dual-card--nsct:hover .dual-preview-box--nsct .dual-preview-img {
+    filter: blur(2px) brightness(0.65) saturate(0.6);
+    transform: scale(1.1);
+  }
+  /* "View PDF / View Result" pill overlay on previews */
+  .dual-preview-hint {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    pointer-events: none;
+  }
+  .dual-preview-hint-pill {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--fg-dim);
+    background: color-mix(in srgb, var(--bg) 80%, transparent);
+    border: 1px solid var(--line-strong);
+    padding: 3px 10px;
+    border-radius: 100px;
+    opacity: 0;
+    transform: translateY(4px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+  .dual-preview-hint-pill--green { color: var(--signal); border-color: color-mix(in srgb, var(--signal) 35%, transparent); }
+  .dual-card--resume:hover .dual-preview-hint-pill,
+  .dual-card--nsct:hover .dual-preview-hint-pill {
+    opacity: 1;
+    transform: translateY(0);
   }
 
   /* Label below the box — matches the "⊕ VIEW RESULT" style from screenshot */
@@ -2862,9 +2932,41 @@
   <div class="container">
     <div class="status-pill">
       <span class="signal-dot" aria-hidden="true"></span>
-      Available · Data engineering · On-site · Remote · Freelance
+      Open to work · Junior Data Engineer · Analytics Engineer · Remote / On-site
     </div>
   </div>
+
+  <!-- ── Recruiter Snapshot + Current Focus ── -->
+  <div class="container">
+    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px; margin-top: 0;">
+
+      <!-- Recruiter Snapshot -->
+      <div style="border:1px solid var(--line-strong); border-radius:6px; padding:18px 20px; background:color-mix(in srgb, var(--bg-elev) 70%, transparent); backdrop-filter:blur(6px);">
+        <div style="font-family:var(--mono); font-size:9px; letter-spacing:0.2em; text-transform:uppercase; color:var(--fg-mute); margin-bottom:12px;">Recruiter Snapshot</div>
+        <div style="display:flex; flex-direction:column; gap:7px;">
+          <div style="display:flex; align-items:center; gap:9px; font-family:var(--sans); font-size:12.5px; color:var(--fg-dim);"><span style="color:var(--accent); font-family:var(--mono); font-size:11px;">◎</span> CS Graduate · Sukkur IBA · May 2026</div>
+          <div style="display:flex; align-items:center; gap:9px; font-family:var(--sans); font-size:12.5px; color:var(--fg-dim);"><span style="color:var(--accent); font-family:var(--mono); font-size:11px;">◎</span> 3 Production Data Pipelines · GitHub + Cloud</div>
+          <div style="display:flex; align-items:center; gap:9px; font-family:var(--sans); font-size:12.5px; color:var(--fg-dim);"><span style="color:var(--accent); font-family:var(--mono); font-size:11px;">◎</span> Airflow · dbt · PostgreSQL · Kafka</div>
+          <div style="display:flex; align-items:center; gap:9px; font-family:var(--sans); font-size:12.5px; color:var(--fg-dim);"><span style="color:var(--accent); font-family:var(--mono); font-size:11px;">◎</span> Dockerized · CI/CD · Oracle Cloud ARM</div>
+          <div style="display:flex; align-items:center; gap:9px; font-family:var(--sans); font-size:12.5px; color:var(--signal);"><span style="color:var(--signal); font-family:var(--mono); font-size:11px;">◉</span> Open to Internship &amp; Junior DE Roles</div>
+        </div>
+      </div>
+
+      <!-- Current Focus -->
+      <div style="border:1px solid var(--line-strong); border-radius:6px; padding:18px 20px; background:color-mix(in srgb, var(--bg-elev) 70%, transparent); backdrop-filter:blur(6px);">
+        <div style="font-family:var(--mono); font-size:9px; letter-spacing:0.2em; text-transform:uppercase; color:var(--fg-mute); margin-bottom:12px;">Current Focus</div>
+        <div style="display:flex; flex-direction:column; gap:7px;">
+          <div style="display:flex; align-items:center; gap:9px; font-family:var(--sans); font-size:12.5px; color:var(--fg-dim);"><span style="color:var(--signal); font-family:var(--mono); font-size:10px;">→</span> Junior Data Engineer Roles</div>
+          <div style="display:flex; align-items:center; gap:9px; font-family:var(--sans); font-size:12.5px; color:var(--fg-dim);"><span style="color:var(--signal); font-family:var(--mono); font-size:10px;">→</span> Data Engineering Internships</div>
+          <div style="display:flex; align-items:center; gap:9px; font-family:var(--sans); font-size:12.5px; color:var(--fg-dim);"><span style="color:var(--signal); font-family:var(--mono); font-size:10px;">→</span> Airflow &amp; dbt Projects</div>
+          <div style="display:flex; align-items:center; gap:9px; font-family:var(--sans); font-size:12.5px; color:var(--fg-dim);"><span style="color:var(--signal); font-family:var(--mono); font-size:10px;">→</span> Real-Time Data Platforms</div>
+          <div style="display:flex; align-items:center; gap:9px; font-family:var(--sans); font-size:12.5px; color:var(--fg-dim);"><span style="color:var(--signal); font-family:var(--mono); font-size:10px;">→</span> Remote or On-site · Pakistan</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <!-- ─────────────────────────────────────── -->
 
   <div class="container">
     <div class="hero-grid">
@@ -2882,7 +2984,7 @@
         </div>
 
         <p class="hero-lede">
-          I ship <span class="rotate-host"><span class="rotate-ghost" aria-hidden="true">orchestrated workflows</span><span class="rotate-word" id="rotator">streaming pipelines</span></span> &mdash; production-grade, observable, and built to survive load.
+          I build <span class="rotate-host"><span class="rotate-ghost" aria-hidden="true">medallion lakehouses</span><span class="rotate-word" id="rotator">streaming pipelines</span></span> deployed on real infrastructure with Airflow, dbt, and Kafka. Three end-to-end systems on GitHub.
         </p>
       </div>
 
@@ -2983,6 +3085,46 @@
 </section>
 
 
+<!-- ========== WHAT I CAN DO ========== -->
+<section class="layer" id="value" style="padding: clamp(56px, 10vh, 100px) 0;">
+  <div class="container">
+    <div class="section-head reveal">
+      <h2>What I can do <em>for your team</em></h2>
+      <span class="num">§ 00 / Value</span>
+    </div>
+    <div class="stack-categories" style="grid-template-columns: repeat(3, 1fr);">
+
+      <div class="stack-cat reveal">
+        <div class="stack-cat-head">
+          <span>Automate Manual Work</span>
+        </div>
+        <div class="about-list" style="padding-top:16px;">
+          <p style="font-family:var(--sans);font-size:13.5px;color:var(--fg-dim);line-height:1.72;">Replace manual data pulls and spreadsheet hand-offs with scheduled, tested pipelines that run on their own. Your analysts get fresh data every morning without anyone touching it.</p>
+        </div>
+      </div>
+
+      <div class="stack-cat reveal">
+        <div class="stack-cat-head">
+          <span>Data You Can Trust</span>
+        </div>
+        <div class="about-list" style="padding-top:16px;">
+          <p style="font-family:var(--sans);font-size:13.5px;color:var(--fg-dim);line-height:1.72;">Pipelines that validate data at every layer and halt loudly when something breaks, never silently corrupting the warehouse. Fewer firefighting incidents, more confidence in dashboards.</p>
+        </div>
+      </div>
+
+      <div class="stack-cat reveal">
+        <div class="stack-cat-head">
+          <span>Faster Decisions</span>
+        </div>
+        <div class="about-list" style="padding-top:16px;">
+          <p style="font-family:var(--sans);font-size:13.5px;color:var(--fg-dim);line-height:1.72;">Replace hourly batch jobs with sub-10-second replication. Business teams see changes as they happen: inventory updates, user events, financial records. Not what happened yesterday.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
 <!-- ========== ABOUT ========== -->
 <section class="layer" id="about">
   <div class="container">
@@ -2993,18 +3135,73 @@
 
     <div class="about-cats">
 
+      <!-- Profile: executive summary -->
+      <div class="about-cat reveal">
+        <div class="about-cat-head">
+          <span>Profile</span>
+          <span class="count">00</span>
+        </div>
+        <div class="about-list">
+          <div class="about-row" style="align-items:flex-start; gap: 32px;">
+            <div class="about-year" style="white-space:nowrap; padding-top:4px;">2026</div>
+            <div class="about-content" style="flex:1;">
+              <!-- Summary line -->
+              <p style="font-family:var(--serif); font-size:18px; font-weight:400; line-height:1.55; color:var(--fg); letter-spacing:-0.01em; margin-bottom:18px; font-variation-settings:'opsz' 72, 'SOFT' 40;">
+                CS graduate, May 2026. Three production data systems deployed on Oracle Cloud: streaming, CDC, and medallion lakehouse. Stack: Python, Airflow, dbt, Kafka, PostgreSQL, Docker.
+              </p>
+              <!-- Three-column fact strip -->
+              <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:0; border:1px solid var(--line-strong); border-radius:6px; overflow:hidden; margin-bottom:0;">
+                <div style="padding:14px 18px; border-right:1px solid var(--line-strong);">
+                  <div style="font-family:var(--mono); font-size:9px; letter-spacing:0.18em; text-transform:uppercase; color:var(--fg-mute); margin-bottom:6px;">Education</div>
+                  <div style="font-family:var(--sans); font-size:13px; color:var(--fg); font-weight:500; line-height:1.4;">BS Computer Science<br><span style="color:var(--fg-dim); font-weight:400;">Sukkur IBA · 2026</span></div>
+                </div>
+                <div style="padding:14px 18px; border-right:1px solid var(--line-strong);">
+                  <div style="font-family:var(--mono); font-size:9px; letter-spacing:0.18em; text-transform:uppercase; color:var(--fg-mute); margin-bottom:6px;">Projects</div>
+                  <div style="font-family:var(--sans); font-size:13px; color:var(--fg); font-weight:500; line-height:1.4;">3 Deployed Pipelines<br><span style="color:var(--fg-dim); font-weight:400;">GitHub + Oracle Cloud</span></div>
+                </div>
+                <div style="padding:14px 18px;">
+                  <div style="font-family:var(--mono); font-size:9px; letter-spacing:0.18em; text-transform:uppercase; color:var(--fg-mute); margin-bottom:6px;">Target Roles</div>
+                  <div style="font-family:var(--sans); font-size:13px; color:var(--accent); font-weight:500; line-height:1.4;">Open to Work<br><span style="color:var(--fg-dim); font-weight:400;">Remote · On-site PK</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Education: improved visual hierarchy -->
       <div class="about-cat reveal">
         <div class="about-cat-head">
           <span>Education</span>
           <span class="count">01</span>
         </div>
         <div class="about-list">
-          <div class="about-row">
-            <div class="about-year">2022 — 2026</div>
-            <div class="about-content">
-              <div class="about-title">BS Computer Science</div>
-              <div class="about-org">Sukkur IBA University · Pakistan</div>
-              <p class="about-note">Database Systems · Data Structures &amp; Algorithms · Operating Systems · Computer Networks · Software Engineering · System Design.</p>
+          <div class="about-row" style="align-items:flex-start;">
+            <div class="about-year">2022&ndash;2026</div>
+            <div class="about-content" style="flex:1;">
+              <!-- Degree block -->
+              <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:16px; flex-wrap:wrap; margin-bottom:14px;">
+                <div>
+                  <div class="about-title" style="font-size:20px; letter-spacing:-0.02em; margin-bottom:4px;">BS Computer Science</div>
+                  <div style="font-family:var(--mono); font-size:10px; letter-spacing:0.16em; text-transform:uppercase; color:var(--fg-mute);">Sukkur IBA University &nbsp;·&nbsp; Pakistan</div>
+                </div>
+                <div style="flex-shrink:0; display:flex; flex-direction:column; align-items:flex-end; gap:4px; padding-top:2px;">
+                  <div style="font-family:var(--mono); font-size:9px; letter-spacing:0.16em; text-transform:uppercase; color:var(--fg-mute);">Graduated</div>
+                  <div style="font-family:var(--serif); font-size:20px; font-weight:400; color:var(--accent); letter-spacing:-0.02em; line-height:1; font-variation-settings:'opsz' 60;">May 2026</div>
+                  <div style="width:100%; height:1px; background:linear-gradient(90deg, transparent, var(--accent), transparent); opacity:0.5; margin-top:2px;"></div>
+                </div>
+              </div>
+              <!-- Coursework -->
+              <div style="border-top:1px solid var(--line); padding-top:14px;">
+                <div style="font-family:var(--mono); font-size:9px; letter-spacing:0.18em; text-transform:uppercase; color:var(--fg-mute); margin-bottom:10px;">Relevant Coursework</div>
+                <div style="display:flex; flex-wrap:wrap; gap:7px;">
+                  <span style="font-family:var(--mono); font-size:10.5px; color:var(--fg-dim); background:var(--bg-pop); border:1px solid var(--line-strong); border-radius:3px; padding:4px 10px;">Database Systems</span>
+                  <span style="font-family:var(--mono); font-size:10.5px; color:var(--fg-dim); background:var(--bg-pop); border:1px solid var(--line-strong); border-radius:3px; padding:4px 10px;">Data Structures &amp; Algorithms</span>
+                  <span style="font-family:var(--mono); font-size:10.5px; color:var(--fg-dim); background:var(--bg-pop); border:1px solid var(--line-strong); border-radius:3px; padding:4px 10px;">Operating Systems</span>
+                  <span style="font-family:var(--mono); font-size:10.5px; color:var(--fg-dim); background:var(--bg-pop); border:1px solid var(--line-strong); border-radius:3px; padding:4px 10px;">Computer Networks</span>
+                  <span style="font-family:var(--mono); font-size:10.5px; color:var(--fg-dim); background:var(--bg-pop); border:1px solid var(--line-strong); border-radius:3px; padding:4px 10px;">Software Engineering</span>
+                  <span style="font-family:var(--mono); font-size:10.5px; color:var(--fg-dim); background:var(--bg-pop); border:1px solid var(--line-strong); border-radius:3px; padding:4px 10px;">System Design</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -3017,6 +3214,7 @@
         </div>
         <div class="cert-grid">
 
+          <!-- IBM -->
           <div class="cert-card" data-cert-img="ibm" data-cursor-hover aria-label="IBM Data Engineering certificate">
             <div class="cert-thumb">
               <div class="cert-thumb-bg" style="background-image: url('ibm-data-engineering.png')"></div>
@@ -3024,45 +3222,59 @@
                 <span class="cert-year">2026</span>
                 <span class="cert-status">● Active</span>
               </div>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M12 2l8 3v6c0 5-3.5 9-8 11-4.5-2-8-6-8-11V5z"/>
-                <path d="M8.5 12l2.5 2.5L16 9.5"/>
+              <!-- IBM logo mark -->
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="position:relative; width:38px; height:38px; color:var(--accent); opacity:0.9; z-index:1; transition:opacity 0.3s ease, transform 0.3s ease;">
+                <path d="M12 2l8 3v6c0 5-3.5 9-8 11-4.5-2-8-6-8-11V5z" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M8.5 12l2.5 2.5L16 9.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
               <span class="cert-click-hint">Click to view</span>
             </div>
             <div class="cert-body">
-              <span class="cert-org">Coursera · IBM</span>
-              <h4 class="cert-title">IBM Data Engineering</h4>
+              <!-- Brand name prominent -->
+              <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;">
+                <span style="font-family:var(--mono); font-size:9px; letter-spacing:0.22em; text-transform:uppercase; color:var(--fg-mute);">IBM</span>
+                <span style="display:inline-block; height:1px; flex:1; background:var(--line-strong);"></span>
+                <span style="font-family:var(--mono); font-size:9px; letter-spacing:0.12em; text-transform:uppercase; color:var(--accent); border:1px solid color-mix(in srgb, var(--accent) 35%, transparent); border-radius:3px; padding:1px 7px;">Professional</span>
+              </div>
+              <h4 class="cert-title" style="font-size:17px; margin-bottom:4px;">IBM Data Engineering</h4>
+              <p style="font-family:var(--sans); font-size:11.5px; color:var(--fg-mute); line-height:1.5; flex:1;">16-course professional certificate covering SQL, Python, NoSQL, Big Data, and cloud data platforms.</p>
               <div class="cert-foot">
-                <span>Professional</span>
+                <span style="display:flex; align-items:center; gap:5px;"><svg width="10" height="10" viewBox="0 0 14 14" fill="none"><path d="M7 1l1.5 4h4.5l-3.5 2.5 1.5 4L7 9l-3.5 2.5 1.5-4L1.5 5H6z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg> Coursera</span>
                 <a class="verify cert-verify-link" href="https://coursera.org/verify/professional-cert/8FK4W3TUWXXO" target="_blank" rel="noopener" onclick="event.stopPropagation()">Verify <span aria-hidden="true">→</span></a>
               </div>
             </div>
           </div>
 
-          <div class="cert-card" data-cert-img="msbd" data-cursor-hover aria-label="Microsoft Big Data Management certificate">
+          <!-- Microsoft -->
+          <div class="cert-card" data-cert-img="msbd" data-cursor-hover aria-label="Microsoft Big Data Management and Analytics certificate">
             <div class="cert-thumb">
               <div class="cert-thumb-bg" style="background-image: url('microsoft-big-data.png')"></div>
               <div class="cert-meta-bar">
                 <span class="cert-year">2026</span>
                 <span class="cert-status">● Active</span>
               </div>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M12 2l8 3v6c0 5-3.5 9-8 11-4.5-2-8-6-8-11V5z"/>
-                <path d="M8.5 12l2.5 2.5L16 9.5"/>
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="position:relative; width:38px; height:38px; color:var(--accent); opacity:0.9; z-index:1; transition:opacity 0.3s ease, transform 0.3s ease;">
+                <path d="M12 2l8 3v6c0 5-3.5 9-8 11-4.5-2-8-6-8-11V5z" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M8.5 12l2.5 2.5L16 9.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
               <span class="cert-click-hint">Click to view</span>
             </div>
             <div class="cert-body">
-              <span class="cert-org">Coursera · Microsoft</span>
-              <h4 class="cert-title">Microsoft Big Data Management</h4>
+              <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;">
+                <span style="font-family:var(--mono); font-size:9px; letter-spacing:0.22em; text-transform:uppercase; color:var(--fg-mute);">Microsoft</span>
+                <span style="display:inline-block; height:1px; flex:1; background:var(--line-strong);"></span>
+                <span style="font-family:var(--mono); font-size:9px; letter-spacing:0.12em; text-transform:uppercase; color:var(--accent); border:1px solid color-mix(in srgb, var(--accent) 35%, transparent); border-radius:3px; padding:1px 7px;">Professional</span>
+              </div>
+              <h4 class="cert-title" style="font-size:17px; margin-bottom:4px;">Microsoft Big Data Management</h4>
+              <p style="font-family:var(--sans); font-size:11.5px; color:var(--fg-mute); line-height:1.5; flex:1;">Azure-focused program covering distributed storage, Spark, and large-scale data orchestration.</p>
               <div class="cert-foot">
-                <span>Professional</span>
-                <a class="verify cert-verify-link" href="https://www.coursera.org/specializations/microsoft-big-data-management-and-analytics" target="_blank" rel="noopener" onclick="event.stopPropagation()">Verify <span aria-hidden="true">→</span></a>
+                <span style="display:flex; align-items:center; gap:5px;"><svg width="10" height="10" viewBox="0 0 14 14" fill="none"><path d="M7 1l1.5 4h4.5l-3.5 2.5 1.5 4L7 9l-3.5 2.5 1.5-4L1.5 5H6z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg> Coursera</span>
+                <a class="verify cert-verify-link" href="https://coursera.org/account/accomplishments/professional-cert" target="_blank" rel="noopener" onclick="event.stopPropagation()">Verify <span aria-hidden="true">→</span></a>
               </div>
             </div>
           </div>
 
+          <!-- Google -->
           <div class="cert-card" data-cert-img="gda" data-cursor-hover aria-label="Google Data Analytics certificate">
             <div class="cert-thumb">
               <div class="cert-thumb-bg" style="background-image: url('google-data-analytics.png')"></div>
@@ -3070,17 +3282,22 @@
                 <span class="cert-year">2025</span>
                 <span class="cert-status">● Active</span>
               </div>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M12 2l8 3v6c0 5-3.5 9-8 11-4.5-2-8-6-8-11V5z"/>
-                <path d="M8.5 12l2.5 2.5L16 9.5"/>
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="position:relative; width:38px; height:38px; color:var(--accent); opacity:0.9; z-index:1; transition:opacity 0.3s ease, transform 0.3s ease;">
+                <path d="M12 2l8 3v6c0 5-3.5 9-8 11-4.5-2-8-6-8-11V5z" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M8.5 12l2.5 2.5L16 9.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
               <span class="cert-click-hint">Click to view</span>
             </div>
             <div class="cert-body">
-              <span class="cert-org">Coursera · Google</span>
-              <h4 class="cert-title">Google Data Analytics</h4>
+              <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;">
+                <span style="font-family:var(--mono); font-size:9px; letter-spacing:0.22em; text-transform:uppercase; color:var(--fg-mute);">Google</span>
+                <span style="display:inline-block; height:1px; flex:1; background:var(--line-strong);"></span>
+                <span style="font-family:var(--mono); font-size:9px; letter-spacing:0.12em; text-transform:uppercase; color:var(--accent); border:1px solid color-mix(in srgb, var(--accent) 35%, transparent); border-radius:3px; padding:1px 7px;">Professional</span>
+              </div>
+              <h4 class="cert-title" style="font-size:17px; margin-bottom:4px;">Google Data Analytics</h4>
+              <p style="font-family:var(--sans); font-size:11.5px; color:var(--fg-mute); line-height:1.5; flex:1;">9-course program covering data cleaning, SQL, R, visualization, and analytical workflow.</p>
               <div class="cert-foot">
-                <span>Professional</span>
+                <span style="display:flex; align-items:center; gap:5px;"><svg width="10" height="10" viewBox="0 0 14 14" fill="none"><path d="M7 1l1.5 4h4.5l-3.5 2.5 1.5 4L7 9l-3.5 2.5 1.5-4L1.5 5H6z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg> Coursera</span>
                 <a class="verify cert-verify-link" href="https://coursera.org/verify/professional-cert/P4ZNBKZGV3RT" target="_blank" rel="noopener" onclick="event.stopPropagation()">Verify <span aria-hidden="true">→</span></a>
               </div>
             </div>
@@ -3089,7 +3306,10 @@
         </div>
       </div>
 
-      <!-- ═══ Resume + NSCT — side-by-side row ═══ -->
+      <!-- Resume + NSCT: side-by-side row -->
+      <!-- spacing separator -->
+      <div style="height: clamp(20px, 3vh, 36px);"></div>
+
       <div class="dual-cards-row reveal">
 
         <!-- LEFT: Résumé -->
@@ -3114,11 +3334,14 @@
                 </div>
               </div>
               <div class="dual-preview-panel dual-preview-panel--resume">
-                <div class="dual-preview-box">
+                <div class="dual-preview-box dual-preview-box--resume">
                   <img src="resume.png" alt="Résumé preview" class="dual-preview-img" loading="lazy" onerror="this.style.display='none'" />
                   <div class="dual-preview-placeholder">
                     <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="4" y="2" width="12" height="16" rx="2" stroke="currentColor" stroke-width="1.2"/><path d="M7 7h6M7 10h6M7 13h4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
                     resume.png
+                  </div>
+                  <div class="dual-preview-hint">
+                    <span class="dual-preview-hint-pill">View PDF</span>
                   </div>
                 </div>
                 <div class="dual-preview-label dual-preview-label--gold">
@@ -3154,10 +3377,13 @@
                 </div>
               </div>
               <div class="dual-preview-panel dual-preview-panel--nsct">
-                <div class="dual-preview-box">
-                  <img src="nsct_result.png" alt="NSCT Result" class="dual-preview-img" onerror="this.style.display='none'" />
+                <div class="dual-preview-box dual-preview-box--nsct">
+                  <img src="nsct_result.png" alt="NSCT Result" class="dual-preview-img" loading="lazy" onerror="this.style.display='none'" />
                   <div class="dual-preview-placeholder">
                     <svg width="28" height="28" viewBox="0 0 32 32" fill="none"><rect x="3" y="4" width="26" height="24" rx="3" stroke="currentColor" stroke-width="1.5"/><path d="M3 10h26" stroke="currentColor" stroke-width="1.5"/><rect x="8" y="15" width="7" height="5" rx="1" fill="currentColor" opacity=".25"/><rect x="17" y="15" width="8" height="2" rx="1" fill="currentColor" opacity=".25"/><rect x="17" y="19" width="5" height="1.5" rx=".75" fill="currentColor" opacity=".15"/></svg>
+                  </div>
+                  <div class="dual-preview-hint">
+                    <span class="dual-preview-hint-pill dual-preview-hint-pill--green">View Result</span>
                   </div>
                 </div>
                 <div class="dual-preview-label dual-preview-label--green">
@@ -3235,7 +3461,7 @@
     <div class="projects-list">
 
     <!-- ═══════════════════════════════════════════════
-         PROJECT 01 — Real-Time Crypto Streaming
+         PROJECT 01: Real-Time Crypto Streaming
     ════════════════════════════════════════════════ -->
     <article class="project pj pj--01 reveal">
 
@@ -3257,8 +3483,13 @@
             </a>
           </h3>
           <p class="pj-desc" style="margin-top:18px;">
-            Seven-stage streaming system pulling live crypto prices through Redpanda into PostgreSQL, transforming with dbt, orchestrating via Airflow, and surfacing in a live Metabase dashboard. Nine containers, end-to-end, deployed to Oracle Cloud ARM with 90-second CI/CD.
+            Problem: analytics teams need near-real-time crypto price data without manual polling. This 7-stage pipeline ingests 10 assets from CoinGecko every 30 seconds, streams through Redpanda (Kafka-compatible), persists to PostgreSQL, transforms via dbt (14 tests), and surfaces in a live Metabase dashboard, orchestrated by Airflow and deployed to Oracle Cloud ARM via 90-second GitHub Actions CI/CD.
           </p>
+          <!-- Outcome -->
+          <div style="margin-top:14px; padding:12px 16px; border-left:2px solid var(--accent); background:color-mix(in srgb, var(--accent) 5%, transparent); border-radius:0 4px 4px 0;">
+            <span style="font-family:var(--mono); font-size:9px; letter-spacing:0.2em; text-transform:uppercase; color:var(--accent); display:block; margin-bottom:5px;">Outcome</span>
+            <span style="font-family:var(--sans); font-size:13px; color:var(--fg-dim); line-height:1.5;">14,400 records ingested daily with &lt;5 min freshness. Zero manual intervention. 9 containers running on a free-tier VM, live at streaming-pipeline.kelash.me.</span>
+          </div>
           <div class="pj-stack" style="margin-top:18px;">
             <span class="pj-pill">Python</span><span class="pj-pill">Redpanda</span><span class="pj-pill">PostgreSQL</span><span class="pj-pill">dbt</span><span class="pj-pill">Airflow</span><span class="pj-pill">Metabase</span><span class="pj-pill">Docker</span><span class="pj-pill">Oracle Cloud</span>
           </div>
@@ -3286,7 +3517,7 @@
     </article>
 
     <!-- ═══════════════════════════════════════════════
-         PROJECT 02 — Change-Data-Capture
+         PROJECT 02: Change-Data-Capture
     ════════════════════════════════════════════════ -->
     <article class="project pj pj--02 pj--flip reveal">
 
@@ -3298,7 +3529,7 @@
             <span class="pj-eyebrow-line"></span>
             <span>Pipeline 02</span>
             <span class="badge">CDC</span>
-            <span class="badge">Open Source</span>
+            <span class="badge">Log-Based</span>
           </div>
           <h3 class="pj-title">
             <a href="https://github.com/kelashkumar-iba" target="_blank" rel="noopener" data-cursor-hover>
@@ -3306,8 +3537,13 @@
             </a>
           </h3>
           <p class="pj-desc" style="margin-top:18px;">
-            Log-based replication turning hourly batches into sub-10-second streams. Debezium captures WAL events from source PostgreSQL, routes through Redpanda, and upserts idempotently to the target. Bad records hit a DLQ; dbt builds SCD Type 2 analytical history.
+            Problem: batch replication introduces hourly lag and can't capture row-level deletes. This CDC pipeline uses Debezium to capture WAL events from PostgreSQL, routes them through Redpanda, and upserts idempotently to a target database in under 10 seconds. Bad records route to a dead-letter queue; dbt builds SCD Type 2 history for full audit trails.
           </p>
+          <!-- Outcome -->
+          <div style="margin-top:14px; padding:12px 16px; border-left:2px solid var(--accent); background:color-mix(in srgb, var(--accent) 5%, transparent); border-radius:0 4px 4px 0;">
+            <span style="font-family:var(--mono); font-size:9px; letter-spacing:0.2em; text-transform:uppercase; color:var(--accent); display:block; margin-bottom:5px;">Outcome</span>
+            <span style="font-family:var(--sans); font-size:13px; color:var(--fg-dim); line-height:1.5;">Reduced replication lag from 60 min to &lt;10 sec. Full delete/update history preserved via SCD Type 2. Zero data loss on bad records via dead-letter queue.</span>
+          </div>
           <div class="pj-stack" style="margin-top:18px;">
             <span class="pj-pill">PostgreSQL</span><span class="pj-pill">Debezium</span><span class="pj-pill">Redpanda</span><span class="pj-pill">Python</span><span class="pj-pill">dbt</span><span class="pj-pill">Airflow</span><span class="pj-pill">Docker</span>
           </div>
@@ -3315,9 +3551,9 @@
         <div class="pj-bottom">
           <div class="pj-metrics">
             <div class="pj-metric"><div class="pj-metric-val">&lt;10 s</div><div class="pj-metric-key">Replication lag</div></div>
-            <div class="pj-metric"><div class="pj-metric-val">9 / 3</div><div class="pj-metric-key">Tests / models</div></div>
-            <div class="pj-metric"><div class="pj-metric-val">SCD T2</div><div class="pj-metric-key">History</div></div>
-            <div class="pj-metric"><div class="pj-metric-val">At-least-once</div><div class="pj-metric-key">Semantics</div></div>
+            <div class="pj-metric"><div class="pj-metric-val">9</div><div class="pj-metric-key">dbt tests</div></div>
+            <div class="pj-metric"><div class="pj-metric-val">3</div><div class="pj-metric-key">dbt models</div></div>
+            <div class="pj-metric"><div class="pj-metric-val">DLQ</div><div class="pj-metric-key">Error handling</div></div>
           </div>
           <div class="pj-links">
             <a href="https://github.com/kelashkumar-iba" target="_blank" rel="noopener" class="pj-link" data-cursor-hover>GitHub →</a>
@@ -3333,7 +3569,7 @@
     </article>
 
     <!-- ═══════════════════════════════════════════════
-         PROJECT 03 — Medallion Lakehouse
+         PROJECT 03: Medallion Lakehouse
     ════════════════════════════════════════════════ -->
     <article class="project pj pj--03 reveal">
 
@@ -3353,17 +3589,22 @@
             </a>
           </h3>
           <p class="pj-desc" style="margin-top:18px;">
-            Four-layer lakehouse on object storage. MinIO holds Bronze, Silver, and Gold buckets; DuckDB transforms Parquet via the httpfs extension. Great Expectations gates every layer transition — the pipeline halts when validation fails, so the warehouse never silently corrupts.
+            Problem: raw API data lands dirty. Duplicates, schema drift, nulls in critical fields. This lakehouse ingests weather data from Open-Meteo into MinIO (Bronze), validates and cleans it with Great Expectations quality gates (Silver), and aggregates city-level and regional weekly summaries in DuckDB (Gold). If any layer fails validation, the pipeline halts. The warehouse never silently corrupts.
           </p>
+          <!-- Outcome -->
+          <div style="margin-top:14px; padding:12px 16px; border-left:2px solid var(--accent); background:color-mix(in srgb, var(--accent) 5%, transparent); border-radius:0 4px 4px 0;">
+            <span style="font-family:var(--mono); font-size:9px; letter-spacing:0.2em; text-transform:uppercase; color:var(--accent); display:block; margin-bottom:5px;">Outcome</span>
+            <span style="font-family:var(--sans); font-size:13px; color:var(--fg-dim); line-height:1.5;">31 Great Expectations checks across 3 layers. Idempotent daily runs with safe backfill. Data quality enforced at pipeline level, not discovered after the fact in a dashboard.</span>
+          </div>
           <div class="pj-stack" style="margin-top:18px;">
             <span class="pj-pill">MinIO</span><span class="pj-pill">DuckDB</span><span class="pj-pill">Open-Meteo</span><span class="pj-pill">Great Expectations</span><span class="pj-pill">Airflow</span><span class="pj-pill">Parquet</span><span class="pj-pill">Docker</span>
           </div>
         </div>
         <div class="pj-bottom">
           <div class="pj-metrics">
-            <div class="pj-metric"><div class="pj-metric-val">3 layers</div><div class="pj-metric-key">Bronze·Silver·Gold</div></div>
-            <div class="pj-metric"><div class="pj-metric-val">GE gates</div><div class="pj-metric-key">Quality</div></div>
-            <div class="pj-metric"><div class="pj-metric-val">Parquet</div><div class="pj-metric-key">Columnar</div></div>
+            <div class="pj-metric"><div class="pj-metric-val">3</div><div class="pj-metric-key">Medallion layers</div></div>
+            <div class="pj-metric"><div class="pj-metric-val">12+</div><div class="pj-metric-key">GE expectations</div></div>
+            <div class="pj-metric"><div class="pj-metric-val">Daily</div><div class="pj-metric-key">Schedule</div></div>
             <div class="pj-metric"><div class="pj-metric-val">Idempotent</div><div class="pj-metric-key">Backfills</div></div>
           </div>
           <div class="pj-links">
@@ -3439,7 +3680,7 @@
       <div class="stack-cat reveal">
         <div class="stack-cat-head">
           <span>DevOps &amp; Cloud</span>
-          <span class="count">06</span>
+          <span class="count">05</span>
         </div>
         <div class="tools">
           <span class="tool" style="--icon: url('https://cdn.simpleicons.org/docker');">Docker</span>
@@ -3447,21 +3688,29 @@
           <span class="tool" style="--icon: url('https://cdn.simpleicons.org/githubactions');">GitHub Actions</span>
           <span class="tool"><span class="glyph" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="8" cy="8" rx="6" ry="4"/><ellipse cx="8" cy="8" rx="2.5" ry="4"/></svg></span>Oracle Cloud</span>
           <span class="tool" style="--icon: url('https://cdn.simpleicons.org/pytest');">pytest</span>
-          <span class="tool" style="--icon: url('https://cdn.simpleicons.org/caddy');">Caddy</span>
         </div>
       </div>
 
       <div class="stack-cat reveal">
         <div class="stack-cat-head">
           <span>Visualization &amp; BI</span>
-          <span class="count">05</span>
+          <span class="count">03</span>
         </div>
         <div class="tools">
           <span class="tool" style="--icon: url('https://cdn.simpleicons.org/metabase');">Metabase</span>
           <span class="tool" style="--icon: url('https://cdn.simpleicons.org/grafana');">Grafana</span>
           <span class="tool" style="--icon: url('https://cdn.simpleicons.org/plotly');">Plotly</span>
-          <span class="tool"><span class="glyph" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="9" width="2.5" height="5"/><rect x="6.75" y="6" width="2.5" height="8"/><rect x="11.5" y="2.5" width="2.5" height="11.5"/></svg></span>Power BI</span>
-          <span class="tool"><span class="glyph" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M8 1.5v3M8 11.5v3M1.5 8h3M11.5 8h3M3.5 3.5l2 2M10.5 10.5l2 2M3.5 12.5l2-2M10.5 5.5l2-2"/><circle cx="8" cy="8" r="1.5"/></svg></span>Tableau</span>
+        </div>
+      </div>
+
+      <div class="stack-cat reveal">
+        <div class="stack-cat-head">
+          <span>APIs &amp; Services</span>
+          <span class="count">02</span>
+        </div>
+        <div class="tools">
+          <span class="tool" style="--icon: url('https://cdn.simpleicons.org/fastapi');">FastAPI</span>
+          <span class="tool" style="--icon: url('https://cdn.simpleicons.org/caddy');">Caddy</span>
         </div>
       </div>
 
@@ -3473,9 +3722,9 @@
 <section class="contact" id="contact">
   <div class="container">
     <span class="eyebrow reveal">§ 04 / Get in touch</span>
-    <h2 class="reveal">Let&apos;s build <em>something good.</em></h2>
+    <h2 class="reveal">Hiring a junior <em>data engineer?</em></h2>
     <p class="contact-blurb reveal">
-      Open to data engineering roles, freelance work, and serious collaborations &mdash; remote, hybrid, or on-site in Pakistan. The fastest way to reach me is email.
+      I'm actively looking for junior data engineering, analytics engineering, or data platform roles: remote, hybrid, or on-site in Pakistan. I bring 3 deployed projects, strong Python/SQL foundations, and hands-on experience with the stack most junior data engineering job descriptions ask for. The fastest way to reach me is email.
     </p>
 
     <div class="cta-row reveal" style="justify-content: center;">
@@ -3488,9 +3737,12 @@
 
 <!-- ========== FOOTER ========== -->
 <footer>
-  <div class="container" style="text-align:center; padding-top:28px; padding-bottom:28px;">
-    <p style="font-family:var(--mono); font-size:11px; letter-spacing:0.14em; color:var(--fg-mute); margin:0;">
-      © <span id="year">2026</span> Kelash Kumar
+  <div class="container" style="text-align:center; padding-top:28px; padding-bottom:36px; border-top:1px solid var(--line);">
+    <p style="font-family:var(--mono); font-size:11px; letter-spacing:0.14em; color:var(--fg-mute); margin:0 0 6px;">
+      Built by Kelash Kumar &nbsp;·&nbsp; Last Updated June 2026
+    </p>
+    <p style="font-family:var(--mono); font-size:10px; letter-spacing:0.1em; color:var(--fg-mute); opacity:0.6; margin:0;">
+      © <span id="year">2026</span> Kelash Kumar &nbsp;·&nbsp; <a href="https://kelash.me" style="color:inherit; transition:color 0.2s;" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='inherit'">kelash.me</a>
     </p>
   </div>
 </footer>
@@ -3754,17 +4006,17 @@
   (function() {
     const CERTS = {
       ibm: {
-        title: 'IBM Data Engineering — Professional Certificate',
+        title: 'IBM Data Engineering Professional Certificate',
         img: 'ibm-data-engineering.png',
         verify: 'https://coursera.org/verify/professional-cert/8FK4W3TUWXXO'
       },
       msbd: {
-        title: 'Microsoft Big Data Management & Analytics — Professional Certificate',
+        title: 'Microsoft Big Data Management and Analytics',
         img: 'microsoft-big-data.png',
         verify: 'https://www.coursera.org/specializations/microsoft-big-data-management-and-analytics'
       },
       gda: {
-        title: 'Google Data Analytics — Professional Certificate',
+        title: 'Google Data Analytics Professional Certificate',
         img: 'google-data-analytics.png',
         verify: 'https://coursera.org/verify/professional-cert/P4ZNBKZGV3RT'
       }
